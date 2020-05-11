@@ -124,6 +124,7 @@ public class WorkorderController extends Controller {
 					CreatWordByModel("D:\\TemplateDoc.docx", map, path + order_code+"-"+System.currentTimeMillis()+".docx");
 //					String printerName = "HP MFP M436 PCL6";//打印机名包含字串
 //					printWord(path + order_code+"-"+System.currentTimeMillis()+".docx",printerName);
+
 				}
 			}
 		}
