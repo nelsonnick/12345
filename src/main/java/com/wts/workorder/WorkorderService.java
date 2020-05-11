@@ -42,7 +42,8 @@ public class WorkorderService {
 					String write_time,String urgency_degree, String problem_classification,String is_secret,
 					String is_reply,String reply_remark,String problem_description,String send_person,
 					String send_time,String end_date,String transfer_opinion,String transfer_process,String remark) {
-		dao.set("order_guid",GUID)
+		Workorder workorder = new Workorder();
+		workorder.set("order_guid",GUID)
 				.set("order_state",order_state)
 				.set("order_code",order_code)
 				.set("link_person",link_person)

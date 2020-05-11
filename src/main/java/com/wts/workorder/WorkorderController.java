@@ -2,6 +2,7 @@ package com.wts.workorder;
 
 import com.jfinal.aop.Inject;
 import com.jfinal.core.Controller;
+import com.wts.entity.model.Workorder;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -10,28 +11,23 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.wts.util.WordUtil.*;
 
-/**
- * 本 demo 仅表达最为粗浅的 jfinal 用法，更为有价值的实用的企业级用法
- * 详见 JFinal 俱乐部: http://jfinal.com/club
- * 
- * 所有 sql 与业务逻辑写在 Service 中，不要放在 Model 中，更不
- * 要放在 Controller 中，养成好习惯，有利于大型项目的开发与维护
- */
 public class WorkorderController extends Controller {
 	
 	@Inject
 	WorkorderService service;
 
-	
-	public void add() {
-	}
-
 	public void index() throws Exception {
+		LocalDate date = LocalDate.now();
+		DateTimeFormatter yyyy = DateTimeFormatter.ofPattern("yyyy");
+		DateTimeFormatter MM = DateTimeFormatter.ofPattern("MM");
+		DateTimeFormatter dd = DateTimeFormatter.ofPattern("dd");
 		String Cookie = "jn.gov.cn=UserID=GVl7MZ9hnbtfzpPrOq3B9A==&UserPass=bXnKpxw85yw=&ADGuid=HP79/4nMJ6xJ9s+VHA4+I5fM/D3BpZvY79O9dyE2cvkvhUuktBvziQ==&UserName=LKgasW++KiD/0oOuF4OIoAmaekB6iJy4OiygaTn++HU=&TicketData=y/cmJRNtGBo=; ASP.NET_SessionId=w0jaj455nitxwcy23ksduh55; .jhoa=B306F3F495EA0FD04FF9B817B233D49266F2602D6B125520CB820C9F09B407E72900C49A0CF34F50BEA06CF285CEF07FD226CDC1C6CAC5840B1A018B421AC202930C88C924B562D3101A07762F53187C8A1195E6C1C7B8CFEB0D2FE48DD9DCEF67C25A5A4C33692BBD13EDB9242906F488B38F9D30C89871C871ADED128EAFD36D6A9BC8161C78E6917A6EBBB667FDCF5ADD1222";
 		OkHttpClient client = new OkHttpClient().newBuilder()
 				.build();
@@ -53,9 +49,6 @@ public class WorkorderController extends Controller {
 			Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
 			String value = in.attr("value");
 			String GUID = value.substring(5, 43);
-			if (service.findNumByGUID(GUID)!=0){
-
-			}
 			OkHttpClient client2 = new OkHttpClient().newBuilder()
 					.build();
 			Request request2 = new Request.Builder()
@@ -114,8 +107,25 @@ public class WorkorderController extends Controller {
 			map.put("${problem_description}",problem_description);
 			map.put("${transfer_opinion}",transfer_opinion);
 			map.put("${transfer_process}",transfer_process);
-			CreatWordByModel("D:\\TemplateDoc.docx", map, "D:\\"+order_code+".docx");
-
+			String path = "D:\\"+date.format(yyyy)+ "\\"+date.format(MM)+ "\\"+date.format(dd)+ "\\";
+			System.out.println(path);
+//			CreatWordByModel("D:\\TemplateDoc.docx", map, "D:\\"+order_code+".docx");
+			if (service.findNumByGUID(GUID)==0){
+				service.add(GUID,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark);
+				CreatWordByModel("D:\\TemplateDoc.docx", map, path + order_code+".docx");
+//				String printerName = "HP MFP M436 PCL6";//打印机名包含字串
+//				printWord(path + order_code+".docx",printerName);
+			}else{
+				Workorder workorder = service.findByGUID(GUID);
+				if(!workorder.get("problem_description").equals(problem_description)
+						||!workorder.get("transfer_opinion").equals(transfer_opinion)
+						||!workorder.get("transfer_process").equals(transfer_process)){
+					service.add(GUID,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark);
+					CreatWordByModel("D:\\TemplateDoc.docx", map, path + order_code+"-"+System.currentTimeMillis()+".docx");
+//					String printerName = "HP MFP M436 PCL6";//打印机名包含字串
+//					printWord(path + order_code+"-"+System.currentTimeMillis()+".docx",printerName);
+				}
+			}
 		}
 		renderText("11");
 	}

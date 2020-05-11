@@ -1,6 +1,10 @@
 package com.wts.util;
 
 
+import com.jacob.activeX.ActiveXComponent;
+import com.jacob.com.ComThread;
+import com.jacob.com.Dispatch;
+import com.jacob.com.Variant;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xwpf.usermodel.*;
 
@@ -8,6 +12,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -117,4 +123,94 @@ public class WordUtil {
         }
     }
 
+    public static void printWord(String filePath, String printerName){
+//        初始化线程
+        ComThread.InitSTA();
+        ActiveXComponent word = new ActiveXComponent("Word.Application");
+        //设置打印机名称
+        word.setProperty("ActivePrinter", new Variant(printerName));
+        // 这里Visible是控制文档打开后是可见还是不可见，若是静默打印，那么第三个参数就设为false就好了
+        Dispatch.put(word, "Visible", new Variant(false));
+        // 获取文档属性
+        Dispatch document = word.getProperty("Documents").toDispatch();
+        // 打开激活文挡
+        Dispatch doc=Dispatch.call(document, "Open", filePath).toDispatch();
+        //Dispatch doc = Dispatch.invoke(document, "Open", Dispatch.Method,
+        //  new Object[] { filePath }, new int[1]).toDispatch();
+        try{
+            Dispatch.callN(doc, "PrintOut");
+            System.out.println("打印成功！");
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println("打印失败");
+        }finally {
+            try {
+                if (doc != null) {
+                    Dispatch.call(doc, "Close", new Variant(0));//word文档关闭
+                }
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+            //退出
+            word.invoke("Quit", new Variant[0]);
+            //释放资源
+            ComThread.Release();
+            ComThread.quitMainSTA();
+        }
+    }
+
+    public static void main(String[] args) {
+        File file=new File("D:\\2020");
+        if(!file.exists()){//如果文件夹不存在
+            file.mkdir();//创建文件夹
+        }
+        for( int i = 1; i < 10; i++ ){
+            File file1=new File("D:\\2020\\0" + i);
+            if(!file1.exists()){//如果文件夹不存在
+                file1.mkdir();//创建文件夹
+            }
+        }
+        for( int i = 10; i < 13; i++ ){
+            File file1=new File("D:\\2020\\" + i);
+            if(!file1.exists()){//如果文件夹不存在
+                file1.mkdir();//创建文件夹
+            }
+        }
+        for( int i = 1; i < 10; i++ ){
+            for( int j = 1; j < 10; j++ ) {
+                File file2 = new File("D:\\2020\\0" + i + "\\0" + j);
+                if (!file2.exists()) {//如果文件夹不存在
+                    file2.mkdir();//创建文件夹
+                }
+            }
+            for( int j = 10; j < 32; j++ ) {
+                File file2 = new File("D:\\2020\\0" + i + "\\" + j);
+                if (!file2.exists()) {//如果文件夹不存在
+                    file2.mkdir();//创建文件夹
+                }
+            }
+        }
+        for( int i = 10; i < 13; i++ ){
+            for( int j = 1; j < 10; j++ ) {
+                File file2 = new File("D:\\2020\\0" + i + "\\0" + j);
+                if (!file2.exists()) {//如果文件夹不存在
+                    file2.mkdir();//创建文件夹
+                }
+            }
+            for( int j = 10; j < 32; j++ ) {
+                File file2 = new File("D:\\2020\\" + i + "\\" + j);
+                if (!file2.exists()) {//如果文件夹不存在
+                    file2.mkdir();//创建文件夹
+                }
+            }
+        }
+        LocalDate date = LocalDate.now();
+        DateTimeFormatter yyyy = DateTimeFormatter.ofPattern("yyyy");
+        DateTimeFormatter MM = DateTimeFormatter.ofPattern("MM");
+        DateTimeFormatter dd = DateTimeFormatter.ofPattern("dd");
+        System.out.println(date.format(yyyy));
+        System.out.println(date.format(MM));
+        System.out.println(date.format(dd));
+        System.out.println(System.currentTimeMillis());
+    }
 }
