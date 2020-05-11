@@ -1,93 +1,120 @@
 package com.wts.util;
+
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.xwpf.usermodel.*;
+
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.poi.ooxml.POIXMLDocument;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.xwpf.usermodel.*;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.*;
 
 public class WordUtil {
-    public static void generateWord(Map<String, Object> param, String fileSrc, String fileDest) {
-        XWPFDocument doc = null;
-        OPCPackage pack = null;
-        try {
-            pack = POIXMLDocument.openPackage(fileSrc);
-            doc = new XWPFDocument(pack);
-            if (param != null && param.size() > 0) {
-                // 处理段落
-                List<XWPFParagraph> paragraphList = doc.getParagraphs();
-                processParagraphs(paragraphList, param, doc);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        FileOutputStream fopts = null;
-        try {
-            fopts = new FileOutputStream(fileDest);
-            doc.write(fopts);
-            pack.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            closeStream(fopts);
-        }
-    }
 
-    public static void closeStream(FileOutputStream fopts) {
-        try {
-            fopts.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * 处理段落,替换关键字
-     *
-     * @param paragraphList
-     * @throws FileNotFoundException
-     * @throws InvalidFormatException
+    /*
+     * 替换表格里面的变量
+     * @param doc 要替换的文档
+     * @param params 参数
      */
-    public static void processParagraphs(List<XWPFParagraph> paragraphList, Map<String, Object> param, XWPFDocument doc)
-            throws InvalidFormatException, FileNotFoundException {
-        if (paragraphList != null && paragraphList.size() > 0) {
-            // 遍历所有段落
-            for (XWPFParagraph paragraph : paragraphList) {
-                List<XWPFRun> runs = paragraph.getRuns();
-                for (XWPFRun run : runs) {
-                    String text = run.getText(0);
-                    // System.out.println("text==" + text);
-                    if (text != null) {
-                        boolean isSetText = false;
-                        for (Entry<String, Object> entry : param.entrySet()) {
-                            String key = entry.getKey();
-                            if (text.indexOf(key) != -1) {// 在配置文件中有这个关键字对应的键
-                                isSetText = true;
-                                Object value = entry.getValue();
-                                if (value instanceof String) {// 文本替换
-                                    // System.out.println("key==" + key);
-                                    if (text.contains(key)) {
-                                        text = text.replace(key, value.toString());
-                                    }
-                                }
-                            }
-                        }
-                        if (isSetText) {
-                            run.setText(text, 0);
-                        }
+    public static void replaceInTable(XWPFDocument doc, Map<String, String> map){
+        Iterator<XWPFTable> iterator = doc.getTablesIterator();
+        XWPFTable table;
+        XWPFTableRow row;
+        List<XWPFTableCell> cells;
+        List<XWPFParagraph> paras;
+        while(iterator.hasNext()){
+            table = iterator.next();//获取每一个table
+            int count = table.getNumberOfRows();
+            for(int i=0;i<count;i++){
+                row = table.getRow(i);
+                cells = row.getTableCells();
+                for(XWPFTableCell cell : cells){
+                    paras = cell.getParagraphs();
+                    for(XWPFParagraph para : paras){
+                        replaceInPara(para, map);
                     }
                 }
             }
         }
     }
 
+    /*
+     * 替换文档里面的变量
+     * @param doc 要替换的文档
+     * @param params 参数
+     */
+    public static void replaceInPara(XWPFDocument doc, Map<String, String> map){
+        Iterator<XWPFParagraph> iterator = doc.getParagraphsIterator();
+        XWPFParagraph para;
+        while(iterator.hasNext()){
+            para = iterator.next();
+            /*
+             * 此处获取段落的时候有四个
+             *  XX报告
+             * 	报告日期：${reportDate}
+             *  报告内容：
+             *  (此处由于是表格所以为空)
+             */
+            replaceInPara(para, map);
+        }
+    }
+
+    /*
+     * 替换段落里面的变量(被上面的方法调用)
+     * @param doc 要替换的段落
+     * @param params 参数
+     */
+    public static void replaceInPara(XWPFParagraph para, Map<String, String> map){
+        List<XWPFRun> runs = para.getRuns();
+        for(XWPFRun run : runs){
+            String oneparaString = run.getText(run.getTextPosition());
+            if(StringUtils.isBlank(oneparaString)){
+                continue;
+            }
+            for(Map.Entry<String, String> entry : map.entrySet()){
+                if(entry.getValue() != null){
+                    oneparaString = oneparaString.replace(entry.getKey(), entry.getValue());
+                }
+            }
+            run.setText(oneparaString, 0);
+        }
+    }
+
+    /*
+     * 获取紧急程度
+     */
+    public static String getUrgencyDegree(Element element){
+        Elements elements = element.getElementsByTag("option");
+        for (Element e:elements){
+            if (e.attr("selected").equals("selected")){
+                return e.text();
+            }
+        }
+        return "";
+    }
+
+    /*
+     * 创建新文件
+     */
+    public static void CreatWordByModel(String  tmpFile, Map<String, String> contentMap, String exportFile) throws Exception{
+        InputStream in = null;
+        in = new FileInputStream(new File(tmpFile));
+        XWPFDocument document = null;
+        document = new XWPFDocument (in);
+        replaceInTable(document, contentMap);
+        //导出到文件
+        try {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            document.write((OutputStream)byteArrayOutputStream);
+            OutputStream outputStream = new FileOutputStream(exportFile);
+            outputStream.write(byteArrayOutputStream.toByteArray());
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

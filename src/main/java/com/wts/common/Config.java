@@ -13,8 +13,8 @@ import com.jfinal.plugin.cron4j.Cron4jPlugin;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.server.undertow.UndertowServer;
 import com.jfinal.template.Engine;
-import com.wts.common.model._MappingKit;
-import com.wts.controller.MainController;
+import com.wts.entity.model._MappingKit;
+import com.wts.workorder.WorkorderController;
 
 /**
  * 本 demo 仅表达最为粗浅的 jfinal 用法，更为有价值的实用的企业级用法
@@ -65,8 +65,8 @@ public class Config extends JFinalConfig {
 	 * 配置路由
 	 */
 	public void configRoute(Routes me) {
-//		me.add("/", IndexController.class, "/index");	// 第三个参数为该Controller的视图存放路径
-		me.add("/", MainController.class);			// 第三个参数省略时默认与第一个参数值相同，在此即为 "/blog"
+		me.add("/w", WorkorderController.class);
+		me.add("/", MainController.class);
 	}
 	
 	public void configEngine(Engine me) {

@@ -1,4 +1,4 @@
-package com.wts.common.model;
+package com.wts.entity.model;
 
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 
@@ -16,7 +16,7 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 public class _MappingKit {
 	
 	public static void mapping(ActiveRecordPlugin arp) {
-		arp.addMapping("order", "id", Order.class);
+		arp.addMapping("workorder", "id", Workorder.class);
 	}
 }
 

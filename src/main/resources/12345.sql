@@ -1,4 +1,4 @@
-CREATE TABLE `order` (
+CREATE TABLE `workorder` (
 `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
 `order_guid` varchar(255) CHARACTER SET utf8 NULL COMMENT '工单序号',
 `order_state` varchar(255) CHARACTER SET utf8 NULL COMMENT '工单状态',

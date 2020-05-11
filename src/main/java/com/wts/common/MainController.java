@@ -1,4 +1,4 @@
-package com.wts.controller;
+package com.wts.common;
 
 import com.jfinal.core.Controller;
 
