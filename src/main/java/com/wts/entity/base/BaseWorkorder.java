@@ -1,4 +1,4 @@
-package com.wts.entity.model.base;
+package com.wts.entity.base;
 
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.IBean;
@@ -208,15 +208,15 @@ public abstract class BaseWorkorder<M extends BaseWorkorder<M>> extends Model<M>
 	/**
 	 * 录入时间
 	 */
-	public void setEntryTime(java.lang.String entryTime) {
-		set("entry_time", entryTime);
+	public void setWriteTime(java.lang.String writeTime) {
+		set("write_time", writeTime);
 	}
 	
 	/**
 	 * 录入时间
 	 */
-	public java.lang.String getEntryTime() {
-		return getStr("entry_time");
+	public java.lang.String getWriteTime() {
+		return getStr("write_time");
 	}
 
 	/**
@@ -399,6 +399,20 @@ public abstract class BaseWorkorder<M extends BaseWorkorder<M>> extends Model<M>
 	 */
 	public java.lang.String getRemark() {
 		return getStr("remark");
+	}
+
+	/**
+	 * 下载时间
+	 */
+	public void setDownTime(java.util.Date downTime) {
+		set("down_time", downTime);
+	}
+	
+	/**
+	 * 下载时间
+	 */
+	public java.util.Date getDownTime() {
+		return get("down_time");
 	}
 
 }

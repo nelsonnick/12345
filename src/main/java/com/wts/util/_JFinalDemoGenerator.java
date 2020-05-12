@@ -23,9 +23,9 @@ public class _JFinalDemoGenerator {
 	
 	public static void main(String[] args) {
 		// base model 所使用的包名
-		String baseModelPackageName = "com.wts.entity.model.base";
+		String baseModelPackageName = "com.wts.entity.base";
 		// base model 文件保存路径
-		String baseModelOutputDir = PathKit.getWebRootPath() + "/src/main/java/com/wts/entity/model/base";
+		String baseModelOutputDir = PathKit.getWebRootPath() + "/src/main/java/com/wts/entity/base";
 		
 		// model 所使用的包名 (MappingKit 默认使用的包名)
 		String modelPackageName = "com.wts.entity.model";

@@ -27,5 +27,6 @@ CREATE TABLE `workorder` (
 `transfer_opinion` varchar(4999) CHARACTER SET utf8 NULL COMMENT '转办意见',
 `transfer_process` varchar(4999) CHARACTER SET utf8 NULL COMMENT '转办流程',
 `remark` varchar(255) CHARACTER SET utf8 NULL COMMENT '备注',
+`down_time` datetime(0) NULL DEFAULT NULL COMMENT '下载时间',
 PRIMARY KEY (`id`) 
 );

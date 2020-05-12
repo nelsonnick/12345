@@ -19,7 +19,7 @@ import java.util.Map;
 import static com.wts.util.WordUtil.*;
 
 public class WorkorderController extends Controller {
-	
+
 	@Inject
 	WorkorderService service;
 
