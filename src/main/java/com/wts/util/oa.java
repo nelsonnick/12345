@@ -105,7 +105,7 @@ public class oa {
                                     String problem_classification, String problem_description, String transfer_process, String suggestion, String type) {
         Date dNow = new Date();
         SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        String temp = "{\"run_id\":\"${run_id}\",\"run_name\":\"12345转办件${工单编号}\",\"run_name_html\":\"<div contenteditable=\\\"false\\\" class=\\\"title-item\\\">12345转办件</div><div class=\\\"title-item control\\\" data-type=\\\"formData\\\" ng-click=\\\"vm.choiceControl('DATA_2')\\\" data-id=\\\"DATA_2\\\" title=\\\"值来源于-工单编号\\\" ng-bind=\\\"vm.praseData('DATA_2')\\\">${工单编号}</div><div contenteditable=\\\"false\\\" class=\\\"title-item\\\"></div>\",\"instancy_type\":\"1\",\"form_data\":{\"DATA_31\":\"${办件类型}\",\"DATA_2\":\"${工单编号}\",\"DATA_7\":\"${办结时限}\",\"DATA_3\":\"${来电类别}\",\"DATA_8\":\"${紧急程度}\",\"DATA_5\":\"${联系人}\",\"DATA_10\":\"${联系电话}\",\"DATA_13\":\"${问题分类}\",\"DATA_16\":\"${问题描述}\",\"DATA_27\":\"经核实实际情况与12345描述一致\",\"DATA_30\":\"${问题核实情况}\",\"DATA_15\":\"${处理意见}\",\"DATA_17\":\"${处理意见时间}\",\"DATA_18\":\"\",\"DATA_19\":\"\",\"DATA_20\":\"\",\"DATA_21\":\"\",\"DATA_24\":\"\",\"DATA_25\":\"\"},\"flow_process\":66,\"process_id\":1}";
+        String temp = "{\"run_id\":\"${run_id}\",\"run_name\":\"12345转办件${工单编号}\",\"run_name_html\":\"<div contenteditable=\\\"false\\\" class=\\\"title-item\\\">12345转办件</div><div class=\\\"title-item control\\\" data-type=\\\"formData\\\" ng-click=\\\"vm.choiceControl('DATA_2')\\\" data-id=\\\"DATA_2\\\" title=\\\"值来源于-工单编号\\\" ng-bind=\\\"vm.praseData('DATA_2')\\\">${工单编号}</div><div contenteditable=\\\"false\\\" class=\\\"title-item\\\"></div>\",\"instancy_type\":\"0\",\"form_data\":{\"DATA_31\":\"${办件类型}\",\"DATA_2\":\"${工单编号}\",\"DATA_7\":\"${办结时限}\",\"DATA_3\":\"${来电类别}\",\"DATA_8\":\"${紧急程度}\",\"DATA_5\":\"${联系人}\",\"DATA_10\":\"${联系电话}\",\"DATA_13\":\"${问题分类}\",\"DATA_16\":\"${问题描述}\",\"DATA_27\":\"经核实实际情况与12345描述一致\",\"DATA_30\":\"${问题核实情况}\",\"DATA_15\":\"${处理意见}\",\"DATA_17\":\"${处理意见时间}\",\"DATA_18\":\"\",\"DATA_19\":\"\",\"DATA_20\":\"\",\"DATA_21\":\"\",\"DATA_24\":\"\",\"DATA_25\":\"\"},\"flow_process\":66,\"process_id\":1}";
         return temp.replace("${run_id}", run_id)
                 .replace("${工单编号}", order_code)
                 .replace("${来电类别}", phone_type)
@@ -140,8 +140,11 @@ public class oa {
             String problem_classification = rows.get(7).getTableCells().get(1).getText();
             String problem_description = rows.get(8).getTableCells().get(1).getText();
             String transfer_process = rows.get(9).getTableCells().get(1).getText();
+            String type = rows.get(12).getTableCells().get(0).getText();
+            String department = rows.get(12).getTableCells().get(1).getText();
+            String suggestion = "建议转" +department + "进行答复。";
             String run_id = getRun_id(token);
-            String content = getContent(run_id,order_code,phone_type,link_person,end_date,urgency_degree,link_phone,problem_classification,problem_description,transfer_process,"","承办件");
+            String content = getContent(run_id,order_code,phone_type,link_person,end_date,urgency_degree,link_phone,problem_classification,problem_description,transfer_process,suggestion,type);
             inputOA(token,content);
         } catch (Exception e) {
             e.printStackTrace();
@@ -162,6 +165,8 @@ public class oa {
             }
         }
     }
+
+
     public static void main(String[] args) throws Exception{
         getFileContent("D:\\承办单");
     }

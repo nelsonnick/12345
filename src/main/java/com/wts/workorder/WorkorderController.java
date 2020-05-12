@@ -64,6 +64,11 @@ public class WorkorderController extends Controller {
 			Response response2 = client2.newCall(request2).execute();
 			Document doc2 = Jsoup.parse(response2.body().string());
 			Element tbody = doc2.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
+			Element td = tbody.getElementsByTag("tr").get(9).getElementsByTag("td").get(1);
+			String enclosure = "";
+			if (!td.text().equals("")){
+				enclosure = "请查看附件";
+			}
 			String order_state = tbody.getElementById("gdzt").text();//工单状态
 			String order_code = tbody.getElementById("HotLineWorkNumber").text();//工单编号
 			String link_person = tbody.getElementById("linkPerson").text();//联系人
@@ -107,6 +112,7 @@ public class WorkorderController extends Controller {
 			map.put("${problem_description}",problem_description);
 			map.put("${transfer_opinion}",transfer_opinion);
 			map.put("${transfer_process}",transfer_process);
+			map.put("${enclosure}",enclosure);
 			String path = "D:\\"+date.format(yyyy)+ "\\"+date.format(MM)+ "\\"+date.format(dd)+ "\\";
 			System.out.println(path);
 //			CreatWordByModel("D:\\TemplateDoc.docx", map, "D:\\"+order_code+".docx");
