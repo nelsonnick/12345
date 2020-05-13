@@ -1,13 +1,11 @@
 package com.wts.task;
 
-import com.jfinal.aop.Inject;
 import com.jfinal.kit.PropKit;
 import com.wts.entity.model.Workorder;
 import com.wts.workorder.WorkorderService;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.apache.log4j.Logger;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -23,8 +21,7 @@ import java.util.Map;
 import static com.wts.util.WordUtil.*;
 
 public class Down12345  implements Runnable{
-    @Inject
-    WorkorderService service;
+
     @Override
     public void run() {
         String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/listTaskHotLine.aspx?MessageType=0&issend=0";
@@ -66,8 +63,8 @@ public class Down12345  implements Runnable{
     }
 
 
-    public Workorder getDetail(String GUID,String cookie){
-        String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?GUID=" +GUID+ "&IsZDDB=&";
+    public Workorder getDetail(String order_guid,String cookie){
+        String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?GUID=" +order_guid+ "&IsZDDB=&";
         Document doc = getDoc(url,cookie);
         Element tbody = doc.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
         Element td = tbody.getElementsByTag("tr").get(9).getElementsByTag("td").get(1);
@@ -102,7 +99,7 @@ public class Down12345  implements Runnable{
         String transfer_process = tbody.getElementById("banliFlow").text();//转办流程
         String remark = tbody.getElementById("beizhu").text();//备注
         Workorder workorder = new Workorder();
-        workorder.set("order_guid",GUID)
+        workorder.set("order_guid",order_guid)
                 .set("order_state",order_state)
                 .set("order_code",order_code)
                 .set("link_person",link_person)
@@ -138,7 +135,7 @@ public class Down12345  implements Runnable{
         DateTimeFormatter yyyy = DateTimeFormatter.ofPattern("yyyy");
         DateTimeFormatter MM = DateTimeFormatter.ofPattern("MM");
         DateTimeFormatter dd = DateTimeFormatter.ofPattern("dd");
-        String GUID = workorder.get("order_guid");
+        String order_guid = workorder.get("order_guid");
         String order_state = workorder.get("order_state");
         String order_code = workorder.get("order_code");
         String link_person = workorder.get("link_person");
@@ -166,41 +163,32 @@ public class Down12345  implements Runnable{
         String remark = workorder.get("remark");
         String enclosure = workorder.get("enclosure");
         Map<String, String> map = new HashMap<String, String>();
-        map.put("${accept_person_code}",accept_person_code);
-        map.put("${end_date}",end_date);
-        map.put("${order_code}",order_code);
-        map.put("${urgency_degree}",urgency_degree);
-        map.put("${phone_type}",phone_type);
-        map.put("${accept_channel}",accept_channel);
-        map.put("${is_reply}",is_reply);
-        map.put("${is_secret}",is_secret);
-        map.put("${link_person}",link_person);
-        map.put("${link_phone}",link_phone);
-        map.put("${link_address}",link_address);
-        map.put("${reply_remark}",reply_remark);
-        map.put("${problem_classification}",problem_classification);
-        map.put("${problem_description}",problem_description);
-        map.put("${transfer_opinion}",transfer_opinion);
-        map.put("${transfer_process}",transfer_process);
-        map.put("${enclosure}",enclosure);
-        map.put("${order_guid}",GUID);
+        map.put("accept_person_code",accept_person_code);
+        map.put("end_date",end_date);
+        map.put("order_code",order_code);
+        map.put("urgency_degree",urgency_degree);
+        map.put("phone_type",phone_type);
+        map.put("accept_channel",accept_channel);
+        map.put("is_reply",is_reply);
+        map.put("is_secret",is_secret);
+        map.put("link_person",link_person);
+        map.put("link_phone",link_phone);
+        map.put("link_address",link_address);
+        map.put("reply_remark",reply_remark);
+        map.put("problem_classification",problem_classification);
+        map.put("problem_description",problem_description);
+        map.put("transfer_opinion",transfer_opinion);
+        map.put("transfer_process",transfer_process);
+        map.put("enclosure",enclosure);
+        map.put("order_guid",order_guid);
         String path = "D:\\"+date.format(yyyy)+ "\\"+date.format(MM)+ "\\"+date.format(dd)+ "\\";
-        if (service.findNumByGUID(GUID)==0){
-            service.add(GUID,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark);
+        System.out.println(order_code + "-" + link_person + "-" + send_time);
+        WorkorderService service = new WorkorderService();
+        if (service.findNumByGUID(order_guid)==0){
+            service.add(order_guid,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark);
             CreatWordByModel("D:\\TemplateDoc.docx", map, path + order_code+".docx");
             String printerName = "HP LaserJet 1020";//打印机名包含字串
             printWord(path + order_code+".docx",printerName);
-        }else{
-            Workorder w = service.findByGUID(GUID);
-            if(!w.get("problem_description").equals(problem_description)
-                    ||!w.get("transfer_opinion").equals(transfer_opinion)
-                    ||!w.get("transfer_process").equals(transfer_process)){
-                service.add(GUID,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark);
-                CreatWordByModel("D:\\TemplateDoc.docx", map, path + order_code+"-"+System.currentTimeMillis()+".docx");
-                String printerName = "HP LaserJet 1020";//打印机名包含字串
-                printWord(path + order_code+"-"+System.currentTimeMillis()+".docx",printerName);
-
-            }
         }
     }
 
@@ -221,4 +209,5 @@ public class Down12345  implements Runnable{
             e.printStackTrace();
         }
     }
+
 }

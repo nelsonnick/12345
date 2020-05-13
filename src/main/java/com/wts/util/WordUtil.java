@@ -139,10 +139,10 @@ public class WordUtil {
         //  new Object[] { filePath }, new int[1]).toDispatch();
         try{
             Dispatch.callN(doc, "PrintOut");
-            System.out.println("打印成功！");
+            System.out.println(filePath + "：打印成功！");
         }catch (Exception e){
             e.printStackTrace();
-            System.out.println("打印失败");
+            System.out.println(filePath + "：打印失败");
         }finally {
             try {
                 if (doc != null) {

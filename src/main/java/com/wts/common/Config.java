@@ -91,7 +91,7 @@ public class Config extends JFinalConfig {
 		me.add(arp);
 		//配置任务调度插件
 		Cron4jPlugin cp = new Cron4jPlugin();
-		cp.addTask("*/5 * * * *", new Down12345());
+		cp.addTask("*/1 * * * *", new Down12345());
 //		cp.addTask("20 22 * * *", new Send12345());
 		me.add(cp);
 	}
