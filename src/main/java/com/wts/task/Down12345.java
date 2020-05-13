@@ -183,14 +183,13 @@ public class Down12345  implements Runnable{
         map.put("${transfer_opinion}",transfer_opinion);
         map.put("${transfer_process}",transfer_process);
         map.put("${enclosure}",enclosure);
+        map.put("${order_guid}",GUID);
         String path = "D:\\"+date.format(yyyy)+ "\\"+date.format(MM)+ "\\"+date.format(dd)+ "\\";
-        System.out.println(path);
-//			CreatWordByModel("D:\\TemplateDoc.docx", map, "D:\\"+order_code+".docx");
         if (service.findNumByGUID(GUID)==0){
             service.add(GUID,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark);
             CreatWordByModel("D:\\TemplateDoc.docx", map, path + order_code+".docx");
-//				String printerName = "HP MFP M436 PCL6";//打印机名包含字串
-//				printWord(path + order_code+".docx",printerName);
+            String printerName = "HP LaserJet 1020";//打印机名包含字串
+            printWord(path + order_code+".docx",printerName);
         }else{
             Workorder w = service.findByGUID(GUID);
             if(!w.get("problem_description").equals(problem_description)
@@ -198,8 +197,8 @@ public class Down12345  implements Runnable{
                     ||!w.get("transfer_process").equals(transfer_process)){
                 service.add(GUID,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark);
                 CreatWordByModel("D:\\TemplateDoc.docx", map, path + order_code+"-"+System.currentTimeMillis()+".docx");
-//					String printerName = "HP MFP M436 PCL6";//打印机名包含字串
-//					printWord(path + order_code+"-"+System.currentTimeMillis()+".docx",printerName);
+                String printerName = "HP LaserJet 1020";//打印机名包含字串
+                printWord(path + order_code+"-"+System.currentTimeMillis()+".docx",printerName);
 
             }
         }

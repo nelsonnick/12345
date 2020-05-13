@@ -14,6 +14,7 @@ import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.server.undertow.UndertowServer;
 import com.jfinal.template.Engine;
 import com.wts.entity.model._MappingKit;
+import com.wts.task.Down12345;
 import com.wts.task.Send12345;
 import com.wts.workorder.WorkorderController;
 
@@ -90,13 +91,13 @@ public class Config extends JFinalConfig {
 		me.add(arp);
 		//配置任务调度插件
 		Cron4jPlugin cp = new Cron4jPlugin();
+		cp.addTask("*/5 * * * *", new Down12345());
 //		cp.addTask("20 22 * * *", new Send12345());
 		me.add(cp);
 	}
 
 	public static DruidPlugin createDruidPlugin() {
 		loadConfig();
-
 		return new DruidPlugin(p.get("jdbcUrl"), p.get("user"), p.get("password").trim());
 	}
 
