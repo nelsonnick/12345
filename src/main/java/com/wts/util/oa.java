@@ -95,18 +95,17 @@ public class oa {
                 .build();
         Response response = client.newCall(request).execute();
         String run_id = JSONObject.parseObject(JSONObject.parseObject(response.body().string()).getString("data")).getString("run_id");
-        System.out.println(run_id);
     }
 
     /*
-    type:直办件、承办件
+    type:直办件、承办件、退办件
      */
     public static String getContent(String run_id, String order_code, String phone_type, String link_person, String end_date, String urgency_degree, String link_phone,
                                     String problem_classification, String problem_description, String transfer_process, String suggestion, String type) {
         Date dNow = new Date();
         SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        String temp = "{\"run_id\":\"${run_id}\",\"run_name\":\"12345转办件${工单编号}\",\"run_name_html\":\"<div contenteditable=\\\"false\\\" class=\\\"title-item\\\">12345转办件</div><div class=\\\"title-item control\\\" data-type=\\\"formData\\\" ng-click=\\\"vm.choiceControl('DATA_2')\\\" data-id=\\\"DATA_2\\\" title=\\\"值来源于-工单编号\\\" ng-bind=\\\"vm.praseData('DATA_2')\\\">${工单编号}</div><div contenteditable=\\\"false\\\" class=\\\"title-item\\\"></div>\",\"instancy_type\":\"0\",\"form_data\":{\"DATA_31\":\"${办件类型}\",\"DATA_2\":\"${工单编号}\",\"DATA_7\":\"${办结时限}\",\"DATA_3\":\"${来电类别}\",\"DATA_8\":\"${紧急程度}\",\"DATA_5\":\"${联系人}\",\"DATA_10\":\"${联系电话}\",\"DATA_13\":\"${问题分类}\",\"DATA_16\":\"${问题描述}\",\"DATA_27\":\"经核实实际情况与12345描述一致\",\"DATA_30\":\"${问题核实情况}\",\"DATA_15\":\"${处理意见}\",\"DATA_17\":\"${处理意见时间}\",\"DATA_18\":\"\",\"DATA_19\":\"\",\"DATA_20\":\"\",\"DATA_21\":\"\",\"DATA_24\":\"\",\"DATA_25\":\"\"},\"flow_process\":66,\"process_id\":1}";
-        return temp.replace("${run_id}", run_id)
+        String temp = "{\"run_id\":\"${run_id}\",\"run_name\":\"12345转办件${工单编号}\",\"run_name_html\":\"<div contenteditable=\\\"false\\\" class=\\\"title-item\\\">12345转办件</div><div class=\\\"title-item control\\\" data-type=\\\"formData\\\" ng-click=\\\"vm.choiceControl('DATA_2')\\\" data-id=\\\"DATA_2\\\" title=\\\"值来源于-工单编号\\\" ng-bind=\\\"vm.praseData('DATA_2')\\\">${工单编号}</div><div contenteditable=\\\"false\\\" class=\\\"title-item\\\"></div>\",\"instancy_type\":\"${紧急编号}\",\"form_data\":{\"DATA_31\":\"${办件类型}\",\"DATA_2\":\"${工单编号}\",\"DATA_7\":\"${办结时限}\",\"DATA_3\":\"${来电类别}\",\"DATA_8\":\"${紧急程度}\",\"DATA_5\":\"${联系人}\",\"DATA_10\":\"${联系电话}\",\"DATA_13\":\"${问题分类}\",\"DATA_16\":\"${问题描述}\",\"DATA_27\":\"经核实实际情况与12345描述一致\",\"DATA_30\":\"${问题核实情况}\",\"DATA_15\":\"${处理意见}\",\"DATA_17\":\"${处理意见时间}\",\"DATA_18\":\"\",\"DATA_19\":\"\",\"DATA_20\":\"\",\"DATA_21\":\"\",\"DATA_24\":\"\",\"DATA_25\":\"\"},\"flow_process\":66,\"process_id\":1}";
+        String str = temp.replace("${run_id}", run_id)
                 .replace("${工单编号}", order_code)
                 .replace("${来电类别}", phone_type)
                 .replace("${联系人}", link_person)
@@ -119,7 +118,18 @@ public class oa {
                 .replace("${处理意见}", suggestion)
                 .replace("${办件类型}", type)
                 .replace("${处理意见时间}", ft.format(dNow));
-
+        if (type.equals("退办件")){
+            str.replace("${紧急编号}", "0").replace("${办件类型}", "直办件");
+        }else{
+            str.replace("${办件类型}", type);
+        }
+        if (urgency_degree.equals("一般")){
+            str.replace("${紧急编号}", "0");
+        } else {
+            str.replace("${紧急编号}", "2");
+        }
+        System.out.println(run_id + "-" + order_code + "-" + link_person + "-" + type + "-" + end_date);
+        return str;
     }
     /*
     读取单个文档内容并写入
@@ -140,8 +150,8 @@ public class oa {
             String problem_classification = rows.get(7).getTableCells().get(1).getText();
             String problem_description = rows.get(8).getTableCells().get(1).getText();
             String transfer_process = rows.get(9).getTableCells().get(1).getText();
-            String type = rows.get(12).getTableCells().get(0).getText();
-            String department = rows.get(12).getTableCells().get(1).getText();
+            String type = rows.get(12).getTableCells().get(1).getText();
+            String department = rows.get(12).getTableCells().get(3).getText();
             String suggestion = "建议转" +department + "进行答复。";
             String run_id = getRun_id(token);
             String content = getContent(run_id,order_code,phone_type,link_person,end_date,urgency_degree,link_phone,problem_classification,problem_description,transfer_process,suggestion,type);
@@ -168,6 +178,6 @@ public class oa {
 
 
     public static void main(String[] args) throws Exception{
-        getFileContent("D:\\承办单");
+        getFileContent("D:\\上传OA");
     }
 }

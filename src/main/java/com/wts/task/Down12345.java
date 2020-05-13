@@ -186,9 +186,9 @@ public class Down12345  implements Runnable{
         WorkorderService service = new WorkorderService();
         if (service.findNumByGUID(order_guid)==0){
             service.add(order_guid,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark);
-            CreatWordByModel("D:\\TemplateDoc.docx", map, path + order_code+".docx");
+            CreatWordByModel("D:\\TemplateDoc.docx", map, path + order_code + "-" + order_guid + ".docx");
             String printerName = "HP LaserJet 1020";//打印机名包含字串
-            printWord(path + order_code+".docx",printerName);
+            printWord(path + order_code + "-" + order_guid + ".docx",printerName);
         }
     }
 
