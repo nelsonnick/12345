@@ -8,7 +8,7 @@ import org.apache.poi.hwpf.usermodel.Table;
 import org.apache.poi.hwpf.usermodel.TableIterator;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
-
+// 解析doc版本的12345工单
 public class get12345 {
     /**
      * 去除后面的特殊符号

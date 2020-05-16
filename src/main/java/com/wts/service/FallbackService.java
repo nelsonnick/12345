@@ -1,29 +1,20 @@
-package com.wts.workorder;
+package com.wts.service;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
-import com.wts.entity.model.Workorder;
+import com.wts.entity.model.Fallback;
 
 import java.util.Date;
 
-/**
- * 本 demo 仅表达最为粗浅的 jfinal 用法，更为有价值的实用的企业级用法
- * 详见 JFinal 俱乐部: http://jfinal.com/club
- *
- * BlogService
- * 所有 sql 与业务逻辑写在 Service 中，不要放在 Model 中，更不
- * 要放在 Controller 中，养成好习惯，有利于大型项目的开发与维护
- */
-public class WorkorderService {
+public class FallbackService {
 
+	private Fallback dao = new Fallback().dao();
 
-	private Workorder dao = new Workorder().dao();
-
-	public Page<Workorder> paginate(int pageNumber, int pageSize) {
-		return dao.paginate(pageNumber, pageSize, "select *", "from workorder order by id asc");
+	public Page<Fallback> paginate(int pageNumber, int pageSize) {
+		return dao.paginate(pageNumber, pageSize, "select *", "from fallback order by id asc");
 	}
 
-	public Workorder findById(int id) {
+	public Fallback findById(int id) {
 		return dao.findById(id);
 	}
 
@@ -31,21 +22,23 @@ public class WorkorderService {
 		dao.deleteById(id);
 	}
 
-	public Integer findNumByGUID(String GUID) {
-		return Db.queryInt("SELECT COUNT(*) FROM workorder WHERE workorder.order_guid LIKE '%" + GUID + "%' ");
+	public Integer findNumByGUID(String order_guid) {
+		return Db.queryInt("SELECT COUNT(*) FROM fallback WHERE fallback.order_guid LIKE '%" + order_guid + "%' ");
 	}
-	public Workorder findByGUID(String GUID) {
-		return dao.findFirst("SELECT * FROM workorder WHERE workorder.order_guid LIKE '%" + GUID + "%' ");
+	public Fallback findByGUID(String order_guid) {
+		return dao.findFirst("SELECT * FROM fallback WHERE fallback.order_guid LIKE '%" + order_guid + "%' ");
 	}
 
-	public void add(String GUID,String order_state, String order_code, String link_person,String link_phone,
+	public void add(String order_guid,String order_state, String order_code, String link_person,String link_phone,
 					String link_address,String business_environment,String new_supervision,String accept_person,
 					String accept_person_code,String accept_channel,String handle_type,String phone_type,
 					String write_time,String urgency_degree, String problem_classification,String is_secret,
 					String is_reply,String reply_remark,String problem_description,String send_person,
-					String send_time,String end_date,String transfer_opinion,String transfer_process,String remark) {
-		Workorder workorder = new Workorder();
-		workorder.set("order_guid",GUID)
+					String send_time,String end_date,String transfer_opinion,String transfer_process,String remark,
+					String enclosure, String fallback_reason, String leader_opinions, String suggestion,
+					String fallback_department, String fallback_time, String fallback_person, String fallback_phone) {
+		Fallback fallback = new Fallback();
+		fallback.set("order_guid",order_guid)
 				.set("order_state",order_state)
 				.set("order_code",order_code)
 				.set("link_person",link_person)
@@ -71,7 +64,15 @@ public class WorkorderService {
 				.set("transfer_opinion",transfer_opinion)
 				.set("transfer_process",transfer_process)
 				.set("remark",remark)
+				.set("enclosure",enclosure)
 				.set("down_time", new Date())
+				.set("fallback_reason",fallback_reason)
+				.set("leader_opinions",leader_opinions)
+				.set("suggestion",suggestion)
+				.set("fallback_department",fallback_department)
+				.set("fallback_time",fallback_time)
+				.set("fallback_person",fallback_person)
+				.set("fallback_phone",fallback_phone)
 				.save();
 	}
 }

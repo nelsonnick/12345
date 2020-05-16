@@ -1,16 +1,13 @@
 package com.wts.task;
 
-import com.jfinal.aop.Inject;
 import com.wts.util.ParamesAPI;
-import com.wts.workorder.WorkorderService;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.cp.api.impl.WxCpServiceImpl;
 import me.chanjar.weixin.cp.bean.WxCpMessage;
 import me.chanjar.weixin.cp.config.impl.WxCpDefaultConfigImpl;
 
 public class Send12345 implements Runnable{
-    @Inject
-    WorkorderService service;
+
     @Override
     public void run() {
         WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();

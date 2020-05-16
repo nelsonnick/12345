@@ -97,7 +97,7 @@ public class oa {
     }
 
     /*
-    type:直办件、承办件、退办件
+    type:直办件、转办件、退办件
      */
     public static String getContent(String run_id, String order_code, String phone_type, String link_person, String end_date, String urgency_degree, String link_phone,
                                     String problem_classification, String problem_description, String transfer_process, String suggestion, String type) {
@@ -117,8 +117,10 @@ public class oa {
                 .replace("${处理意见}", suggestion)
                 .replace("${办件类型}", type)
                 .replace("${处理意见时间}", ft.format(dNow));
-        if (type.equals("退办件")){
+        if (type.equals("退办件")) {
             str.replace("${紧急编号}", "0").replace("${办件类型}", "直办件");
+        }else if(type.equals("转办件")){
+            str.replace("${办件类型}", "承办件");
         }else{
             str.replace("${办件类型}", type);
         }

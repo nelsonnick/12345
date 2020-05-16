@@ -1,8 +1,9 @@
-package com.wts.workorder;
+package com.wts.controller;
 
 import com.jfinal.aop.Inject;
 import com.jfinal.core.Controller;
-import com.wts.entity.model.Workorder;
+import com.wts.entity.model.Undo;
+import com.wts.service.UndoService;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -18,10 +19,10 @@ import java.util.Map;
 
 import static com.wts.util.WordUtil.*;
 
-public class WorkorderController extends Controller {
+public class UndoController extends Controller {
 
 	@Inject
-	WorkorderService service;
+	UndoService service;
 
 	public void index() throws Exception {
 		LocalDate date = LocalDate.now();
@@ -117,16 +118,16 @@ public class WorkorderController extends Controller {
 			System.out.println(path);
 //			CreatWordByModel("D:\\TemplateDoc.docx", map, "D:\\"+order_code+".docx");
 			if (service.findNumByGUID(GUID)==0){
-				service.add(GUID,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark);
+				service.add(GUID,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark,enclosure);
 				CreatWordByModel("D:\\TemplateDoc.docx", map, path + order_code+".docx");
 //				String printerName = "HP LaserJet 1020";//打印机名包含字串
 //				printWord(path + order_code+".docx",printerName);
 			}else{
-				Workorder workorder = service.findByGUID(GUID);
-				if(!workorder.get("problem_description").equals(problem_description)
-						||!workorder.get("transfer_opinion").equals(transfer_opinion)
-						||!workorder.get("transfer_process").equals(transfer_process)){
-					service.add(GUID,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark);
+				Undo undo = service.findByGUID(GUID);
+				if(!undo.get("problem_description").equals(problem_description)
+						||!undo.get("transfer_opinion").equals(transfer_opinion)
+						||!undo.get("transfer_process").equals(transfer_process)){
+					service.add(GUID,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark,enclosure);
 					CreatWordByModel("D:\\TemplateDoc.docx", map, path + order_code+"-"+System.currentTimeMillis()+".docx");
 //					String printerName = "HP LaserJet 1020";//打印机名包含字串
 //					printWord(path + order_code+"-"+System.currentTimeMillis()+".docx",printerName);

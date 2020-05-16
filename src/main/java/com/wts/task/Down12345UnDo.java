@@ -1,69 +1,43 @@
 package com.wts.task;
 
 import com.jfinal.kit.PropKit;
-import com.wts.entity.model.Workorder;
-import com.wts.workorder.WorkorderService;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.jsoup.Jsoup;
+import com.wts.entity.model.Undo;
+import com.wts.service.UndoService;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.wts.util.WordUtil.*;
+import static com.wts.util.util12345.getDoc;
+import static com.wts.util.util12345.getListUrl;
 
-public class Down12345  implements Runnable{
+public class Down12345UnDo implements Runnable{
 
     @Override
     public void run() {
-        String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/listTaskHotLine.aspx?MessageType=0&issend=0";
+        String url = getListUrl("0", "0");
         String cookie = PropKit.use("config-dev.txt").get("cookie");
         Document doc = getDoc(url,cookie);
         Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
         for (int i = 0; i < trs.size() - 1; i++) {
             Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
             String value = in.attr("value");
-            String GUID = value.substring(5, 43);
-            Workorder workorder = getDetail(GUID, cookie);
-            saveDetail(workorder);
+            String order_guid = value.substring(5, 43);
+            Undo undo = get(order_guid, cookie);
+            try {
+                save(undo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    public Document getDoc(String url,String cookie){
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-        Request request = new Request.Builder()
-                .url(url)
-                .method("GET", null)
-                .addHeader("Accept", "text/html, application/xhtml+xml, image/jxr, */*")
-                .addHeader("Accept-Language", "zh-Hans-CN, zh-Hans; q=0.5")
-//					.addHeader("Accept-Encoding", "gzip, deflate")
-                .addHeader("Cookie", cookie)
-                .addHeader("Connection", "Keep-Alive")
-                .addHeader("Host", "15.1.0.24")
-                .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko Core/1.70.3756.400 QQBrowser/10.5.4039.400")
-
-                .build();
-        Document doc = null;
-        try{
-            Response response = client.newCall(request).execute();
-            doc = Jsoup.parse(response.body().string());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return doc;
-    }
-
-
-    public Workorder getDetail(String order_guid,String cookie){
+    public Undo get(String order_guid, String cookie){
         String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?GUID=" +order_guid+ "&IsZDDB=&";
         Document doc = getDoc(url,cookie);
         Element tbody = doc.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
@@ -98,8 +72,8 @@ public class Down12345  implements Runnable{
         String transfer_opinion = tbody.getElementById("remark").text();//转办意见
         String transfer_process = tbody.getElementById("banliFlow").text();//转办流程
         String remark = tbody.getElementById("beizhu").text();//备注
-        Workorder workorder = new Workorder();
-        workorder.set("order_guid",order_guid)
+        Undo undo = new Undo();
+        undo.set("order_guid",order_guid)
                 .set("order_state",order_state)
                 .set("order_code",order_code)
                 .set("link_person",link_person)
@@ -126,42 +100,42 @@ public class Down12345  implements Runnable{
                 .set("transfer_process",transfer_process)
                 .set("enclosure",enclosure)
                 .set("remark",remark);
-         return workorder;
+         return undo;
 
     }
 
-    public void saveDetail(Workorder workorder){
+    public void save(Undo undo) throws Exception {
         LocalDate date = LocalDate.now();
         DateTimeFormatter yyyy = DateTimeFormatter.ofPattern("yyyy");
         DateTimeFormatter MM = DateTimeFormatter.ofPattern("MM");
         DateTimeFormatter dd = DateTimeFormatter.ofPattern("dd");
-        String order_guid = workorder.get("order_guid");
-        String order_state = workorder.get("order_state");
-        String order_code = workorder.get("order_code");
-        String link_person = workorder.get("link_person");
-        String link_phone = workorder.get("link_phone");
-        String link_address = workorder.get("link_address");
-        String business_environment = workorder.get("business_environment");
-        String new_supervision = workorder.get("new_supervision");
-        String accept_person = workorder.get("accept_person");
-        String accept_person_code = workorder.get("accept_person_code");
-        String accept_channel = workorder.get("accept_channel");
-        String handle_type = workorder.get("handle_type");
-        String phone_type = workorder.get("phone_type");
-        String write_time = workorder.get("write_time");
-        String urgency_degree = workorder.get("urgency_degree");
-        String problem_classification = workorder.get("problem_classification");
-        String is_secret = workorder.get("is_secret");
-        String is_reply = workorder.get("is_reply");
-        String reply_remark = workorder.get("reply_remark");
-        String problem_description = workorder.get("problem_description");
-        String send_person = workorder.get("send_person");
-        String send_time = workorder.get("send_time");
-        String end_date = workorder.get("end_date");
-        String transfer_opinion = workorder.get("transfer_opinion");
-        String transfer_process = workorder.get("transfer_process");
-        String remark = workorder.get("remark");
-        String enclosure = workorder.get("enclosure");
+        String order_guid = undo.get("order_guid");
+        String order_state = undo.get("order_state");
+        String order_code = undo.get("order_code");
+        String link_person = undo.get("link_person");
+        String link_phone = undo.get("link_phone");
+        String link_address = undo.get("link_address");
+        String business_environment = undo.get("business_environment");
+        String new_supervision = undo.get("new_supervision");
+        String accept_person = undo.get("accept_person");
+        String accept_person_code = undo.get("accept_person_code");
+        String accept_channel = undo.get("accept_channel");
+        String handle_type = undo.get("handle_type");
+        String phone_type = undo.get("phone_type");
+        String write_time = undo.get("write_time");
+        String urgency_degree = undo.get("urgency_degree");
+        String problem_classification = undo.get("problem_classification");
+        String is_secret = undo.get("is_secret");
+        String is_reply = undo.get("is_reply");
+        String reply_remark = undo.get("reply_remark");
+        String problem_description = undo.get("problem_description");
+        String send_person = undo.get("send_person");
+        String send_time = undo.get("send_time");
+        String end_date = undo.get("end_date");
+        String transfer_opinion = undo.get("transfer_opinion");
+        String transfer_process = undo.get("transfer_process");
+        String remark = undo.get("remark");
+        String enclosure = undo.get("enclosure");
         Map<String, String> map = new HashMap<String, String>();
         map.put("accept_person_code",accept_person_code);
         map.put("end_date",end_date);
@@ -181,34 +155,19 @@ public class Down12345  implements Runnable{
         map.put("transfer_process",transfer_process);
         map.put("enclosure",enclosure);
         map.put("order_guid",order_guid);
-        String path = "D:\\"+date.format(yyyy)+ "\\"+date.format(MM)+ "\\"+date.format(dd)+ "\\";
+        String path = "D:\\工单备份\\"+date.format(yyyy)+ "\\"+date.format(MM)+ "\\"+date.format(dd)+ "\\";
+        String path2 = "D:\\当前下载\\";
         System.out.println(order_code + "-" + link_person + "-" + send_time);
-        WorkorderService service = new WorkorderService();
+        UndoService service = new UndoService();
         if (service.findNumByGUID(order_guid)==0){
-            service.add(order_guid,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark);
+            service.add(order_guid,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark,enclosure);
             CreatWordByModel("D:\\TemplateDoc.docx", map, path + order_code + "-" + order_guid + ".docx");
+            CreatWordByModel("D:\\TemplateDoc.docx", map, path2 + order_code + "-" + order_guid + ".docx");
             String printerName = "HP LaserJet 1020";//打印机名包含字串
             printWord(path + order_code + "-" + order_guid + ".docx",printerName);
         }
     }
 
 
-    private void CreatWordByModel(String  tmpFile, Map<String, String> contentMap, String exportFile) {
-        //导出到文件
-        try {
-            InputStream in = null;
-            in = new FileInputStream(new File(tmpFile));
-            XWPFDocument document = null;
-            document = new XWPFDocument (in);
-            replaceInTable(document, contentMap);
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            document.write((OutputStream)byteArrayOutputStream);
-            OutputStream outputStream = new FileOutputStream(exportFile);
-            outputStream.write(byteArrayOutputStream.toByteArray());
-            outputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 }
