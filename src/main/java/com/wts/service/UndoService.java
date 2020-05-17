@@ -28,7 +28,9 @@ public class UndoService {
 	public Undo findByGUID(String order_guid) {
 		return dao.findFirst("SELECT * FROM undo WHERE undo.order_guid LIKE '%" + order_guid + "%' ");
 	}
-
+	public void add(Undo undo){
+		undo.save();
+	}
 	public void add(String order_guid,String order_state, String order_code, String link_person,String link_phone,
 					String link_address,String business_environment,String new_supervision,String accept_person,
 					String accept_person_code,String accept_channel,String handle_type,String phone_type,

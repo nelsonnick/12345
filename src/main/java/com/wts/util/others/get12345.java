@@ -1,4 +1,4 @@
-package com.wts.util;
+package com.wts.util.others;
 import java.io.File;
 import java.io.FileInputStream;
 

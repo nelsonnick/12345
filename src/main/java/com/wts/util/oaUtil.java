@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-public class oa {
+public class oaUtil {
     /*
     获取token
     */

@@ -178,7 +178,8 @@ public class Down12345Reply implements Runnable{
         System.out.println("已回复工单：" + order_code + "-" + link_person + "-" + send_time);
         ReplyService service = new ReplyService();
         if (service.findNumByGUID(order_guid)==0){
-            service.add(order_guid,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark,enclosure, reply_type, finish_time, reply_satisfy, reply_day, reply_person, reply_phone, reply_content, reply_department, reply_time, subordinate_department, if_nodo, nodo_reason, reply_enclosure, reply_person2, reply_phone2);
+            service.add(reply);
+//            service.add(order_guid,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark,enclosure, reply_type, finish_time, reply_satisfy, reply_day, reply_person, reply_phone, reply_content, reply_department, reply_time, subordinate_department, if_nodo, nodo_reason, reply_enclosure, reply_person2, reply_phone2);
         }
     }
 

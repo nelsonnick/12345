@@ -1,6 +1,6 @@
 package com.wts.task;
 
-import static com.wts.util.oa.getFileContent;
+import static com.wts.util.oaUtil.getFileContent;
 
 public class SendOA implements Runnable {
 

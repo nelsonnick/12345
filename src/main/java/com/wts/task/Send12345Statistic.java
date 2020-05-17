@@ -6,7 +6,7 @@ import me.chanjar.weixin.cp.api.impl.WxCpServiceImpl;
 import me.chanjar.weixin.cp.bean.WxCpMessage;
 import me.chanjar.weixin.cp.config.impl.WxCpDefaultConfigImpl;
 
-public class Send12345 implements Runnable{
+public class Send12345Statistic implements Runnable{
 
     @Override
     public void run() {

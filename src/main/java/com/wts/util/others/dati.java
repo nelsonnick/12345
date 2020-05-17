@@ -1,4 +1,4 @@
-package com.wts.util;
+package com.wts.util.others;
 
 import com.alibaba.fastjson.JSONObject;
 import okhttp3.*;

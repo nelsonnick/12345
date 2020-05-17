@@ -3,6 +3,7 @@ package com.wts.service;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.wts.entity.model.Fallback;
+import com.wts.entity.model.Reply;
 
 import java.util.Date;
 
@@ -28,7 +29,9 @@ public class FallbackService {
 	public Fallback findByGUID(String order_guid) {
 		return dao.findFirst("SELECT * FROM fallback WHERE fallback.order_guid LIKE '%" + order_guid + "%' ");
 	}
-
+	public void add(Fallback fallback){
+		fallback.save();
+	}
 	public void add(String order_guid,String order_state, String order_code, String link_person,String link_phone,
 					String link_address,String business_environment,String new_supervision,String accept_person,
 					String accept_person_code,String accept_channel,String handle_type,String phone_type,

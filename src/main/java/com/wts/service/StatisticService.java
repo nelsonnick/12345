@@ -6,7 +6,6 @@ import com.wts.entity.model.Statistic;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 public class StatisticService {
 
@@ -34,6 +33,9 @@ public class StatisticService {
 	}
 	public Statistic findByGUID(String order_guid) {
 		return dao.findFirst("SELECT * FROM statistic WHERE statistic.order_guid LIKE '%" + order_guid + "%' ");
+	}
+	public void add(Statistic statistic){
+		statistic.save();
 	}
 
 	public void add(String order_guid,String order_code, String end_date,String type,

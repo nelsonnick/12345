@@ -157,17 +157,16 @@ public class Down12345UnDo implements Runnable{
         map.put("order_guid",order_guid);
         String path = "D:\\工单备份\\"+date.format(yyyy)+ "\\"+date.format(MM)+ "\\"+date.format(dd)+ "\\";
         String path2 = "D:\\当前下载\\";
-        System.out.println(order_code + "-" + link_person + "-" + send_time);
+        System.out.println("待办理工单：" + order_code + "-" + link_person + "-" + send_time);
         UndoService service = new UndoService();
         if (service.findNumByGUID(order_guid)==0){
-            service.add(order_guid,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark,enclosure);
+            service.add(undo);
+//            service.add(order_guid,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark,enclosure);
             CreatWordByModel("D:\\TemplateDoc.docx", map, path + order_code + "-" + order_guid + ".docx");
             CreatWordByModel("D:\\TemplateDoc.docx", map, path2 + order_code + "-" + order_guid + ".docx");
             String printerName = "HP LaserJet 1020";//打印机名包含字串
             printWord(path + order_code + "-" + order_guid + ".docx",printerName);
         }
     }
-
-
 
 }
