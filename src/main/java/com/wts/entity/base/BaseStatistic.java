@@ -52,6 +52,34 @@ public abstract class BaseStatistic<M extends BaseStatistic<M>> extends Model<M>
 	}
 
 	/**
+	 * 受理员编号
+	 */
+	public void setAcceptPersonCode(java.lang.String acceptPersonCode) {
+		set("accept_person_code", acceptPersonCode);
+	}
+	
+	/**
+	 * 受理员编号
+	 */
+	public java.lang.String getAcceptPersonCode() {
+		return getStr("accept_person_code");
+	}
+
+	/**
+	 * 受理渠道
+	 */
+	public void setAcceptChannel(java.lang.String acceptChannel) {
+		set("accept_channel", acceptChannel);
+	}
+	
+	/**
+	 * 受理渠道
+	 */
+	public java.lang.String getAcceptChannel() {
+		return getStr("accept_channel");
+	}
+
+	/**
 	 * 办理时限
 	 */
 	public void setEndDate(java.lang.String endDate) {
@@ -63,6 +91,188 @@ public abstract class BaseStatistic<M extends BaseStatistic<M>> extends Model<M>
 	 */
 	public java.lang.String getEndDate() {
 		return getStr("end_date");
+	}
+
+	/**
+	 * 是否保密
+	 */
+	public void setIsSecret(java.lang.String isSecret) {
+		set("is_secret", isSecret);
+	}
+	
+	/**
+	 * 是否保密
+	 */
+	public java.lang.String getIsSecret() {
+		return getStr("is_secret");
+	}
+
+	/**
+	 * 是否回复
+	 */
+	public void setIsReply(java.lang.String isReply) {
+		set("is_reply", isReply);
+	}
+	
+	/**
+	 * 是否回复
+	 */
+	public java.lang.String getIsReply() {
+		return getStr("is_reply");
+	}
+
+	/**
+	 * 紧急程度
+	 */
+	public void setUrgencyDegree(java.lang.String urgencyDegree) {
+		set("urgency_degree", urgencyDegree);
+	}
+	
+	/**
+	 * 紧急程度
+	 */
+	public java.lang.String getUrgencyDegree() {
+		return getStr("urgency_degree");
+	}
+
+	/**
+	 * 来电类别
+	 */
+	public void setPhoneType(java.lang.String phoneType) {
+		set("phone_type", phoneType);
+	}
+	
+	/**
+	 * 来电类别
+	 */
+	public java.lang.String getPhoneType() {
+		return getStr("phone_type");
+	}
+
+	/**
+	 * 联系人
+	 */
+	public void setLinkPerson(java.lang.String linkPerson) {
+		set("link_person", linkPerson);
+	}
+	
+	/**
+	 * 联系人
+	 */
+	public java.lang.String getLinkPerson() {
+		return getStr("link_person");
+	}
+
+	/**
+	 * 联系电话
+	 */
+	public void setLinkPhone(java.lang.String linkPhone) {
+		set("link_phone", linkPhone);
+	}
+	
+	/**
+	 * 联系电话
+	 */
+	public java.lang.String getLinkPhone() {
+		return getStr("link_phone");
+	}
+
+	/**
+	 * 联系地址
+	 */
+	public void setLinkAddress(java.lang.String linkAddress) {
+		set("link_address", linkAddress);
+	}
+	
+	/**
+	 * 联系地址
+	 */
+	public java.lang.String getLinkAddress() {
+		return getStr("link_address");
+	}
+
+	/**
+	 * 问题分类
+	 */
+	public void setProblemClassification(java.lang.String problemClassification) {
+		set("problem_classification", problemClassification);
+	}
+	
+	/**
+	 * 问题分类
+	 */
+	public java.lang.String getProblemClassification() {
+		return getStr("problem_classification");
+	}
+
+	/**
+	 * 问题描述
+	 */
+	public void setProblemDescription(java.lang.String problemDescription) {
+		set("problem_description", problemDescription);
+	}
+	
+	/**
+	 * 问题描述
+	 */
+	public java.lang.String getProblemDescription() {
+		return getStr("problem_description");
+	}
+
+	/**
+	 * 转办意见
+	 */
+	public void setTransferOpinion(java.lang.String transferOpinion) {
+		set("transfer_opinion", transferOpinion);
+	}
+	
+	/**
+	 * 转办意见
+	 */
+	public java.lang.String getTransferOpinion() {
+		return getStr("transfer_opinion");
+	}
+
+	/**
+	 * 转办流程
+	 */
+	public void setTransferProcess(java.lang.String transferProcess) {
+		set("transfer_process", transferProcess);
+	}
+	
+	/**
+	 * 转办流程
+	 */
+	public java.lang.String getTransferProcess() {
+		return getStr("transfer_process");
+	}
+
+	/**
+	 * 附件
+	 */
+	public void setEnclosure(java.lang.String enclosure) {
+		set("enclosure", enclosure);
+	}
+	
+	/**
+	 * 附件
+	 */
+	public java.lang.String getEnclosure() {
+		return getStr("enclosure");
+	}
+
+	/**
+	 * 回复备注
+	 */
+	public void setReplyRemark(java.lang.String replyRemark) {
+		set("reply_remark", replyRemark);
+	}
+	
+	/**
+	 * 回复备注
+	 */
+	public java.lang.String getReplyRemark() {
+		return getStr("reply_remark");
 	}
 
 	/**
