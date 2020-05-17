@@ -1,6 +1,7 @@
 package com.wts.task;
 
 import com.wts.entity.model.Statistic;
+import com.wts.service.StatisticService;
 import com.wts.util.ParamesAPI;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.cp.api.impl.WxCpServiceImpl;
@@ -10,7 +11,11 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,6 +23,25 @@ public class Send12345Statistic implements Runnable{
 
     @Override
     public void run() {
+        LocalDate date = LocalDate.now();
+        DateTimeFormatter yyyy = DateTimeFormatter.ofPattern("yyyy");
+        DateTimeFormatter MM = DateTimeFormatter.ofPattern("MM");
+        DateTimeFormatter dd = DateTimeFormatter.ofPattern("dd");
+        String day = date.format(yyyy) + date.format(MM)+date.format(dd);
+        String path = "D:\\工单详细\\"+date.format(yyyy)+ "\\"+date.format(MM)+ "\\"+date.format(dd)+ "\\";
+        saveAll(path);
+        StatisticService service = new StatisticService();
+        Integer type1 = service.countByType("直办件");
+        Integer type2 = service.countByType("转办件");
+        Integer type3 = service.countByType("退办件");
+        Integer type = type1 + type2 + type3;
+        StringBuffer content=new StringBuffer();
+        content.append("总计：" + type + "件\n");
+        content.append("直办：" + type1 + "件\n");
+        content.append("转办：" + type2 + "件\n");
+        content.append("回退：" + type3 + "件\n");
+        content.append("直办率：" + (double) (Math.round(type1*10000/(type1+type2))/10000.0)*100 + "%");
+
         WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();
         config.setCorpId(ParamesAPI.corpId);      // 设置微信企业号的appid
         config.setCorpSecret(ParamesAPI.secret);  // 设置微信企业号的app corpSecret
@@ -28,11 +52,13 @@ public class Send12345Statistic implements Runnable{
         WxCpServiceImpl wxCpService = new WxCpServiceImpl();
         wxCpService.setWxCpConfigStorage(config);
         WxCpMessage message = WxCpMessage
-                .TEXT()
+                .TEXTCARD()
                 .agentId(1000002)
                 //.toUser("@all")
                 .toUser("WangTianShuo")
-                .content("Hello World")
+                .title(day + "日报")
+                .description(content.toString())
+                .url("#")
                 .build();
         try {
             wxCpService.messageSend(message);
@@ -42,6 +68,7 @@ public class Send12345Statistic implements Runnable{
 
 
     }
+
 
     public void save(String filePath){
         try {
@@ -93,8 +120,63 @@ public class Send12345Statistic implements Runnable{
                     .set("department",department)
                     .set("order_guid",order_guid)
                     .set("keywords",keywords)
+                    .set("save_time",new Date())
                     .save();
         } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(filePath + "---Word文档错误！");
+        }
+    }
+
+    /*
+    批量操作
+    */
+    public void saveAll(String strPath) {
+        File[] files = new File(strPath).listFiles();
+        if (files != null) {
+            for (File file : files) {
+                String fileName = file.getName();
+                if (fileName.endsWith("docx")) {
+                    save(file.getAbsolutePath());
+                }
+            }
+        }
+    }
+
+
+    public static void main(String[] args) {
+        Integer type1 = 50;
+        Integer type2 = 10;
+        Integer type3 = 5;
+        Integer type = type1 + type2 + type3;
+        StringBuffer content=new StringBuffer();
+        content.append("总计：" + type + "件\n");
+        content.append("直办：" + type1 + "件\n");
+        content.append("转办：" + type2 + "件\n");
+        content.append("回退：" + type3 + "件\n");
+        content.append("直办率：" + (double) (Math.round(type1*10000/(type1+type2))/10000.0)*100 + "%");
+        System.out.println(content);
+        WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();
+        config.setCorpId(ParamesAPI.corpId);      // 设置微信企业号的appid
+        config.setCorpSecret(ParamesAPI.secret);  // 设置微信企业号的app corpSecret
+        config.setAgentId(1000002);     // 设置微信企业号应用ID
+        config.setToken("...");       // 设置微信企业号应用的token
+        config.setAesKey("...");      // 设置微信企业号应用的EncodingAESKey
+
+        WxCpServiceImpl wxCpService = new WxCpServiceImpl();
+        wxCpService.setWxCpConfigStorage(config);
+        WxCpMessage message = WxCpMessage
+                .TEXTCARD()
+                .agentId(1000002)
+//                .toUser("@all")
+                .toUser("WangTianShuo")
+                .title("20200517日报")
+                .description(content.toString())
+                .url("#")
+                .build();
+        try {
+            wxCpService.messageSend(message);
+        } catch (WxErrorException e) {
             e.printStackTrace();
         }
     }

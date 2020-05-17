@@ -93,22 +93,22 @@ public class util12345 {
     }
 
 
-    private void CreatWordByModel(String tmpFile, Map<String, String> contentMap, String exportFile) {
-        //导出到文件
-        try {
-            InputStream in = null;
-            in = new FileInputStream(new File(tmpFile));
-            XWPFDocument document = null;
-            document = new XWPFDocument (in);
-            replaceInTable(document, contentMap);
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            document.write((OutputStream)byteArrayOutputStream);
-            OutputStream outputStream = new FileOutputStream(exportFile);
-            outputStream.write(byteArrayOutputStream.toByteArray());
-            outputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    private void CreatWordByModel(String tmpFile, Map<String, String> contentMap, String exportFile) {
+//        //导出到文件
+//        try {
+//            InputStream in = null;
+//            in = new FileInputStream(new File(tmpFile));
+//            XWPFDocument document = null;
+//            document = new XWPFDocument (in);
+//            replaceInTable(document, contentMap);
+//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//            document.write((OutputStream)byteArrayOutputStream);
+//            OutputStream outputStream = new FileOutputStream(exportFile);
+//            outputStream.write(byteArrayOutputStream.toByteArray());
+//            outputStream.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 }

@@ -317,4 +317,18 @@ public abstract class BaseStatistic<M extends BaseStatistic<M>> extends Model<M>
 		return getStr("keywords");
 	}
 
+	/**
+	 * 保存时间
+	 */
+	public void setSaveTime(java.util.Date saveTime) {
+		set("save_time", saveTime);
+	}
+
+	/**
+	 * 保存时间
+	 */
+	public java.util.Date getSaveTime() {
+		return get("save_time");
+	}
+
 }

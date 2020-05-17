@@ -14,7 +14,7 @@ public class StatisticService {
 	DateTimeFormatter yyyy = DateTimeFormatter.ofPattern("yyyy");
 	DateTimeFormatter MM = DateTimeFormatter.ofPattern("MM");
 	DateTimeFormatter dd = DateTimeFormatter.ofPattern("dd");
-	String path = "D:\\工单详细\\"+date.format(yyyy)+ "\\"+date.format(MM)+ "\\"+date.format(dd)+ "\\";
+	String d = date.format(yyyy) + "-" + date.format(MM) + "-" + date.format(dd);
 
 	public Page<Statistic> paginate(int pageNumber, int pageSize) {
 		return dao.paginate(pageNumber, pageSize, "select *", "from statistic order by id asc");
@@ -34,6 +34,11 @@ public class StatisticService {
 	public Statistic findByGUID(String order_guid) {
 		return dao.findFirst("SELECT * FROM statistic WHERE statistic.order_guid LIKE '%" + order_guid + "%' ");
 	}
+
+	public Integer countByType(String type) {
+		return Db.queryInt("SELECT COUNT(*) FROM statistic WHERE (statistic.type LIKE '%" + type + "%') And (timestamp(save_time) between '"+d+" 00:00:00' and '"+d+" 23:59:59')");
+	}
+
 	public void add(Statistic statistic){
 		statistic.save();
 	}

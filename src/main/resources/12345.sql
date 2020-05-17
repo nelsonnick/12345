@@ -155,6 +155,7 @@ CREATE TABLE `statistic`
     `type`                   varchar(255) CHARACTER SET utf8  NULL COMMENT '办理类型：直办件、转办件、退办件',
     `department`             varchar(255) CHARACTER SET utf8  NULL COMMENT '办理部门',
     `keywords`               varchar(255) CHARACTER SET utf8  NULL COMMENT '关键词',
+    `save_time`              datetime(0)                      NULL DEFAULT NULL COMMENT '保存时间',
     PRIMARY KEY (`id`)
 )
 

@@ -14,6 +14,7 @@ public class Down12345Expire implements Runnable {
     @Override
     public void run() {
         Db.update("truncate table expire");
+        // 第一页
         String url = getListUrl("0", "0");
         String cookie = PropKit.use("config-dev.txt").get("cookie");
         Document doc = getDoc(url, cookie);
@@ -34,5 +35,13 @@ public class Down12345Expire implements Runnable {
             service.add(order_guid,order_code, end_date);
         }
     }
-
+//    需要进一步分析页面
+//    table id=lkocok_grid_footer
+//    tr--0
+//    td--0
+//    font--2--value:/5
+//
+//
+//    td--1
+//    a--1--href="?pageNo=2"---value:下一页&nbsp;
 }

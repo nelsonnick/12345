@@ -3,10 +3,16 @@ package com.wts.task;
 import com.jfinal.kit.PropKit;
 import com.wts.entity.model.Undo;
 import com.wts.service.UndoService;
+import com.wts.util.ParamesAPI;
+import me.chanjar.weixin.common.error.WxErrorException;
+import me.chanjar.weixin.cp.api.impl.WxCpServiceImpl;
+import me.chanjar.weixin.cp.bean.WxCpMessage;
+import me.chanjar.weixin.cp.config.impl.WxCpDefaultConfigImpl;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -18,6 +24,7 @@ import static com.wts.util.util12345.getListUrl;
 
 public class Down12345UnDo implements Runnable{
 
+    String path2 = "D:\\当前下载\\";
     @Override
     public void run() {
         String url = getListUrl("0", "0");
@@ -31,6 +38,34 @@ public class Down12345UnDo implements Runnable{
             Undo undo = get(order_guid, cookie);
             try {
                 save(undo);
+                WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();
+                config.setCorpId(ParamesAPI.corpId);      // 设置微信企业号的appid
+                config.setCorpSecret(ParamesAPI.secret);  // 设置微信企业号的app corpSecret
+                config.setAgentId(1000002);     // 设置微信企业号应用ID
+                config.setToken("...");       // 设置微信企业号应用的token
+                config.setAesKey("...");      // 设置微信企业号应用的EncodingAESKey
+                WxCpServiceImpl wxCpService = new WxCpServiceImpl();
+                wxCpService.setWxCpConfigStorage(config);
+//                WxCpMessage message = WxCpMessage
+//                        .TEXT()
+//                        .agentId(1000002)
+//                        //.toUser("@all")
+//                        .toUser("WangTianShuo")
+//                        .content("新工单：" + undo.getOrderCode())
+//                        .build();
+                File file = new File(path2 + undo.get("order_code") + "-" + order_guid + ".docx");
+                String mediaId = wxCpService.getMediaService().upload("file",file).getMediaId();
+                WxCpMessage message = WxCpMessage
+                        .FILE()
+                        .agentId(1000002)
+                        //.toUser("@all")
+                        .toUser("WangTianShuo")
+                        .mediaId(mediaId)
+                        .build();
+                wxCpService.messageSend(message);
+
+
+                wxCpService.messageSend(message);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -156,7 +191,6 @@ public class Down12345UnDo implements Runnable{
         map.put("enclosure",enclosure);
         map.put("order_guid",order_guid);
         String path = "D:\\工单备份\\"+date.format(yyyy)+ "\\"+date.format(MM)+ "\\"+date.format(dd)+ "\\";
-        String path2 = "D:\\当前下载\\";
         System.out.println("待办理工单：" + order_code + "-" + link_person + "-" + send_time);
         UndoService service = new UndoService();
         if (service.findNumByGUID(order_guid)==0){

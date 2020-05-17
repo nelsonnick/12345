@@ -101,7 +101,7 @@ public class Config extends JFinalConfig {
 //		cp.addTask("0 12 * * *", new Down12345Expire()); //每天12:00查询当天到期工单
 //		cp.addTask("30 15 * * *", new Down12345Expire()); //每天15:30查询当天到期工单
 //		cp.addTask("50 15 * * *", new Down12345Expire()); //每天15:50查询当天到期工单
-//		cp.addTask("50 7 * * *", new Send12345Statistic()); //每天7:50统计前一天工单情况
+//		cp.addTask("0 19 * * *", new Send12345Statistic()); //每天19:00保存并统计当天工单情况
 //		cp.addTask("* */2 * * *", new Down12345Fallback()); //每2小时下载一次回退工单
 //		cp.addTask("* */2 * * *", new Down12345Reply()); //每2小时下载一次回复工单
 //		cp.addTask("*/10 * * * *", new Down12345Return());//每10分钟查询一次回退办理单
