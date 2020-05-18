@@ -133,51 +133,13 @@ public class Down12345Reply implements Runnable{
     }
 
     public void save(Reply reply){
-        String order_guid = reply.get("order_guid");
-        String order_state = reply.get("order_state");
-        String order_code = reply.get("order_code");
-        String link_person = reply.get("link_person");
-        String link_phone = reply.get("link_phone");
-        String link_address = reply.get("link_address");
-        String business_environment = reply.get("business_environment");
-        String new_supervision = reply.get("new_supervision");
-        String accept_person = reply.get("accept_person");
-        String accept_person_code = reply.get("accept_person_code");
-        String accept_channel = reply.get("accept_channel");
-        String handle_type = reply.get("handle_type");
-        String phone_type = reply.get("phone_type");
-        String write_time = reply.get("write_time");
-        String urgency_degree = reply.get("urgency_degree");
-        String problem_classification = reply.get("problem_classification");
-        String is_secret = reply.get("is_secret");
-        String is_reply = reply.get("is_reply");
-        String reply_remark = reply.get("reply_remark");
-        String problem_description = reply.get("problem_description");
-        String send_person = reply.get("send_person");
-        String send_time = reply.get("send_time");
-        String end_date = reply.get("end_date");
-        String transfer_opinion = reply.get("transfer_opinion");
-        String transfer_process = reply.get("transfer_process");
-        String remark = reply.get("remark");
-        String enclosure = reply.get("enclosure");
-        String reply_type = reply.get("reply_type");
-        String finish_time = reply.get("finish_time");
-        String reply_satisfy = reply.get("reply_satisfy");
-        String reply_day = reply.get("reply_day");
-        String reply_person = reply.get("reply_person");
-        String reply_phone = reply.get("reply_phone");
-        String reply_content = reply.get("reply_content");
-        String reply_department = reply.get("reply_department");
-        String reply_time = reply.get("reply_time");
-        String subordinate_department = reply.get("subordinate_department");
-        String if_nodo = reply.get("if_nodo");
-        String nodo_reason = reply.get("nodo_reason");
-        String reply_enclosure = reply.get("reply_enclosure");
-        String reply_person2 = reply.get("reply_person2");
-        String reply_phone2 = reply.get("reply_phone2");
-        System.out.println("已回复工单：" + order_code + "-" + link_person + "-" + send_time);
         ReplyService service = new ReplyService();
-        if (service.findNumByGUID(order_guid)==0){
+        if (service.findNumByGUID(reply.get("order_guid"))==0){
+            String order_guid = reply.get("order_guid");
+            String order_code = reply.get("order_code");
+            String link_person = reply.get("link_person");
+            String send_time = reply.get("send_time");
+            System.out.println("已回复工单：" + order_code + "-" + link_person + "-" + send_time);
             service.add(reply);
 //            service.add(order_guid,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark,enclosure, reply_type, finish_time, reply_satisfy, reply_day, reply_person, reply_phone, reply_content, reply_department, reply_time, subordinate_department, if_nodo, nodo_reason, reply_enclosure, reply_person2, reply_phone2);
         }

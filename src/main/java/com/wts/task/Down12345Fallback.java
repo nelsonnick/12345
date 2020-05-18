@@ -115,43 +115,14 @@ public class Down12345Fallback implements Runnable{
     }
 
     public void save(Fallback fallback){
-        String order_guid = fallback.get("order_guid");
-        String order_state = fallback.get("order_state");
-        String order_code = fallback.get("order_code");
-        String link_person = fallback.get("link_person");
-        String link_phone = fallback.get("link_phone");
-        String link_address = fallback.get("link_address");
-        String business_environment = fallback.get("business_environment");
-        String new_supervision = fallback.get("new_supervision");
-        String accept_person = fallback.get("accept_person");
-        String accept_person_code = fallback.get("accept_person_code");
-        String accept_channel = fallback.get("accept_channel");
-        String handle_type = fallback.get("handle_type");
-        String phone_type = fallback.get("phone_type");
-        String write_time = fallback.get("write_time");
-        String urgency_degree = fallback.get("urgency_degree");
-        String problem_classification = fallback.get("problem_classification");
-        String is_secret = fallback.get("is_secret");
-        String is_reply = fallback.get("is_reply");
-        String reply_remark = fallback.get("reply_remark");
-        String problem_description = fallback.get("problem_description");
-        String send_person = fallback.get("send_person");
-        String send_time = fallback.get("send_time");
-        String end_date = fallback.get("end_date");
-        String transfer_opinion = fallback.get("transfer_opinion");
-        String transfer_process = fallback.get("transfer_process");
-        String remark = fallback.get("remark");
-        String enclosure = fallback.get("enclosure");
-        String fallback_reason = fallback.get("fallback_reason");
-        String leader_opinions = fallback.get("leader_opinions");
-        String suggestion = fallback.get("suggestion");
-        String fallback_department = fallback.get("fallback_department");
-        String fallback_time = fallback.get("fallback_time");
-        String fallback_person = fallback.get("fallback_person");
-        String fallback_phone = fallback.get("fallback_phone");
-        System.out.println("已回退工单：" + order_code + "-" + link_person + "-" + send_time);
+
         FallbackService service = new FallbackService();
-        if (service.findNumByGUID(order_guid)==0){
+        if (service.findNumByGUID(fallback.get("order_guid"))==0){
+            String order_guid = fallback.get("order_guid");
+            String order_code = fallback.get("order_code");
+            String link_person = fallback.get("link_person");
+            String send_time = fallback.get("send_time");
+            System.out.println("已回退工单：" + order_code + "-" + link_person + "-" + send_time);
             service.add(fallback);
 //            service.add(order_guid,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark,enclosure,fallback_reason,leader_opinions,suggestion,fallback_department,fallback_time,fallback_person,fallback_phone);
         }
