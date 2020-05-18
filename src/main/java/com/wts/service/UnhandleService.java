@@ -2,19 +2,19 @@ package com.wts.service;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
-import com.wts.entity.model.Undo;
+import com.wts.entity.model.Unhandle;
 
 import java.util.Date;
 
-public class UndoService {
+public class UnhandleService {
 
-	private Undo dao = new Undo().dao();
+	private Unhandle dao = new Unhandle().dao();
 
-	public Page<Undo> paginate(int pageNumber, int pageSize) {
+	public Page<Unhandle> paginate(int pageNumber, int pageSize) {
 		return dao.paginate(pageNumber, pageSize, "select *", "from undo order by id asc");
 	}
 
-	public Undo findById(int id) {
+	public Unhandle findById(int id) {
 		return dao.findById(id);
 	}
 
@@ -23,13 +23,13 @@ public class UndoService {
 	}
 
 	public Integer findNumByGUID(String order_guid) {
-		return Db.queryInt("SELECT COUNT(*) FROM undo WHERE undo.order_guid LIKE '%" + order_guid + "%' ");
+		return Db.queryInt("SELECT COUNT(*) FROM unhandle WHERE unhandle.order_guid LIKE '%" + order_guid + "%' ");
 	}
-	public Undo findByGUID(String order_guid) {
-		return dao.findFirst("SELECT * FROM undo WHERE undo.order_guid LIKE '%" + order_guid + "%' ");
+	public Unhandle findByGUID(String order_guid) {
+		return dao.findFirst("SELECT * FROM unhandle WHERE unhandle.order_guid LIKE '%" + order_guid + "%' ");
 	}
-	public void add(Undo undo){
-		undo.save();
+	public void add(Unhandle unhandle){
+		unhandle.save();
 	}
 	public void add(String order_guid,String order_state, String order_code, String link_person,String link_phone,
 					String link_address,String business_environment,String new_supervision,String accept_person,
@@ -37,8 +37,8 @@ public class UndoService {
 					String write_time,String urgency_degree, String problem_classification,String is_secret,
 					String is_reply,String reply_remark,String problem_description,String send_person,
 					String send_time,String end_date,String transfer_opinion,String transfer_process,String remark,String enclosure) {
-		Undo undo = new Undo();
-		undo.set("order_guid",order_guid)
+		Unhandle unhandle = new Unhandle();
+		unhandle.set("order_guid",order_guid)
 				.set("order_state",order_state)
 				.set("order_code",order_code)
 				.set("link_person",link_person)

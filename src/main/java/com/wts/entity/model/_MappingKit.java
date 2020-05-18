@@ -20,7 +20,7 @@ public class _MappingKit {
 		arp.addMapping("fallback", "id", Fallback.class);
 		arp.addMapping("reply", "id", Reply.class);
 		arp.addMapping("statistic", "id", Statistic.class);
-		arp.addMapping("undo", "id", Undo.class);
+		arp.addMapping("unhandle", "id", Unhandle.class);
 	}
 }
 

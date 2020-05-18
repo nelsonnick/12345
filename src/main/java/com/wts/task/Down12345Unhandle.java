@@ -1,8 +1,8 @@
 package com.wts.task;
 
 import com.jfinal.kit.PropKit;
-import com.wts.entity.model.Undo;
-import com.wts.service.UndoService;
+import com.wts.entity.model.Unhandle;
+import com.wts.service.UnhandleService;
 import com.wts.util.ParamesAPI;
 import me.chanjar.weixin.cp.api.impl.WxCpServiceImpl;
 import me.chanjar.weixin.cp.bean.WxCpMessage;
@@ -21,7 +21,7 @@ import static com.wts.util.WordUtil.*;
 import static com.wts.util.util12345.getDoc;
 import static com.wts.util.util12345.getPageUrl;
 
-public class Down12345UnDo implements Runnable{
+public class Down12345Unhandle implements Runnable{
 
     String path2 = "D:\\当前下载\\";
     @Override
@@ -34,9 +34,9 @@ public class Down12345UnDo implements Runnable{
             Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
             String value = in.attr("value");
             String order_guid = value.substring(5, 43);
-            Undo undo = get(order_guid, cookie);
+            Unhandle unhandle = get(order_guid, cookie);
             try {
-                save(undo);
+                save(unhandle);
                 WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();
                 config.setCorpId(ParamesAPI.corpId);      // 设置微信企业号的appid
                 config.setCorpSecret(ParamesAPI.secret);  // 设置微信企业号的app corpSecret
@@ -52,7 +52,7 @@ public class Down12345UnDo implements Runnable{
 //                        .toUser("WangTianShuo")
 //                        .content("新工单：" + undo.getOrderCode())
 //                        .build();
-                File file = new File(path2 + undo.get("order_code") + "-" + order_guid + ".docx");
+                File file = new File(path2 + unhandle.get("order_code") + "-" + order_guid + ".docx");
                 String mediaId = wxCpService.getMediaService().upload("file",file).getMediaId();
                 WxCpMessage message = WxCpMessage
                         .FILE()
@@ -71,7 +71,7 @@ public class Down12345UnDo implements Runnable{
         }
     }
 
-    public Undo get(String order_guid, String cookie){
+    public Unhandle get(String order_guid, String cookie){
         String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?GUID=" +order_guid+ "&IsZDDB=&";
         Document doc = getDoc(url,cookie);
         Element tbody = doc.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
@@ -106,8 +106,8 @@ public class Down12345UnDo implements Runnable{
         String transfer_opinion = tbody.getElementById("remark").text();//转办意见
         String transfer_process = tbody.getElementById("banliFlow").text();//转办流程
         String remark = tbody.getElementById("beizhu").text();//备注
-        Undo undo = new Undo();
-        undo.set("order_guid",order_guid)
+        Unhandle unhandle = new Unhandle();
+        unhandle.set("order_guid",order_guid)
                 .set("order_state",order_state)
                 .set("order_code",order_code)
                 .set("link_person",link_person)
@@ -134,42 +134,42 @@ public class Down12345UnDo implements Runnable{
                 .set("transfer_process",transfer_process)
                 .set("enclosure",enclosure)
                 .set("remark",remark);
-         return undo;
+         return unhandle;
 
     }
 
-    public void save(Undo undo) throws Exception {
+    public void save(Unhandle unhandle) throws Exception {
         LocalDate date = LocalDate.now();
         DateTimeFormatter yyyy = DateTimeFormatter.ofPattern("yyyy");
         DateTimeFormatter MM = DateTimeFormatter.ofPattern("MM");
         DateTimeFormatter dd = DateTimeFormatter.ofPattern("dd");
-        String order_guid = undo.get("order_guid");
-        String order_state = undo.get("order_state");
-        String order_code = undo.get("order_code");
-        String link_person = undo.get("link_person");
-        String link_phone = undo.get("link_phone");
-        String link_address = undo.get("link_address");
-        String business_environment = undo.get("business_environment");
-        String new_supervision = undo.get("new_supervision");
-        String accept_person = undo.get("accept_person");
-        String accept_person_code = undo.get("accept_person_code");
-        String accept_channel = undo.get("accept_channel");
-        String handle_type = undo.get("handle_type");
-        String phone_type = undo.get("phone_type");
-        String write_time = undo.get("write_time");
-        String urgency_degree = undo.get("urgency_degree");
-        String problem_classification = undo.get("problem_classification");
-        String is_secret = undo.get("is_secret");
-        String is_reply = undo.get("is_reply");
-        String reply_remark = undo.get("reply_remark");
-        String problem_description = undo.get("problem_description");
-        String send_person = undo.get("send_person");
-        String send_time = undo.get("send_time");
-        String end_date = undo.get("end_date");
-        String transfer_opinion = undo.get("transfer_opinion");
-        String transfer_process = undo.get("transfer_process");
-        String remark = undo.get("remark");
-        String enclosure = undo.get("enclosure");
+        String order_guid = unhandle.get("order_guid");
+        String order_state = unhandle.get("order_state");
+        String order_code = unhandle.get("order_code");
+        String link_person = unhandle.get("link_person");
+        String link_phone = unhandle.get("link_phone");
+        String link_address = unhandle.get("link_address");
+        String business_environment = unhandle.get("business_environment");
+        String new_supervision = unhandle.get("new_supervision");
+        String accept_person = unhandle.get("accept_person");
+        String accept_person_code = unhandle.get("accept_person_code");
+        String accept_channel = unhandle.get("accept_channel");
+        String handle_type = unhandle.get("handle_type");
+        String phone_type = unhandle.get("phone_type");
+        String write_time = unhandle.get("write_time");
+        String urgency_degree = unhandle.get("urgency_degree");
+        String problem_classification = unhandle.get("problem_classification");
+        String is_secret = unhandle.get("is_secret");
+        String is_reply = unhandle.get("is_reply");
+        String reply_remark = unhandle.get("reply_remark");
+        String problem_description = unhandle.get("problem_description");
+        String send_person = unhandle.get("send_person");
+        String send_time = unhandle.get("send_time");
+        String end_date = unhandle.get("end_date");
+        String transfer_opinion = unhandle.get("transfer_opinion");
+        String transfer_process = unhandle.get("transfer_process");
+        String remark = unhandle.get("remark");
+        String enclosure = unhandle.get("enclosure");
         Map<String, String> map = new HashMap<String, String>();
         map.put("accept_person_code",accept_person_code);
         map.put("end_date",end_date);
@@ -191,9 +191,9 @@ public class Down12345UnDo implements Runnable{
         map.put("order_guid",order_guid);
         String path = "D:\\工单备份\\"+date.format(yyyy)+ "\\"+date.format(MM)+ "\\"+date.format(dd)+ "\\";
         System.out.println("待办理工单：" + order_code + "-" + link_person + "-" + send_time);
-        UndoService service = new UndoService();
+        UnhandleService service = new UnhandleService();
         if (service.findNumByGUID(order_guid)==0){
-            service.add(undo);
+            service.add(unhandle);
 //            service.add(order_guid,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark,enclosure);
             CreatWordByModel("D:\\TemplateDoc.docx", map, path + order_code + "-" + order_guid + ".docx");
             CreatWordByModel("D:\\TemplateDoc.docx", map, path2 + order_code + "-" + order_guid + ".docx");
