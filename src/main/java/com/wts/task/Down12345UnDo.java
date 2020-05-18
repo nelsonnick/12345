@@ -4,7 +4,6 @@ import com.jfinal.kit.PropKit;
 import com.wts.entity.model.Undo;
 import com.wts.service.UndoService;
 import com.wts.util.ParamesAPI;
-import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.cp.api.impl.WxCpServiceImpl;
 import me.chanjar.weixin.cp.bean.WxCpMessage;
 import me.chanjar.weixin.cp.config.impl.WxCpDefaultConfigImpl;
@@ -20,14 +19,14 @@ import java.util.Map;
 
 import static com.wts.util.WordUtil.*;
 import static com.wts.util.util12345.getDoc;
-import static com.wts.util.util12345.getListUrl;
+import static com.wts.util.util12345.getPageUrl;
 
 public class Down12345UnDo implements Runnable{
 
     String path2 = "D:\\当前下载\\";
     @Override
     public void run() {
-        String url = getListUrl("0", "0");
+        String url = getPageUrl("0", "0");
         String cookie = PropKit.use("config-dev.txt").get("cookie");
         Document doc = getDoc(url,cookie);
         Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");

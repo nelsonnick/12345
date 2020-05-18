@@ -27,7 +27,7 @@ public class util12345 {
      messageType:200   issend:1——已处理退回办理单
      messageType:-1    issend:X——全部工单
      */
-    public static String getListUrl(String messageType, String issend){
+    public static String getPageUrl(String messageType, String issend){
         String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/listTaskHotLine.aspx?MessageType=" + messageType;
         if (issend.equals("X")){
             return url;
@@ -37,7 +37,7 @@ public class util12345 {
     }
 
     //  分页用的
-    public static String getListUrl(String pageNo){
+    public static String getPageUrl(String pageNo){
         return "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/listTaskHotLine.aspx?pageNo=" + pageNo + "&sort=desc&sortColumn=sendTime";
     }
 
@@ -65,7 +65,7 @@ public class util12345 {
         return doc;
     }
 
-    //  分页用的
+    //  分页用的-----似乎用不到了
     public static Document getDoc(String url, String cookie, String Referer){
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();

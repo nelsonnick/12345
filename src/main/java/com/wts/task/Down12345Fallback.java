@@ -9,13 +9,13 @@ import org.jsoup.select.Elements;
 
 import static com.wts.util.WordUtil.*;
 import static com.wts.util.util12345.getDoc;
-import static com.wts.util.util12345.getListUrl;
+import static com.wts.util.util12345.getPageUrl;
 
 public class Down12345Fallback implements Runnable{
 
     @Override
     public void run() {
-        String url = getListUrl("202", "1");
+        String url = getPageUrl("202", "1");
         String cookie = PropKit.use("config-dev.txt").get("cookie");
         Document doc = getDoc(url,cookie);
         Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
