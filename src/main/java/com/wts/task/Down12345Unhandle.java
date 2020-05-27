@@ -37,14 +37,14 @@ public class Down12345Unhandle implements Runnable{
             Unhandle unhandle = get(order_guid, cookie);
             try {
                 save(unhandle);
-                WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();
-                config.setCorpId(ParamesAPI.corpId);      // 设置微信企业号的appid
-                config.setCorpSecret(ParamesAPI.secret);  // 设置微信企业号的app corpSecret
-                config.setAgentId(1000002);     // 设置微信企业号应用ID
-                config.setToken("...");       // 设置微信企业号应用的token
-                config.setAesKey("...");      // 设置微信企业号应用的EncodingAESKey
-                WxCpServiceImpl wxCpService = new WxCpServiceImpl();
-                wxCpService.setWxCpConfigStorage(config);
+//                WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();
+//                config.setCorpId(ParamesAPI.corpId);      // 设置微信企业号的appid
+//                config.setCorpSecret(ParamesAPI.secret);  // 设置微信企业号的app corpSecret
+//                config.setAgentId(1000002);     // 设置微信企业号应用ID
+//                config.setToken("...");       // 设置微信企业号应用的token
+//                config.setAesKey("...");      // 设置微信企业号应用的EncodingAESKey
+//                WxCpServiceImpl wxCpService = new WxCpServiceImpl();
+//                wxCpService.setWxCpConfigStorage(config);
 //                WxCpMessage message = WxCpMessage
 //                        .TEXT()
 //                        .agentId(1000002)
@@ -52,19 +52,19 @@ public class Down12345Unhandle implements Runnable{
 //                        .toUser("WangTianShuo")
 //                        .content("新工单：" + undo.getOrderCode())
 //                        .build();
-                File file = new File(path2 + unhandle.get("order_code") + "-" + order_guid + ".docx");
-                String mediaId = wxCpService.getMediaService().upload("file",file).getMediaId();
-                WxCpMessage message = WxCpMessage
-                        .FILE()
-                        .agentId(1000002)
-                        //.toUser("@all")
-                        .toUser("WangTianShuo")
-                        .mediaId(mediaId)
-                        .build();
-                wxCpService.messageSend(message);
-
-
-                wxCpService.messageSend(message);
+//                File file = new File(path2 + unhandle.get("order_code") + "-" + order_guid + ".docx");
+//                String mediaId = wxCpService.getMediaService().upload("file",file).getMediaId();
+//                WxCpMessage message = WxCpMessage
+//                        .FILE()
+//                        .agentId(1000002)
+//                        //.toUser("@all")
+//                        .toUser("WangTianShuo")
+//                        .mediaId(mediaId)
+//                        .build();
+//                wxCpService.messageSend(message);
+//
+//
+//                wxCpService.messageSend(message);
             } catch (Exception e) {
                 e.printStackTrace();
             }
