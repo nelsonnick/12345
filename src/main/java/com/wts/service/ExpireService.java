@@ -33,8 +33,8 @@ public class ExpireService {
 		expire.save();
 	}
 	public void add(String order_guid, String order_code, String end_date) {
-		Expire undo = new Expire();
-		undo.set("order_guid",order_guid)
+		Expire expire = new Expire();
+		expire.set("order_guid",order_guid)
 				.set("order_code",order_code)
 				.set("end_date",end_date)
 				.save();

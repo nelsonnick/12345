@@ -2,6 +2,7 @@ package com.wts.task;
 
 import com.jfinal.kit.PropKit;
 import com.wts.entity.model.Unhandle;
+import com.wts.service.AllworkService;
 import com.wts.service.UnhandleService;
 import com.wts.util.ParamesAPI;
 import me.chanjar.weixin.cp.api.impl.WxCpServiceImpl;
@@ -140,6 +141,7 @@ public class Down12345Unhandle implements Runnable{
 
     public void save(Unhandle unhandle) throws Exception {
         UnhandleService service = new UnhandleService();
+        AllworkService service2 = new AllworkService();
         if (service.findNumByGUID(unhandle.get("order_guid"))==0){
             service.add(unhandle);
             String order_guid = unhandle.get("order_guid");
@@ -169,6 +171,7 @@ public class Down12345Unhandle implements Runnable{
             String transfer_process = unhandle.get("transfer_process");
             String remark = unhandle.get("remark");
             String enclosure = unhandle.get("enclosure");
+            service2.add(order_guid,order_code,link_person,link_phone,link_address,send_time,problem_description);
             Map<String, String> map = new HashMap<String, String>();
             map.put("accept_person_code",accept_person_code);
             map.put("end_date",end_date);
@@ -188,6 +191,7 @@ public class Down12345Unhandle implements Runnable{
             map.put("transfer_process",transfer_process);
             map.put("enclosure",enclosure);
             map.put("order_guid",order_guid);
+            map.put("phone_time",service2.findNumByPhone(unhandle.get("link_phone")));
             LocalDate date = LocalDate.now();
             DateTimeFormatter yyyy = DateTimeFormatter.ofPattern("yyyy");
             DateTimeFormatter MM = DateTimeFormatter.ofPattern("MM");

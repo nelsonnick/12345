@@ -323,7 +323,7 @@ public abstract class BaseStatistic<M extends BaseStatistic<M>> extends Model<M>
 	public void setSaveTime(java.util.Date saveTime) {
 		set("save_time", saveTime);
 	}
-
+	
 	/**
 	 * 保存时间
 	 */

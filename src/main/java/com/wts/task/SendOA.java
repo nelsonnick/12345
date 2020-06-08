@@ -25,25 +25,25 @@ public class SendOA implements Runnable {
                     }
                     i = i + 1;
                 }
-                WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();
-                config.setCorpId(ParamesAPI.corpId);      // 设置微信企业号的appid
-                config.setCorpSecret(ParamesAPI.secret);  // 设置微信企业号的app corpSecret
-                config.setAgentId(1000002);     // 设置微信企业号应用ID
-                config.setToken("...");       // 设置微信企业号应用的token
-                config.setAesKey("...");      // 设置微信企业号应用的EncodingAESKey
-
-                WxCpServiceImpl wxCpService = new WxCpServiceImpl();
-                wxCpService.setWxCpConfigStorage(config);
-                WxCpMessage message = WxCpMessage
-                        .TEXTCARD()
-                        .agentId(1000002)
-                        //.toUser("@all")
-                        .toUser("WangTianShuo")
-                        .title("上传OA提醒")
-                        .description("已上传" + i + "个工单至OA")
-                        .url("#")
-                        .build();
-                wxCpService.messageSend(message);
+//                WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();
+//                config.setCorpId(ParamesAPI.corpId);      // 设置微信企业号的appid
+//                config.setCorpSecret(ParamesAPI.secret);  // 设置微信企业号的app corpSecret
+//                config.setAgentId(1000002);     // 设置微信企业号应用ID
+//                config.setToken("...");       // 设置微信企业号应用的token
+//                config.setAesKey("...");      // 设置微信企业号应用的EncodingAESKey
+//
+//                WxCpServiceImpl wxCpService = new WxCpServiceImpl();
+//                wxCpService.setWxCpConfigStorage(config);
+//                WxCpMessage message = WxCpMessage
+//                        .TEXTCARD()
+//                        .agentId(1000002)
+//                        //.toUser("@all")
+//                        .toUser("WangTianShuo")
+//                        .title("上传OA提醒")
+//                        .description("已上传" + i + "个工单至OA")
+//                        .url("#")
+//                        .build();
+//                wxCpService.messageSend(message);
             }
         } catch (Exception e) {
             e.printStackTrace();

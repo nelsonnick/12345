@@ -131,6 +131,20 @@ CREATE TABLE `expire`
     PRIMARY KEY (`id`)
 );
 
+CREATE TABLE `allwork`
+(
+    `id`                  int(11)                          NOT NULL AUTO_INCREMENT COMMENT '序号',
+    `order_guid`          varchar(255) CHARACTER SET utf8  NULL COMMENT '工单序号',
+    `order_code`          varchar(255) CHARACTER SET utf8  NULL COMMENT '工单编号',
+    `link_person`         varchar(50) CHARACTER SET utf8   NULL COMMENT '联系人',
+    `link_phone`          varchar(50) CHARACTER SET utf8   NULL COMMENT '联系电话',
+    `link_address`        varchar(255) CHARACTER SET utf8  NULL COMMENT '联系地址',
+    `send_time`           varchar(50) CHARACTER SET utf8   NULL COMMENT '发送时间',
+    `problem_description` varchar(2999) CHARACTER SET utf8 NULL COMMENT '问题描述',
+    PRIMARY KEY (`id`)
+);
+
+
 CREATE TABLE `statistic`
 (
     `id`                     int(11)                          NOT NULL AUTO_INCREMENT COMMENT '序号',

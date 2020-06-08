@@ -1,0 +1,312 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html>
+<head>
+    <title>办理单</title>
+    <meta name="GENERATOR" content="Microsoft Visual Studio .NET 7.1">
+    <meta name="CODE_LANGUAGE" content="C#">
+    <meta name="vs_defaultClientScript" content="JavaScript">
+    <meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5">
+    <link href="../yaweiscripts/pagemanage.css" type="text/css" rel="stylesheet">
+    <script  src="../YaweiScripts/layer/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="../YaweiScripts/layer/layer.js" type="text/javascript"></script>
+    <script language="javascript" src="../yaweiscripts/basic.js"></script>
+    <script language="javascript" src="Scripts/taskHotLine.js"></script>
+    <script language="javascript" src="../yaweiScripts/xmlHttp.js"></script>
+    <script language="javascript" src="Scripts/printName.js"></script>
+    <script language="javascript" src="../yaweiscripts/fileOperate.js"></script>
+
+</head>
+<body  style="height:100%;";leftmargin="0" topmargin="0" rightmargin="0" bottommargin="0" ms_positioning="GridLayout">
+<form name="userForm" method="post" action="ViewTaskHotLine.aspx?GUID=%7b2a406120-d3f5-4a63-9aa7-5e5c54774f91%7d&amp;issend=1&amp;IsZDDB=&amp;" id="userForm" style="font-size: 12px" enctype="multipart/form-data" autocomplete="off">
+    <div>
+        <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUJNzkxMDM1OTQxD2QWAgIBD2QWMgIBDw8WAh4EVGV4dAUa5rWO5Y2XMTIzNDXlip7nkIbpgJrnn6XljZVkZAIDDxYCHglpbm5lcmh0bWwFCeW3suWbnumAgGQCBA8WAh8BBRIyMDA1MzExNDE0MjM3NTMxNDZkAgUPFgIeBXN0eWxlBQ1kaXNwbGF5Om5vbmU7ZAIGDxYCHwEFCemrmOWFiOeUn2QCBw8WAh8BBQsxNTA2OTAwMTUwMGQCCA8WAh8BZWQCCQ8WAh8BZWQCCg8WAh8BBQnpg63mgZLovb9kAgsPFgIfAQUENDU4NGQCDA8WAh8BBQbmnaXnlLVkAg0PFgIfAQUG6L2s5YqeZAIODxYCHwEFBuaxguWKqWQCDw8WAh8BBRIyMDIwLzUvMzEgMTQ6MTY6MDdkAhEPFgIfAQU55Lq65Yqb6LWE5rqQ5L+d6Zqc77yN5Yqz5Yqo57qg57q377yN5Yac5rCR5bel5bel6LWE5pSv5LuYZAISDxYCHwEFCeS4jeS/neWvhmQCEw8WAh8BBQblm57lpI1kAhQPFgIfAWVkAhUPFgIfAQW7D+mrmOWFiOeUn+adpeeUteWPjeaYoO+8mjIwMTTlubTlt6blj7Poh6rlt7Hlkozlt6Xlj4vlnKjmp5DojavljLrlpJbmtbfkuK3lpK7oirHlm63lt6XlnLDlubIzLTLlj7fmpbzlsYXmsJHmpbzlpJblopnlpKfnkIbnn7Plronoo4Xlt6XkvZzvvIzkuI7mt7HlnLPov5zpuY/oo4XppbDlhazlj7jvvIjlvKDlv5flhpvlhYjnlJ/vvIwxMzYwNTYwNTM2OS8xODY2MzczNjM1M++8ieetvuiuouijhemlsOWQiOWQjO+8jOWujOW3peWQjuaLluasoDk3MjAw5LiH5YWD55qE5bel6LWE6L+Y5rKh5pyJ5LiL5Y+R77yM6Ieq5bex6YCa6L+H5rOV6Zmi5pu+57y057qzMjAwMOWFg+i1t+iviei/h++8jOeUseS6juiiq+WRiuaWueacquWIsOWcuu+8jOazlemZouiuqeiHquW3seaSpOivie+8jOeOsOWcqOaXoOazlemAmui/h+azlemZoui/m+ihjOiQveWunu+8jOadpeeUteaxguWKqe+8jOimgeaxguW4ruWKqeWNj+iwg+WwveW/q+e7k+eul+W3pei1hO+8iOadpeeUteS6uuihqOekuueOsOWcqOW3peWPi+S7rOWutuW6reeUn+a0u+WbsOmavu+8jOaApemcgOe7k+eul+W3pei1hO+8iQ0K5qeQ6I2r5Yy65Lq65Yqb6LWE5rqQ5ZKM56S+5Lya5L+d6Zqc5bGA5Zue5aSN77ya57uP5LqG6Kej5p2l55S15Lq65Y+N5bqU55qE6Zeu6aKY5Li65LiO5YyF5bel5aS05LmL6Ze055qE57uP5rWO57qg57q377yM5L6d5o2u44CK5Yqz5Yqo5L+d6Zqc55uR5a+f5p2h5L6L44CL56ys5Y2B5LiA5p2h55qE6KeE5a6a5Yqz5Yqo5L+d6Zqc6KGM5pS/6YOo6Zeo5a+55LiL5YiX5LqL6aG55a6e5pa95Yqz5Yqo5L+d6Zqc55uR5a+f5LiA77yJ55So5Lq65Y2V5L2N5Yi25a6a5YaF6YOo5Yqz5Yqo5L+d6Zqc6KeE56ug5Yi25bqm55qE5oOF5Ya177yb44CA44CA77yI5LqM77yJ55So5Lq65Y2V5L2N5LiO5Yqz5Yqo6ICF6K6i56uL5Yqz5Yqo5ZCI5ZCM55qE5oOF5Ya177yb44CA44CA77yI5LiJ77yJ55So5Lq65Y2V5L2N6YG15a6I56aB5q2i5L2/55So56ul5bel6KeE5a6a55qE5oOF5Ya177yb44CA44CA77yI5Zub77yJ55So5Lq65Y2V5L2N6YG15a6I5aWz6IGM5bel5ZKM5pyq5oiQ5bm05bel54m55q6K5Yqz5Yqo5L+d5oqk6KeE5a6a55qE5oOF5Ya177yb44CA44CA77yI5LqU77yJ55So5Lq65Y2V5L2N6YG15a6I5bel5L2c5pe26Ze05ZKM5LyR5oGv5LyR5YGH6KeE5a6a55qE5oOF5Ya177yb44CA44CA77yI5YWt77yJ55So5Lq65Y2V5L2N5pSv5LuY5Yqz5Yqo6ICF5bel6LWE5ZKM5omn6KGM5pyA5L2O5bel6LWE5qCH5YeG55qE5oOF5Ya177yb44CA44CA77yI5LiD77yJ55So5Lq65Y2V5L2N5Y+C5Yqg5ZCE6aG556S+5Lya5L+d6Zmp5ZKM57y057qz56S+5Lya5L+d6Zmp6LS555qE5oOF5Ya177yb44CA44CA77yI5YWr77yJ6IGM5Lia5LuL57uN5py65p6E44CB6IGM5Lia5oqA6IO95Z+56K6t5py65p6E5ZKM6IGM5Lia5oqA6IO96ICD5qC46Ym05a6a5py65p6E6YG15a6I5Zu95a625pyJ5YWz6IGM5Lia5LuL57uN44CB6IGM5Lia5oqA6IO95Z+56K6t5ZKM6IGM5Lia5oqA6IO96ICD5qC46Ym05a6a55qE6KeE5a6a55qE5oOF5Ya177yb44CA44CA77yI5Lmd77yJ5rOV5b6L44CB5rOV6KeE6KeE5a6a55qE5YW25LuW5Yqz5Yqo5L+d6Zqc55uR5a+f5LqL6aG544CCJnF1b3Q7IA0K6auY5YWI55Sf5YaN5qyh5p2l55S15Y+N5pig77ya5q2k6Zeu6aKY5LiA55u05rKh5pyJ5b6X5Yiw6Kej5Yaz77yM6KaB5rGC5biu5Yqp5Y2P6LCD5bC95b+r57uT566X5bel6LWE44CC77yI5p2l55S15Lq65LmL5YmN5bey57uP6YCa6L+H5rOV5b6L6YCU5b6E6L+b6KGM57u05p2D77yM5L2G5piv6KKr5ZGK5Lq65bm25rKh5pyJ5Yiw6L6+5rOV6Zmi546w5Zy677yM5p2l55S15Lq65LiN6K6k5Y+v6YCa5rOV5b6L6YCU5b6E6Kej5Yaz6Zeu6aKY77yM5biM5pyb5pS/5bqc6YOo6Zeo5biu5Yqp5aSE55CG44CC77yJ5pm65oWn5rOJ5Z+O5biM5pyb55u45YWz5Y2V5L2N6JC95a6e5aSE55CG77yM6K+35aSE55CG5bm25Zue5aSN5p2l55S15Lq644CCZAIWDxYCHwEFG+ankOiNq+WMuuaUv+W6nOeDree6v+WKnueQhmQCFw8WAh8BBREyMDIwLzYvNCAxMToyMTo0OGQCGA8WAh8BBQoyMDIwLTA2LTA0ZAIaDxYCHwEFBTIzIDEwZAIbDxYCHwEFjQ7mp5DojavljLrmlL/lupzng63nur/lip7nkIbvvIgyMDIwLzYvNCAxMDozMToyNe+8iei9rOiHs+ankOiNq+azlemZou+8mjIzIOWmguS4jeWxnueuoei+lu+8jOivt+i9rOWKnu+8jOiwouiwojE5DQrmp5DojavljLrkvY/miL/lkozln47kuaHlu7rorr7lsYAxMjM0Ne+8iDIwMjAvNi80IDExOjA1OjAw77yJ77ya6K+l5qGI5Lu26LaF5Ye65oiR5Y2V5L2N5p2D6ZmQ44CC5Y6f5Zug77ya57uP5LqG6Kej77yM5p2l55S15Lq65bGe5LqO6KOF6aWw5ouW5qyg5bel6LWE77yM5qC55o2uJmFtcDtsYXF1bzvmtY7ljZfluILlu7rnrZHkuJrlhpzmsJHlt6Xlt6XotYTmi5bmrKDmipXor4nlpITnkIbmmoLooYzlip7ms5UmYW1wO3JhcXVvO+acieWFs+inhOWumu+8jOS4jeWxnuS6juW7uuetkemihuWfn+WGnOawkeW3peW3pei1hOa4heasoOahiOS7tuWPl+eQhuadoeS7tuOAguW7uuiurui9rOWKs+WKqOS7suijgemDqOmXqOWSqOivouWkhOe9ruOAgu+8jOW7uuiuru+8muivpeahiOS7tui2heWHuuaIkeWNleS9jeadg+mZkOOAguWOn+WboO+8mue7j+S6huino++8jOadpeeUteS6uuWxnuS6juijhemlsOaLluasoOW3pei1hO+8jOagueaNriZhbXA7bGFxdW875rWO5Y2X5biC5bu6562R5Lia5Yac5rCR5bel5bel6LWE5ouW5qyg5oqV6K+J5aSE55CG5pqC6KGM5Yqe5rOVJmFtcDtyYXF1bzvmnInlhbPop4TlrprvvIzkuI3lsZ7kuo7lu7rnrZHpoobln5/lhpzmsJHlt6Xlt6XotYTmuIXmrKDmoYjku7blj5fnkIbmnaHku7bjgILlu7rorq7ovazlirPliqjku7Loo4Hpg6jpl6jlkqjor6LlpITnva7jgIINCuankOiNq+WMuuaUv+W6nOeDree6v+WKnueQhu+8iDIwMjAvNi80IDEwOjU3OjI477yJ6L2s6Iez5qeQ6I2r5Yy65L2P5oi/5ZKM5Z+O5Lmh5bu66K6+5bGAMTIzNDXvvJoyMyAxMA0K5qeQ6I2r5Yy65Lq65Yqb6LWE5rqQ5ZKM56S+5Lya5L+d6Zqc5bGA77yIMjAyMC82LzEgOTowMzowN++8ie+8muagueaNruW3peWNleaPj+i/sO+8jOadpeeUteS6uuW3sumAmui/h+azlemZoueoi+W6j+WkhOeQhu+8jOadpeeUteS6uuWPjeaYoOeahOaYr+iiq+WRiuacqui+vuWIsOazlemZoueOsOWcuuOAguadpeeUteS6uuivieaxgueahOmXrumimOivt+i9rOazlemZouiQveWunuetlOWkje+8jOW7uuiuru+8muivt+i9rOazlemZouiQveWunuetlOWkjQ0K5qeQ6I2r5Yy65pS/5bqc54Ot57q/5Yqe55CG77yIMjAyMC81LzMxIDE1OjM5OjI577yJ6L2s6Iez5qeQ6I2r5Yy65Lq65Yqb6LWE5rqQ5ZKM56S+5Lya5L+d6Zqc5bGA77yaDQrmp5Dojavms5XpmaLvvIgyMDIwLzYvNCAxMDo0MzoyOe+8ie+8muaIkemZouW3peS9nOS6uuWRmOS6jjIwMjDlubQ25pyIMeaXpTEw5pe26YCa6L+HODUwMzAyODDnlLXor53lm57lpI3mnaXnlLXkurrvvIznu4/okL3lrp7vvIzmnaXnlLXkurrns7vmiJHpmaLlj5fnkIbnmoQyMDE46bKBMDEwNOawkeWInTQwNzPlj7flirPliqHlkIjlkIznuqDnurfmoYjku7bljp/lkYrmnLHkvKDliKnnmoTlt6Xlj4vvvIzor6XmoYjku7bmiJHpmaLlj5fnkIblkI7vvIzljp/lkYrlm6Dor4Hmja7kuI3otrPnlLPor7fmkqTor4njgILmnaXnlLXkurrnp7Dnm67liY3miYvkuK3ov5jmmK/pgqPkupvor4Hmja7mnZDmlpnvvIzkuI3mg7PpgJrov4for4norrzpgJTlvoTop6PlhrPvvIzkvYboh6rlt7HliIflrp7mib/ljIXkuobnm7jlhbPlt6XnqIvvvIzlubLkuobmtLvjgILopoHmsYLnm7jlhbPpg6jpl6jljY/osIPopoHlm57lt6XnqIvmrL7vvIzmnaXnlLXkurropoHmsYLmlL/lupzpg6jpl6jop6PlhrPjgILvvIzlu7rorq7vvJrlu7rorq7ovazljLrmlL/lupzlpITnkIYNCmQCHA8WAh8BZWRkcGSn0OSllAcKnOGRwbEB27vT9vc=" />
+    </div>
+
+    <script type="text/javascript" src="/jhoagch_huaiyinqu/ajax/common.ashx"></script><script type="text/javascript" src="/jhoagch_huaiyinqu/ajax/Yawei.Jhoa.UI.TaskHotLine.ViewTaskHotLine,JHOA.ashx"></script>
+    <div>
+
+        <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="E9730A0F" />
+        <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEWCgLxs6nyCgKM54rGBgLZr8e4DwLN6rK/DALW4bf/BALLrfPPDgKno+S2DgL5hLCrDgKh893yBgKm4dCKDLfqdcg56NFc+G3m5LhXy9vidg8b" />
+    </div>
+    <LINK href="../yaweiscripts/msnMenu.css" type="text/css" rel="stylesheet">
+    <script language="javascript" src="../yaweiscripts/msnMenu.js"></script>
+    <IFRAME class="NN" id="Hfrm" src="about:blank"></IFRAME>
+    <TABLE class='N' id='HMTB' cellSpacing='0' cellPadding='0' width='100%' border='0'>
+        <tr><td>
+            <TABLE class='O' id='menuTable' cellSpacing='0' cellPadding='0' width='100%' border='0'>
+                <TBODY>
+                <tr>
+                    <TD style="WIDTH: 8px"><IMG height="1" src="../images/spacer.gif" width="8"></TD>
+                    <td class='P' onmouseover="MO()" onclick="history.back()" onmouseout="MU()" noWrap>
+                        <IMG alt="返回到前一个页面" hspace="1" src="../images/functionkey/back.gif" align="absMiddle" border="0">返回</TD>
+                    <TD class="LL">|</TD>
+                    <td class='P' onmouseover="MO()" onclick="printHotlinework('{2a406120-d3f5-4a63-9aa7-5e5c54774f91}')" onmouseout="MU()" noWrap>
+                        <IMG alt="打印" hspace="1" src="../images/functionkey/print.gif" align="absMiddle" border="0">打印1</TD>
+                    <TD class="LL">|</TD>
+                    <td class='P' onmouseover="MO()" onclick="printHotlineworkNew('{2a406120-d3f5-4a63-9aa7-5e5c54774f91}')" onmouseout="MU()" noWrap>
+                        <IMG alt="打印" hspace="1" src="../images/functionkey/print.gif" align="absMiddle" border="0">打印2</TD>
+                    <TD class="LL">|</TD>
+                    <td class='P' onmouseover="MO()" onclick="serachTaskHotLine('200531141423753146','0')" onmouseout="MU()" noWrap>
+                        <IMG alt="查相同办理单" hspace="1" src="../images/functionkey/8.gif" align="absMiddle" border="0">查相同办理单</TD>
+                    <TD class="LL">|</TD>
+                    <TD width="100%" align="right"></TD>
+                </TR>
+                </tbody>
+            </TABLE>
+        </TD>
+            <TD style='CURSOR: auto'>
+                <TABLE class='O' id='endTable' cellSpacing='0' cellPadding='0' width='100%' border='0'>
+                    <TR>
+                        <TD width='100%'>&nbsp;</TD>
+                    </TR>
+                </TABLE>
+            </TD>
+        </TR>
+    </TABLE>
+
+    <table cellspacing="0" cellpadding="1" width="100%" border="0" height="50">
+        <tr>
+            <td width="100%" align="center" valign="middle">
+                <br>
+                <font color="red" size="5">
+                    <span id="headerTitle">济南12345办理通知单</span></font>
+            </td>
+        </tr>
+        <tr>
+
+
+        </tr>
+        <tr style="display: none">
+            <td>
+                <input type="submit" name="Button1" value="Button" id="Button1" />
+            </td>
+        </tr>
+    </table>
+    <table class="tablebgcolor" cellspacing="1" cellpadding="1" width="100%" align="center"
+           bgcolor="#000000" border="0">
+        <tr>
+            <td class="tdbgcolor" align="right" width="10%">
+                <font color="#000090">工单状态：</font>
+            </td>
+            <td class="tdbgcolor" align="left" width="20%" colspan="5">
+                <span id="gdzt" class="str">已回退</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="tdbgcolor" align="right" width="10%">
+                <font color="#000090">工单编号：</font>
+            </td>
+            <td class="tdbgcolor" align="left" width="20%">
+                <span id="HotLineWorkNumber" class="str" style="width: 99%" tabindex="50" maxlength="30">200531141423753146</span>
+                <input name="playRecord" type="button" id="playRecord" style="display:none;" class="buttonSelected" value="播放录音" onclick="connectCLS()" />
+            </td>
+            <td class="tdbgcolor" align="right" width="10%">
+                <font color="#000090">联&nbsp;系&nbsp;人：</font>
+            </td>
+            <td class="tdbgcolor" align="left" width="20%">
+                <span id="linkPerson" class="str" tabindex="5" name="linkPerson">高先生</span>
+            </td>
+            <td class="tdbgcolor" align="right" width="15%">
+                <font color="#000090">联系电话：</font>
+            </td>
+            <td class="tdbgcolor" align="left" width="25%">
+                <span id="linkPhone" class="str">15069001500</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="tdbgcolor" align="right" width="15%">
+                <font color="#000090">联系地址：</font>
+            </td>
+            <td class="tdbgcolor" align="left" width="35%" colspan="3">
+                <span id="address" class="str" tabindex="5" name="address"></span>
+            </td>
+
+            <td class="tdbgcolor" align="right" width="15%">
+                <font color="#000090">营商环境：</font>
+            </td>
+            <td class="tdbgcolor" align="left" width="35%" >
+                <span id="yshj" class="str" tabindex="5" name="yshj"></span>
+            </td>
+        </tr>
+        <tr width="100%">
+            <td class="tdbgcolor" align="right" width="10%">
+                <font color="#000090">受理人员：</font>
+            </td>
+            <td class="tdbgcolor" align="left" width="20%">
+                <span id="acceptPerson" class="str" style="width: 99%" tabindex="80" maxlength="30" name="acceptPerson">郭恒轿</span>
+            </td>
+            <td class="tdbgcolor" align="right" width="10%">
+                <font color="#000090">受理员编号：</font>
+            </td>
+            <td class="tdbgcolor" align="left" width="20%">
+                <span id="hwyId" class="str" style="width: 100%" tabindex="80" maxlength="30" name="hwyId">4584</span>
+            </td>
+            <td class="tdbgcolor" align="right" width="10%">
+                <font color="#000090">受理渠道：</font>
+            </td>
+            <td class="tdbgcolor" align="left" width="30%">
+                <span id="xxlyId" tabindex="130" maxlength="10" name="xxlyId">来电</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="tdbgcolor" align="right" width="10%">
+                <font color="#000090">办理类型：</font>
+            </td>
+            <td class="tdbgcolor" align="left" width="20%">
+                <span id="sllx" tabindex="130" maxlength="10" name="sllx">转办</span>
+            </td>
+            <td class="tdbgcolor" align="right" width="10%">
+                <font color="#000090">来电类别：</font>
+            </td>
+            <td class="tdbgcolor" align="left" width="20%">
+                <span id="ldlbid" tabindex="130" maxlength="10" name="ldlbid">求助</span>
+            </td>
+            <td class="tdbgcolor" align="right" width="10%">
+                <font color="#000090">录入时间：</font>
+            </td>
+            <td class="tdbgcolor" align="left" width="30%">
+                <span id="writeTime" class="str" style="width: 99%" tabindex="120" maxlength="10" name="writeTime">2020/5/31 14:16:07</span>
+            </td>
+        </tr>
+        <tr width="100%">
+            <td class="tdbgcolor" align="right" width="10%">
+                <font color="#000090">紧急程度：</font>
+            </td>
+            <td class="tdbgcolor" align="left" width="20%">
+                <select name="urgencyDegree" id="urgencyDegree" unselectable="off">
+                    <option selected="selected" value="1">一般</option>
+                    <option value="2">复杂</option>
+                    <option value="3">紧急</option>
+                    <option value="4">特急</option>
+                </select>
+            </td>
+            <td class="tdbgcolor" align="right" width="10%">
+                <font color="#000090">问题分类：</font>
+            </td>
+            <td class="tdbgcolor" align="left" width="60%" colspan="3">
+                <span id="quesTypeInfo" tabindex="90">人力资源保障－劳动纠纷－农民工工资支付</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="tdbgcolor" align="right" width="10%">
+                <font color="#000090">是否保密：</font>
+            </td>
+            <td class="tdbgcolor" align="left" width="20%">
+                <span id="isSecret" tabindex="130" maxlength="10" name="isSecret">不保密</span>
+            </td>
+            <td class="tdbgcolor" align="right" width="10%">
+                <font color="#000090">是否回复：</font>
+            </td>
+            <td class="tdbgcolor" align="left" width="20%">
+                <span id="isReply" tabindex="130" maxlength="10" name="isReply">回复</span>
+            </td>
+            <td class="tdbgcolor" align="right" width="10%">
+                <font color="#000090">回复备注：</font>
+            </td>
+            <td class="tdbgcolor" align="left" width="30%">
+                <span id="hfdh" tabindex="130" maxlength="10" name="hfdh"></span>
+            </td>
+        </tr>
+        <tr>
+            <td class="tdbgcolor" align="right" width="10%">
+                <font color="#000090">问题描述：</font>
+            </td>
+            <td class="tdbgcolor" width="90%" colspan="5">
+                <textarea name="content" id="content" style="width: 99%;" rows="4" readonly="">高先生来电反映：2014年左右自己和工友在槐荫区外海中央花园工地干3-2号楼居民楼外墙大理石安装工作，与深圳远鹏装饰公司（张志军先生，13605605369/18663736353）签订装饰合同，完工后拖欠97200万元的工资还没有下发，自己通过法院曾缴纳2000元起诉过，由于被告方未到场，法院让自己撤诉，现在无法通过法院进行落实，来电求助，要求帮助协调尽快结算工资（来电人表示现在工友们家庭生活困难，急需结算工资）
+槐荫区人力资源和社会保障局回复：经了解来电人反应的问题为与包工头之间的经济纠纷，依据《劳动保障监察条例》第十一条的规定劳动保障行政部门对下列事项实施劳动保障监察一）用人单位制定内部劳动保障规章制度的情况；　　（二）用人单位与劳动者订立劳动合同的情况；　　（三）用人单位遵守禁止使用童工规定的情况；　　（四）用人单位遵守女职工和未成年工特殊劳动保护规定的情况；　　（五）用人单位遵守工作时间和休息休假规定的情况；　　（六）用人单位支付劳动者工资和执行最低工资标准的情况；　　（七）用人单位参加各项社会保险和缴纳社会保险费的情况；　　（八）职业介绍机构、职业技能培训机构和职业技能考核鉴定机构遵守国家有关职业介绍、职业技能培训和职业技能考核鉴定的规定的情况；　　（九）法律、法规规定的其他劳动保障监察事项。&quot;
+高先生再次来电反映：此问题一直没有得到解决，要求帮助协调尽快结算工资。（来电人之前已经通过法律途径进行维权，但是被告人并没有到达法院现场，来电人不认可通法律途径解决问题，希望政府部门帮助处理。）智慧泉城希望相关单位落实处理，请处理并回复来电人。</textarea>
+            </td>
+        </tr>
+        <tr>
+            <td class="tdbgcolor" align="right" width="10%">
+                <font color="#000090">附&nbsp;&nbsp;&nbsp;&nbsp;件：</font>
+            </td>
+            <td class="tdbgcolor" width="90%" colspan="5">
+
+            </td>
+        </tr>
+        <tr>
+            <td align="center" class="tdbgcolor" colspan="6">
+                办理信息
+            </td>
+        </tr>
+        <tr>
+            <td class="tdbgcolor" align="right" width="10%">
+                <font color="#000090">发送人：</font>
+            </td>
+            <td class="tdbgcolor" align="left" width="20%">
+                <span id="sendPerson" class="str" tabindex="5" name="sendPerson">槐荫区政府热线办理</span>
+            </td>
+            <td class="tdbgcolor" align="right" width="10%">
+                <font color="#000090">发送时间：</font>
+            </td>
+            <td class="tdbgcolor" align="left" width="20%">
+                <span id="sendTime" class="str" tabindex="5" name="sendTime">2020/6/4 11:21:48</span>
+            </td>
+            <td class="tdbgcolor" align="right" width="10%">
+                <font color="#000090">办理时限：</font>
+            </td>
+            <td class="tdbgcolor" align="left" width="20%">
+                <span id="endDate" class="str" tabindex="140" type="text" style="width: 99%" name="endDate">2020-06-04</span>
+            </td>
+        </tr>
+        <tr id="txlxTr" style="display: none">
+            <td id="txlxLab" class="tdbgcolor" align="right" width="10%">
+                <font color="#000090">督办类型：</font>
+            </td>
+            <td id="txlxSelect" class="tdbgcolor" align="left" width="20%">
+
+                <span id="txlx" class="str" tabindex="141" type="text" style="width: 99%">
+                </span>
+            </td>
+            <td id="Td1" class="tdbgcolor" align="right" width="10%">
+            </td>
+            <td id="Td2" class="tdbgcolor" align="left" width="20%">
+            </td>
+            <td id="Td3" class="tdbgcolor" align="right" width="10%">
+            </td>
+            <td id="Td4" class="tdbgcolor" align="left" width="20%">
+            </td>
+        </tr>
+
+        <tr>
+            <td class="tdbgcolor" align="right" width="15%">
+                <font color="#000090">转办意见：</font>
+            </td>
+            <td class="tdbgcolor" align="right" colspan="5" width="85%">
+                <textarea name="remark" id="remark" rows="4" style="width: 100%" readonly="">23 10</textarea>
+            </td>
+        </tr>
+        <tr>
+            <td class="tdbgcolor" align="right" width="15%">
+                <font color="#000090">转办流程：</font>
+            </td>
+            <td class="tdbgcolor" align="right" colspan="5" width="85%">
+                <textarea name="banliFlow" id="banliFlow" rows="4" style="width: 100%" readonly="">槐荫区政府热线办理（2020/6/4 10:31:25）转至槐荫法院：23 如不属管辖，请转办，谢谢19
+槐荫区住房和城乡建设局12345（2020/6/4 11:05:00）：该案件超出我单位权限。原因：经了解，来电人属于装饰拖欠工资，根据&amp;laquo;济南市建筑业农民工工资拖欠投诉处理暂行办法&amp;raquo;有关规定，不属于建筑领域农民工工资清欠案件受理条件。建议转劳动仲裁部门咨询处置。，建议：该案件超出我单位权限。原因：经了解，来电人属于装饰拖欠工资，根据&amp;laquo;济南市建筑业农民工工资拖欠投诉处理暂行办法&amp;raquo;有关规定，不属于建筑领域农民工工资清欠案件受理条件。建议转劳动仲裁部门咨询处置。
+槐荫区政府热线办理（2020/6/4 10:57:28）转至槐荫区住房和城乡建设局12345：23 10
+槐荫区人力资源和社会保障局（2020/6/1 9:03:07）：根据工单描述，来电人已通过法院程序处理，来电人反映的是被告未达到法院现场。来电人诉求的问题请转法院落实答复，建议：请转法院落实答复
+槐荫区政府热线办理（2020/5/31 15:39:29）转至槐荫区人力资源和社会保障局：
+槐荫法院（2020/6/4 10:43:29）：我院工作人员于2020年6月1日10时通过85030280电话回复来电人，经落实，来电人系我院受理的2018鲁0104民初4073号劳务合同纠纷案件原告朱传利的工友，该案件我院受理后，原告因证据不足申请撤诉。来电人称目前手中还是那些证据材料，不想通过诉讼途径解决，但自己切实承包了相关工程，干了活。要求相关部门协调要回工程款，来电人要求政府部门解决。，建议：建议转区政府处理
+</textarea>
+            </td>
+        </tr>
+        <tr>
+            <td class="tdbgcolor" align="right" width="15%">
+                <font color="#000090">备&nbsp;&nbsp;&nbsp;&nbsp;注：</font>
+            </td>
+            <td class="tdbgcolor" align="right" colspan="5" width="85%">
+                <textarea name="beizhu" id="beizhu" rows="4" style="width: 100%" readonly=""></textarea>
+            </td>
+        </tr>
+        <table width='100%' cellspacing="1" cellpadding="2" border="0" class='tablebgcolor'><tr><td class="tdbgcolor"  align="left" colspan="5" width="100%"><b>反馈报告</b></td></tr><tr> <td class="tdbgcolor"  rowspan="5" width="10%" align="center"><font color="#000090">部门回退</font></td> <td class="tdbgcolor"  height="25px" align="center"><font color="#000090">回退理由</font></td> <td class="tdbgcolor"  colspan='3' >根据中华人民共和国建设部令第87号《建筑业企业资质管理规定》第二条 本规定所称建筑业企业，是指从事土木工程、建筑工程、线路管道设备安装工程、装修工程的新建、扩建、改建活动的企业。</td></tr><tr> <td class="tdbgcolor"  height="25px" align="center"><font color="#000090">领导意见</font></td> <td class="tdbgcolor" colspan='3'   >同意</td></tr><tr> <td class="tdbgcolor"  height="25px" align="center"><font color="#000090">建&nbsp;&nbsp;&nbsp;&nbsp;议</font></td> <td class="tdbgcolor" colspan='3' >建议转区建委清欠办答复</td></tr><tr> <td class="tdbgcolor"  width="12%" height="25px" align="center"><font color="#000090">回退部门</font></td> <td class="tdbgcolor"  width="32%">槐荫区人力资源和社会保障局</td> <td class="tdbgcolor"  width="12%" align="center"><font color="#000090">回退时间</font></td> <td class="tdbgcolor" > 2020/6/4 11:37:52</td></tr><tr> <td class="tdbgcolor"  height="25px" align="center"><font color="#000090">联系人</font></td> <td class="tdbgcolor" >朱晓庆</td> <td class="tdbgcolor"  align="center"><font color="#000090">联系电话</font></td> <td class="tdbgcolor" >87957281</td></tr></table>
+    </table>
+    <input name="GuidPrint" type="hidden" id="GuidPrint" />
+    <input name="type" type="hidden" id="type" />
+
+</form>
+<object id="WordContainer" style="display: none" codebase="../yaweiscripts/OfficeAgent.CAB#version=2,0,0,1"
+        classid="CLSID:5EE00CCC-4762-47C1-ADDB-FE530AF99C25" viewastext>
+</body>
+</html>
