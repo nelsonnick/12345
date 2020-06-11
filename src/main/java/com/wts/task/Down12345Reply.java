@@ -23,8 +23,9 @@ public class Down12345Reply implements Runnable{
         for (int i = 0; i < trs.size() - 1; i++) {
             Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
             String value = in.attr("value");
-            String order_guid = value.substring(5, 43);
-            Reply reply = get(order_guid, cookie);
+            String file_guid = value.substring(9, 47);
+            String order_guid = value.substring(53, 91);
+            Reply reply = get(file_guid, order_guid, cookie);
             try {
                 save(reply);
             } catch (Exception e) {
@@ -34,13 +35,13 @@ public class Down12345Reply implements Runnable{
     }
 
 
-    public Reply get(String order_guid, String cookie){
-        String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?GUID=" +order_guid+ "&IsZDDB=&";
+    public Reply get(String file_guid, String order_guid, String cookie){
+        String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid="+file_guid+"&GUID=" +order_guid+ "&IsZDDB=&xxlyid=1";
         Document doc = getDoc(url,cookie);
         Element tbody = doc.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
         Element td = tbody.getElementsByTag("tr").get(8).getElementsByTag("td").get(1);
         String enclosure = "";
-        if (!td.text().equals("")){
+        if (!td.text().trim().equals("")){
             enclosure = "请查看附件";
         }
         String order_state = tbody.getElementById("gdzt").text();//工单状态

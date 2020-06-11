@@ -97,7 +97,7 @@ public class Config extends JFinalConfig {
 		//配置任务调度插件
 		Cron4jPlugin cp = new Cron4jPlugin();
 //		cp.addTask("*/1 * * * *", new Down12345Allwork());//每1分钟下载一次未办理工单
-//		cp.addTask("*/1 * * * *", new Down12345Unhandle());//每1分钟下载一次未办理工单
+		cp.addTask("*/1 * * * *", new Down12345Unhandle());//每1分钟下载一次未办理工单
 //		cp.addTask("0 8 * * *", new Down12345Expire()); //每天8:00查询当天到期工单
 //		cp.addTask("0 12 * * *", new Down12345Expire()); //每天12:00查询当天到期工单
 //		cp.addTask("30 15 * * *", new Down12345Expire()); //每天15:30查询当天到期工单

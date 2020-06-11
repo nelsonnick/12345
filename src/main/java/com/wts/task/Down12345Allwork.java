@@ -25,9 +25,10 @@ public class Down12345Allwork implements Runnable {
         Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
         for (int i = 0; i < trs.size() - 1; i++) {
             Elements ins = trs.get(i).getElementsByTag("td");
-            String order_guid = ins.get(0).getElementsByTag("input").get(0).attr("value").substring(5, 43);
+            String order_guid = ins.get(0).getElementsByTag("input").get(0).attr("value").substring(9, 47);
+            String file_guid = ins.get(0).getElementsByTag("input").get(0).attr("value").substring(53, 91);
             String order_code = ins.get(1).text().replace("&nbsp;", "");
-            save(get(order_guid, order_code));
+            save(get(file_guid, order_guid, order_code));
         }
         for (int i=2;i<757;i++){
             getPage(i,cookie);
@@ -42,14 +43,15 @@ public class Down12345Allwork implements Runnable {
         Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
         for (int i = 0; i < trs.size() - 1; i++) {
             Elements ins = trs.get(i).getElementsByTag("td");
-            String order_guid = ins.get(0).getElementsByTag("input").get(0).attr("value").substring(5, 43);
+            String order_guid = ins.get(0).getElementsByTag("input").get(0).attr("value").substring(9, 47);
+            String file_guid = ins.get(0).getElementsByTag("input").get(0).attr("value").substring(53, 91);
             String order_code = ins.get(1).text().replace("&nbsp;", "");
-            save(get(order_guid, order_code));
+            save(get(file_guid, order_guid, order_code));
         }
     }
 
-    public static Allwork get(String order_guid, String cookie) {
-        String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?GUID=" + order_guid + "&IsZDDB=&";
+    public static Allwork get(String file_guid, String order_guid, String cookie) {
+        String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid="+file_guid+"&GUID=" +order_guid+ "&IsZDDB=&xxlyid=1";
         Document doc = getDoc(url, cookie);
         Element tbody = doc.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
         String order_state = tbody.getElementById("gdzt").text();//工单状态

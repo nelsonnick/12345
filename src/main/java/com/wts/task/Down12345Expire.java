@@ -23,7 +23,8 @@ public class Down12345Expire implements Runnable {
         Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
         for (int i = 0; i < trs.size() - 1; i++) {
             Elements ins = trs.get(i).getElementsByTag("td");
-            String order_guid = ins.get(0).getElementsByTag("input").get(0).attr("value").substring(5, 43);
+            String order_guid = ins.get(0).getElementsByTag("input").get(0).attr("value").substring(9, 47);
+            String file_guid = ins.get(0).getElementsByTag("input").get(0).attr("value").substring(53, 91);
             String order_code = ins.get(1).text().replace("&nbsp;", "");
             String end_date = ins.get(3).text().replace("&nbsp;", "");//2020-05-12
             save(order_guid,order_code,end_date);
@@ -55,7 +56,8 @@ public class Down12345Expire implements Runnable {
         Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
         for (int i = 0; i < trs.size() - 1; i++) {
             Elements ins = trs.get(i).getElementsByTag("td");
-            String order_guid = ins.get(0).getElementsByTag("input").get(0).attr("value").substring(5, 43);
+            String order_guid = ins.get(0).getElementsByTag("input").get(0).attr("value").substring(9, 47);
+            String file_guid = ins.get(0).getElementsByTag("input").get(0).attr("value").substring(53, 91);
             String order_code = ins.get(1).text().replace("&nbsp;", "");
             String end_date = ins.get(3).text().replace("&nbsp;", "");//2020-05-12
             save(order_guid,order_code,end_date);

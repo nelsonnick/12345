@@ -2,6 +2,7 @@ CREATE TABLE `unhandle`
 (
     `id`                     int(11)                          NOT NULL AUTO_INCREMENT COMMENT '序号',
     `order_guid`             varchar(100) CHARACTER SET utf8  NULL COMMENT '工单序号',
+    `file_guid`              varchar(100) CHARACTER SET utf8  NULL COMMENT '文档序号',
     `order_state`            varchar(20) CHARACTER SET utf8   NULL COMMENT '工单状态：已回复、已回退、待处理',
     `order_code`             varchar(50) CHARACTER SET utf8   NULL COMMENT '工单编号',
     `link_person`            varchar(50) CHARACTER SET utf8   NULL COMMENT '联系人',
@@ -36,6 +37,7 @@ CREATE TABLE `fallback`
 (
     `id`                     int(11)                          NOT NULL AUTO_INCREMENT COMMENT '序号',
     `order_guid`             varchar(100) CHARACTER SET utf8  NULL COMMENT '工单序号',
+    `file_guid`              varchar(100) CHARACTER SET utf8  NULL COMMENT '文档序号',
     `order_state`            varchar(20) CHARACTER SET utf8   NULL COMMENT '工单状态：已回复、已回退、待处理',
     `order_code`             varchar(50) CHARACTER SET utf8   NULL COMMENT '工单编号',
     `link_person`            varchar(50) CHARACTER SET utf8   NULL COMMENT '联系人',
@@ -77,6 +79,7 @@ CREATE TABLE `reply`
 (
     `id`                     int(11)                          NOT NULL AUTO_INCREMENT COMMENT '序号',
     `order_guid`             varchar(100) CHARACTER SET utf8  NULL COMMENT '工单序号',
+    `file_guid`              varchar(100) CHARACTER SET utf8  NULL COMMENT '文档序号',
     `order_state`            varchar(20) CHARACTER SET utf8   NULL COMMENT '工单状态：已回复、已回退、待处理',
     `order_code`             varchar(50) CHARACTER SET utf8   NULL COMMENT '工单编号',
     `link_person`            varchar(50) CHARACTER SET utf8   NULL COMMENT '联系人',
@@ -126,6 +129,7 @@ CREATE TABLE `expire`
 (
     `id`         int(11)                         NOT NULL AUTO_INCREMENT COMMENT '序号',
     `order_guid` varchar(255) CHARACTER SET utf8 NULL COMMENT '工单序号',
+    `file_guid`              varchar(100) CHARACTER SET utf8  NULL COMMENT '文档序号',
     `order_code` varchar(255) CHARACTER SET utf8 NULL COMMENT '工单编号',
     `end_date`   varchar(255) CHARACTER SET utf8 NULL COMMENT '办理时限',
     PRIMARY KEY (`id`)
@@ -135,6 +139,7 @@ CREATE TABLE `allwork`
 (
     `id`                  int(11)                          NOT NULL AUTO_INCREMENT COMMENT '序号',
     `order_guid`          varchar(255) CHARACTER SET utf8  NULL COMMENT '工单序号',
+    `file_guid`              varchar(100) CHARACTER SET utf8  NULL COMMENT '文档序号',
     `order_code`          varchar(255) CHARACTER SET utf8  NULL COMMENT '工单编号',
     `link_person`         varchar(50) CHARACTER SET utf8   NULL COMMENT '联系人',
     `link_phone`          varchar(50) CHARACTER SET utf8   NULL COMMENT '联系电话',
@@ -149,6 +154,7 @@ CREATE TABLE `statistic`
 (
     `id`                     int(11)                          NOT NULL AUTO_INCREMENT COMMENT '序号',
     `order_guid`             varchar(255) CHARACTER SET utf8  NULL COMMENT '工单序号',
+    `file_guid`              varchar(100) CHARACTER SET utf8  NULL COMMENT '文档序号',
     `order_code`             varchar(255) CHARACTER SET utf8  NULL COMMENT '工单编号',
     `accept_person_code`     varchar(50) CHARACTER SET utf8   NULL COMMENT '受理员编号',
     `accept_channel`         varchar(50) CHARACTER SET utf8   NULL COMMENT '受理渠道',

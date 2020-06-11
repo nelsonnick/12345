@@ -34,8 +34,9 @@ public class Down12345Unhandle implements Runnable{
         for (int i = 0; i < trs.size() - 1; i++) {
             Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
             String value = in.attr("value");
-            String order_guid = value.substring(5, 43);
-            Unhandle unhandle = get(order_guid, cookie);
+            String file_guid = value.substring(9, 47);
+            String order_guid = value.substring(53, 91);
+            Unhandle unhandle = get(file_guid, order_guid, cookie);
             try {
                 save(unhandle);
 //                WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();
@@ -72,13 +73,13 @@ public class Down12345Unhandle implements Runnable{
         }
     }
 
-    public Unhandle get(String order_guid, String cookie){
-        String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?GUID=" +order_guid+ "&IsZDDB=&";
+    public Unhandle get(String file_guid, String order_guid, String cookie){
+        String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid="+file_guid+"&GUID=" +order_guid+ "&IsZDDB=&xxlyid=1";
         Document doc = getDoc(url,cookie);
         Element tbody = doc.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
-        Element td = tbody.getElementsByTag("tr").get(9).getElementsByTag("td").get(1);
+        Element td = tbody.getElementsByTag("tr").get(8).getElementsByTag("td").get(1);
         String enclosure = "";
-        if (!td.text().equals("")){
+        if (!td.text().trim().equals("")){
             enclosure = "请查看附件";
         }
         String order_state = tbody.getElementById("gdzt").text();//工单状态
@@ -87,7 +88,7 @@ public class Down12345Unhandle implements Runnable{
         String link_phone = tbody.getElementById("linkPhone").text();//联系电话
         String link_address = tbody.getElementById("address").text();//联系地址
         String business_environment = tbody.getElementById("yshj").text();//营商环境
-        String new_supervision = tbody.getElementById("isNewDuCha").text();//新版督察
+//        String new_supervision = tbody.getElementById("isNewDuCha").text();//新版督察
         String accept_person = tbody.getElementById("acceptPerson").text();//受理人员
         String accept_person_code = tbody.getElementById("hwyId").text();//受理员编号
         String accept_channel = tbody.getElementById("xxlyId").text();//受理渠道
@@ -115,7 +116,7 @@ public class Down12345Unhandle implements Runnable{
                 .set("link_phone",link_phone)
                 .set("link_address",link_address)
                 .set("business_environment",business_environment)
-                .set("new_supervision",new_supervision)
+//                .set("new_supervision",new_supervision)
                 .set("accept_person",accept_person)
                 .set("accept_person_code",accept_person_code)
                 .set("accept_channel",accept_channel)
@@ -151,7 +152,7 @@ public class Down12345Unhandle implements Runnable{
             String link_phone = unhandle.get("link_phone");
             String link_address = unhandle.get("link_address");
             String business_environment = unhandle.get("business_environment");
-            String new_supervision = unhandle.get("new_supervision");
+//            String new_supervision = unhandle.get("new_supervision");
             String accept_person = unhandle.get("accept_person");
             String accept_person_code = unhandle.get("accept_person_code");
             String accept_channel = unhandle.get("accept_channel");
