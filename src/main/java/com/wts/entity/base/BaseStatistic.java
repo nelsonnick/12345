@@ -38,6 +38,20 @@ public abstract class BaseStatistic<M extends BaseStatistic<M>> extends Model<M>
 	}
 
 	/**
+	 * 文档序号
+	 */
+	public void setFileGuid(java.lang.String fileGuid) {
+		set("file_guid", fileGuid);
+	}
+	
+	/**
+	 * 文档序号
+	 */
+	public java.lang.String getFileGuid() {
+		return getStr("file_guid");
+	}
+
+	/**
 	 * 工单编号
 	 */
 	public void setOrderCode(java.lang.String orderCode) {

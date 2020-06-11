@@ -56,7 +56,7 @@ public class Down12345Fallback implements Runnable{
         String link_phone = tbody.getElementById("linkPhone").text();//联系电话
         String link_address = tbody.getElementById("address").text();//联系地址
         String business_environment = tbody.getElementById("yshj").text();//营商环境
-        String new_supervision = tbody.getElementById("isNewDuCha").text();//新版督察
+//        String new_supervision = tbody.getElementById("isNewDuCha").text();//新版督察
         String accept_person = tbody.getElementById("acceptPerson").text();//受理人员
         String accept_person_code = tbody.getElementById("hwyId").text();//受理员编号
         String accept_channel = tbody.getElementById("xxlyId").text();//受理渠道
@@ -84,7 +84,7 @@ public class Down12345Fallback implements Runnable{
                 .set("link_phone",link_phone)
                 .set("link_address",link_address)
                 .set("business_environment",business_environment)
-                .set("new_supervision",new_supervision)
+//                .set("new_supervision",new_supervision)
                 .set("accept_person",accept_person)
                 .set("accept_person_code",accept_person_code)
                 .set("accept_channel",accept_channel)

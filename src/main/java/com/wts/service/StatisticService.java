@@ -43,10 +43,11 @@ public class StatisticService {
 		statistic.save();
 	}
 
-	public void add(String order_guid,String order_code, String end_date,String type,
+	public void add(String file_guid, String order_guid,String order_code, String end_date,String type,
 					String department,String keywords) {
 		Statistic statistic = new Statistic();
-		statistic.set("order_guid",order_guid)
+		statistic.set("file_guid",file_guid)
+				.set("order_guid",order_guid)
 				.set("order_code",order_code)
 				.set("end_date",end_date)
 				.set("type",type)

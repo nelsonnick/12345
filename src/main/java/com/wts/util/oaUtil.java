@@ -162,6 +162,24 @@ public class oaUtil {
         }
     }
     /*
+    读取单个文档内容并写入
+    */
+    public static void read(String filePath) {
+        try {
+            FileInputStream in = new FileInputStream(filePath);
+            XWPFDocument xwpf = new XWPFDocument(in);
+            Iterator<XWPFTable> it = xwpf.getTablesIterator();
+            XWPFTable table = it.next();
+            List<XWPFTableRow> rows=table.getRows();
+            String order_code = rows.get(1).getTableCells().get(1).getText();
+            String problem_description = rows.get(8).getTableCells().get(1).getText();
+            System.out.println(order_code + "----" + problem_description);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
     批量操作
     */
     public static void getFileContent(String strPath) throws Exception {
@@ -178,7 +196,15 @@ public class oaUtil {
     }
 
 
-    public static void main(String[] args) throws Exception{
-        getFileContent("D:\\上传OA");
+    public static void main(String[] args){
+        File[] files = new File("N:\\工单备份\\2020\\05\\20").listFiles();
+        if (files != null) {
+            for (File file : files) {
+                String fileName = file.getName();
+                if (fileName.endsWith("docx")) {
+                    read(file.getAbsolutePath());
+                }
+            }
+        }
     }
 }

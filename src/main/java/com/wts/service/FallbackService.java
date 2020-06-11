@@ -2,8 +2,7 @@ package com.wts.service;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
-import com.wts.entity.model.Fallback;
-import com.wts.entity.model.Reply;
+import com.wts.entity.model.*;
 
 import java.util.Date;
 
@@ -32,7 +31,7 @@ public class FallbackService {
 	public void add(Fallback fallback){
 		fallback.save();
 	}
-	public void add(String order_guid,String order_state, String order_code, String link_person,String link_phone,
+	public void add(String file_guid,String order_guid,String order_state, String order_code, String link_person,String link_phone,
 					String link_address,String business_environment,String new_supervision,String accept_person,
 					String accept_person_code,String accept_channel,String handle_type,String phone_type,
 					String write_time,String urgency_degree, String problem_classification,String is_secret,
@@ -41,7 +40,8 @@ public class FallbackService {
 					String enclosure, String fallback_reason, String leader_opinions, String suggestion,
 					String fallback_department, String fallback_time, String fallback_person, String fallback_phone) {
 		Fallback fallback = new Fallback();
-		fallback.set("order_guid",order_guid)
+		fallback.set("file_guid",file_guid)
+				.set("order_guid",order_guid)
 				.set("order_state",order_state)
 				.set("order_code",order_code)
 				.set("link_person",link_person)

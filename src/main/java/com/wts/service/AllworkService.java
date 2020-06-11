@@ -3,7 +3,6 @@ package com.wts.service;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.wts.entity.model.Allwork;
-import com.wts.entity.model.Expire;
 
 public class AllworkService {
 
@@ -38,9 +37,10 @@ public class AllworkService {
 	public void add(Allwork allwork){
 		allwork.save();
 	}
-	public void add(String order_guid,String order_code,String link_person,String link_phone,String link_address,String send_time,String problem_description){
+	public void add(String file_guid, String order_guid,String order_code,String link_person,String link_phone,String link_address,String send_time,String problem_description){
 		Allwork allwork = new Allwork();
-		allwork.set("order_guid",order_guid)
+		allwork.set("file_guid",file_guid)
+				.set("order_guid",order_guid)
 				.set("order_code",order_code)
 				.set("link_person",link_person)
 				.set("link_phone",link_phone)

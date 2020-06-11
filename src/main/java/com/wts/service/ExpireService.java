@@ -3,9 +3,6 @@ package com.wts.service;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.wts.entity.model.Expire;
-import com.wts.entity.model.Fallback;
-
-import java.util.Date;
 
 public class ExpireService {
 
@@ -32,9 +29,10 @@ public class ExpireService {
 	public void add(Expire expire){
 		expire.save();
 	}
-	public void add(String order_guid, String order_code, String end_date) {
+	public void add(String file_guid, String order_guid, String order_code, String end_date) {
 		Expire expire = new Expire();
-		expire.set("order_guid",order_guid)
+		expire.set("file_guid",file_guid)
+				.set("order_guid",order_guid)
 				.set("order_code",order_code)
 				.set("end_date",end_date)
 				.save();

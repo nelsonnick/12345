@@ -38,6 +38,20 @@ public abstract class BaseAllwork<M extends BaseAllwork<M>> extends Model<M> imp
 	}
 
 	/**
+	 * 文档序号
+	 */
+	public void setFileGuid(java.lang.String fileGuid) {
+		set("file_guid", fileGuid);
+	}
+	
+	/**
+	 * 文档序号
+	 */
+	public java.lang.String getFileGuid() {
+		return getStr("file_guid");
+	}
+
+	/**
 	 * 工单编号
 	 */
 	public void setOrderCode(java.lang.String orderCode) {

@@ -38,14 +38,28 @@ public abstract class BaseUnhandle<M extends BaseUnhandle<M>> extends Model<M> i
 	}
 
 	/**
-	 * 工单状态
+	 * 文档序号
+	 */
+	public void setFileGuid(java.lang.String fileGuid) {
+		set("file_guid", fileGuid);
+	}
+	
+	/**
+	 * 文档序号
+	 */
+	public java.lang.String getFileGuid() {
+		return getStr("file_guid");
+	}
+
+	/**
+	 * 工单状态：已回复、已回退、待处理
 	 */
 	public void setOrderState(java.lang.String orderState) {
 		set("order_state", orderState);
 	}
 	
 	/**
-	 * 工单状态
+	 * 工单状态：已回复、已回退、待处理
 	 */
 	public java.lang.String getOrderState() {
 		return getStr("order_state");

@@ -1,17 +1,13 @@
 package com.wts.task;
 
 import com.jfinal.kit.PropKit;
-import com.jfinal.plugin.activerecord.Db;
 import com.wts.entity.model.Allwork;
-import com.wts.entity.model.Unhandle;
 import com.wts.service.AllworkService;
-import com.wts.service.ExpireService;
 import com.wts.util.util12345;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import static com.wts.util.WordUtil.getUrgencyDegree;
 import static com.wts.util.util12345.getDoc;
 import static com.wts.util.util12345.getPageUrl;
 
@@ -62,7 +58,8 @@ public class Down12345Allwork implements Runnable {
         String problem_description = tbody.getElementById("content").text();//问题描述
         String send_time = tbody.getElementById("sendTime").text();//发送时间
         Allwork allwork = new Allwork();
-        allwork.set("order_guid", order_guid)
+        allwork.set("file_guid", file_guid)
+                .set("order_guid", order_guid)
                 .set("order_code", order_code)
                 .set("link_person", link_person)
                 .set("link_phone", link_phone)
@@ -78,10 +75,10 @@ public class Down12345Allwork implements Runnable {
         service.add(allwork);
     }
 
-    public static void save(String order_guid, String order_code, String link_person, String link_phone, String link_address, String send_time, String problem_description) {
+    public static void save(String file_guid, String order_guid, String order_code, String link_person, String link_phone, String link_address, String send_time, String problem_description) {
         AllworkService service = new AllworkService();
         if (service.findNumByGUID(order_guid) == 0) {
-            service.add(order_guid, order_code, link_person, link_phone, link_address, send_time, problem_description);
+            service.add(file_guid, order_guid, order_code, link_person, link_phone, link_address, send_time, problem_description);
         }
     }
 

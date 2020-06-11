@@ -27,7 +27,7 @@ public class Down12345Expire implements Runnable {
             String file_guid = ins.get(0).getElementsByTag("input").get(0).attr("value").substring(53, 91);
             String order_code = ins.get(1).text().replace("&nbsp;", "");
             String end_date = ins.get(3).text().replace("&nbsp;", "");//2020-05-12
-            save(order_guid,order_code,end_date);
+            save(file_guid, order_guid,order_code,end_date);
         }
         Element page = doc.getElementById("lkocok_grid_footer").getElementsByTag("tr").get(0).getElementsByTag("td").get(0).getElementsByTag("font").get(2);
         String pageTotal = page.text().substring(1,page.text().length());
@@ -60,13 +60,13 @@ public class Down12345Expire implements Runnable {
             String file_guid = ins.get(0).getElementsByTag("input").get(0).attr("value").substring(53, 91);
             String order_code = ins.get(1).text().replace("&nbsp;", "");
             String end_date = ins.get(3).text().replace("&nbsp;", "");//2020-05-12
-            save(order_guid,order_code,end_date);
+            save(file_guid,order_guid,order_code,end_date);
         }
     }
-    public void save(String order_guid,String order_code,String end_date){
+    public void save(String file_guid, String order_guid,String order_code,String end_date){
         ExpireService service = new ExpireService();
         if (service.findNumByGUID(order_guid)==0){
-            service.add(order_guid,order_code, end_date);
+            service.add(file_guid,order_guid,order_code, end_date);
         }
     }
 
