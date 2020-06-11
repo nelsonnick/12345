@@ -31,7 +31,7 @@ public class AllworkService {
 		if (link_phone.equals("******")){
 			return "";
 		}else{
-			return Db.queryInt("SELECT COUNT(*) FROM allwork WHERE allwork.link_phone LIKE '%" + link_phone + "%' ") + "";
+			return Db.queryInt("SELECT COUNT(*) FROM allwork WHERE allwork.link_phone = '" + link_phone + "' ") + "";
 
 		}
 	}
