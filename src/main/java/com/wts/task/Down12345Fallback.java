@@ -116,7 +116,6 @@ public class Down12345Fallback implements Runnable{
     }
 
     public void save(Fallback fallback){
-
         FallbackService service = new FallbackService();
         if (service.findNumByGUID(fallback.get("order_guid"))==0){
             String order_guid = fallback.get("order_guid");

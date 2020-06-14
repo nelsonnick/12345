@@ -15,21 +15,7 @@ public class Down12345Allwork implements Runnable {
 
     @Override
     public void run() {
-        String url = getPageUrl("-1", "X");
-        String cookie = PropKit.use("config-dev.txt").get("cookie");
-        Document doc = getDoc(url, cookie);
-        Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
-        for (int i = 0; i < trs.size() - 1; i++) {
-            Elements ins = trs.get(i).getElementsByTag("td");
-            String order_guid = ins.get(0).getElementsByTag("input").get(0).attr("value").substring(9, 47);
-            String file_guid = ins.get(0).getElementsByTag("input").get(0).attr("value").substring(53, 91);
-            String order_code = ins.get(1).text().replace("&nbsp;", "");
-            save(get(file_guid, order_guid, order_code));
-        }
-        for (int i=2;i<757;i++){
-            getPage(i,cookie);
-            System.out.println(i);
-        }
+
     }
 
     public static void getPage(Integer pageNum, String cookie) {
