@@ -31,6 +31,10 @@ public class FallbackController extends Controller {
 		render("/detail.html");
 	}
 
+	public void bb(){
+		String cookie = PropKit.use("config-dev.txt").get("cookie");
+		getPage2(11,cookie);
+	}
 	public void b(){
 		String url = getPageUrl("202", "1");
 		String cookie = PropKit.use("config-dev.txt").get("cookie");
@@ -51,7 +55,7 @@ public class FallbackController extends Controller {
 				if (!td.text().trim().equals("")){
 					enclosure = "请查看附件";
 				}
-				Element table = doc.getElementsByClass("tablebgcolor").get(1).getElementsByTag("tbody").get(0);
+				Element table = doc1.getElementsByClass("tablebgcolor").get(1).getElementsByTag("tbody").get(0);
 				String fallback_reason = table.getElementsByTag("tr").get(1).getElementsByTag("td").get(2).text();//回退原因
 				String leader_opinions = table.getElementsByTag("tr").get(2).getElementsByTag("td").get(1).text();//领导意见
 				String suggestion = table.getElementsByTag("tr").get(3).getElementsByTag("td").get(1).text();//建议
@@ -87,6 +91,7 @@ public class FallbackController extends Controller {
 				String remark = tbody.getElementById("beizhu").text();//备注
 				Fallback fallback = new Fallback();
 				fallback.set("order_guid",order_guid)
+						.set("file_guid",file_guid)
 						.set("order_state",order_state)
 						.set("order_code",order_code)
 						.set("link_person",link_person)
@@ -123,10 +128,10 @@ public class FallbackController extends Controller {
 						.save();
 			}
 		}
-//        for (int i=2;i<7;i++){
-//            getPage(i,cookie);
-//        }
-//        for (int i=7;i<758;i++){
+        for (int i=2;i<3;i++){
+            getPage(i,cookie);
+        }
+//        for (int i=11;i<353;i++){
 //            getPage2(i,cookie);
 //        }
 	}
@@ -149,7 +154,7 @@ public class FallbackController extends Controller {
 			if (!td.text().trim().equals("")){
 				enclosure = "请查看附件";
 			}
-			Element table = doc.getElementsByClass("tablebgcolor").get(1).getElementsByTag("tbody").get(0);
+			Element table = doc1.getElementsByClass("tablebgcolor").get(1).getElementsByTag("tbody").get(0);
 			String fallback_reason = table.getElementsByTag("tr").get(1).getElementsByTag("td").get(2).text();//回退原因
 			String leader_opinions = table.getElementsByTag("tr").get(2).getElementsByTag("td").get(1).text();//领导意见
 			String suggestion = table.getElementsByTag("tr").get(3).getElementsByTag("td").get(1).text();//建议
@@ -185,6 +190,7 @@ public class FallbackController extends Controller {
 			String remark = tbody.getElementById("beizhu").text();//备注
 			Fallback fallback = new Fallback();
 			fallback.set("order_guid",order_guid)
+					.set("file_guid",file_guid)
 					.set("order_state",order_state)
 					.set("order_code",order_code)
 					.set("link_person",link_person)
@@ -224,14 +230,14 @@ public class FallbackController extends Controller {
 	//    7页以后用这个
 	public void getPage2(Integer pageNum, String cookie) {
 		System.out.println(pageNum);
-		Document doc = getDoc2(pageNum+"", cookie);
+		Document doc = getDoc2(pageNum+"", cookie, "202");
 		Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
 		for (int i = 0; i < trs.size() - 1; i++) {
 			Elements ins = trs.get(i).getElementsByTag("td");
-			String file_guid = ins.get(0).getElementsByTag("input").get(0).attr("value").substring(9, 47);
-			String order_guid = ins.get(0).getElementsByTag("input").get(0).attr("value").substring(53, 91);
+			String file_guid = "";
+			String order_guid = ins.get(0).getElementsByTag("input").get(0).attr("value").substring(5, 43);
 			String order_code = ins.get(1).text().replace("&nbsp;", "");
-			String urls = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid="+file_guid+"&GUID=" +order_guid+ "&IsZDDB=&xxlyid=1";
+			String urls = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?GUID=" +order_guid+ "&IsZDDB=&issend=1";
 			Document doc1 = getDoc(urls,cookie);
 			Element tbody = doc1.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
 			Element td = tbody.getElementsByTag("tr").get(8).getElementsByTag("td").get(1);
@@ -239,7 +245,8 @@ public class FallbackController extends Controller {
 			if (!td.text().trim().equals("")){
 				enclosure = "请查看附件";
 			}
-			Element table = doc.getElementsByClass("tablebgcolor").get(1).getElementsByTag("tbody").get(0);
+			Element table = doc1.getElementsByClass("tablebgcolor").get(1).getElementsByTag("tbody").get(0);
+
 			String fallback_reason = table.getElementsByTag("tr").get(1).getElementsByTag("td").get(2).text();//回退原因
 			String leader_opinions = table.getElementsByTag("tr").get(2).getElementsByTag("td").get(1).text();//领导意见
 			String suggestion = table.getElementsByTag("tr").get(3).getElementsByTag("td").get(1).text();//建议
@@ -275,6 +282,7 @@ public class FallbackController extends Controller {
 			String remark = tbody.getElementById("beizhu").text();//备注
 			Fallback fallback = new Fallback();
 			fallback.set("order_guid",order_guid)
+					.set("file_guid",file_guid)
 					.set("order_state",order_state)
 					.set("order_code",order_code)
 					.set("link_person",link_person)

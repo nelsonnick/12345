@@ -57,8 +57,18 @@ public class util12345 {
         }
         return doc;
     }
-    // 第7页之后的列表
-    public static Document getDoc2(String PageNUm, String cookie) {
+    // 第7页之后的列表（所有第2页之后的可能都能用？？？）
+    public static Document getDoc2(String PageNum, String cookie,String MessageTypeFlag) {
+        String sqlwhereHidden = "";
+        if (MessageTypeFlag.equals("-1")){//全部
+            sqlwhereHidden = "   and messagetype!=1  and ownerguid='c443f956-8101-48ec-bf0a-80c97039a90e'";
+        }else if(MessageTypeFlag.equals("202")) {//回退
+            sqlwhereHidden = "   and  issend=1 and (messageType=0 or messagetype=2) and gdzt=4  and ownerguid='c443f956-8101-48ec-bf0a-80c97039a90e'";
+        }else if(MessageTypeFlag.equals("201")) {//回复
+            sqlwhereHidden = "   and  issend=1 and (messageType=0 or messagetype=2) and gdzt=5  and ownerguid='c443f956-8101-48ec-bf0a-80c97039a90e'";
+        }else{
+
+        }
         Document doc = null;
         try {
             OkHttpClient client = new OkHttpClient().newBuilder()
@@ -73,12 +83,13 @@ public class util12345 {
                     .addFormDataPart("sort", "desc")
                     .addFormDataPart("sortColumn", "sendTime")
 //                    .addFormDataPart("cmbPageNo", "7")
-                    .addFormDataPart("cmbPageNo", PageNUm)
+                    .addFormDataPart("cmbPageNo", PageNum)
                     .addFormDataPart("fenleiXmlStringHidden", "")
                     .addFormDataPart("gouxuandaochuXml", "")
                     .addFormDataPart("oneBLDxml", "")
-                    .addFormDataPart("MessageTypeFlag", "-1")
-                    .addFormDataPart("sqlwhereHidden", "and messagetype!=1  and ownerguid='c443f956-8101-48ec-bf0a-80c97039a90e'")
+//                    .addFormDataPart("MessageTypeFlag", "-1")
+                    .addFormDataPart("MessageTypeFlag", MessageTypeFlag)
+                    .addFormDataPart("sqlwhereHidden", sqlwhereHidden)
                     .addFormDataPart("timeflagTxt", "")
                     .addFormDataPart("GuidPrint", "")
                     .addFormDataPart("type", "")

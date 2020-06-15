@@ -78,6 +78,7 @@ public class Down12345Fallback implements Runnable{
         String remark = tbody.getElementById("beizhu").text();//备注
         Fallback fallback = new Fallback();
         fallback.set("order_guid",order_guid)
+                .set("file_guid",file_guid)
                 .set("order_state",order_state)
                 .set("order_code",order_code)
                 .set("link_person",link_person)

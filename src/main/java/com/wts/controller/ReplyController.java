@@ -77,7 +77,7 @@ public class ReplyController extends Controller {
 				String transfer_opinion = tbody.getElementById("remark").text();//转办意见
 				String transfer_process = tbody.getElementById("banliFlow").text();//转办流程
 				String remark = tbody.getElementById("beizhu").text();//备注
-				Element table = doc.getElementsByClass("tablebgcolor").get(1).getElementsByTag("tbody").get(0);
+				Element table = doc1.getElementsByClass("tablebgcolor").get(1).getElementsByTag("tbody").get(0);
 				String reply_type = table.getElementsByTag("tr").get(1).getElementsByTag("td").get(2).text();//答复类型
 				String finish_time = table.getElementsByTag("tr").get(1).getElementsByTag("td").get(4).text();//预计完成时间
 				String reply_satisfy = table.getElementsByTag("tr").get(2).getElementsByTag("td").get(1).text();//答复来电人情况
@@ -95,6 +95,7 @@ public class ReplyController extends Controller {
 				String reply_phone2 = table.getElementsByTag("tr").get(10).getElementsByTag("td").get(3).text();//回复电话
 				Reply reply = new Reply();
 				reply.set("order_guid",order_guid)
+						.set("file_guid",file_guid)
 						.set("order_state",order_state)
 						.set("order_code",order_code)
 						.set("link_person",link_person)
@@ -191,7 +192,7 @@ public class ReplyController extends Controller {
 			String transfer_opinion = tbody.getElementById("remark").text();//转办意见
 			String transfer_process = tbody.getElementById("banliFlow").text();//转办流程
 			String remark = tbody.getElementById("beizhu").text();//备注
-			Element table = doc.getElementsByClass("tablebgcolor").get(1).getElementsByTag("tbody").get(0);
+			Element table = doc1.getElementsByClass("tablebgcolor").get(1).getElementsByTag("tbody").get(0);
 			String reply_type = table.getElementsByTag("tr").get(1).getElementsByTag("td").get(2).text();//答复类型
 			String finish_time = table.getElementsByTag("tr").get(1).getElementsByTag("td").get(4).text();//预计完成时间
 			String reply_satisfy = table.getElementsByTag("tr").get(2).getElementsByTag("td").get(1).text();//答复来电人情况
@@ -209,6 +210,7 @@ public class ReplyController extends Controller {
 			String reply_phone2 = table.getElementsByTag("tr").get(10).getElementsByTag("td").get(3).text();//回复电话
 			Reply reply = new Reply();
 			reply.set("order_guid",order_guid)
+					.set("file_guid",file_guid)
 					.set("order_state",order_state)
 					.set("order_code",order_code)
 					.set("link_person",link_person)
@@ -256,7 +258,7 @@ public class ReplyController extends Controller {
 	//    7页以后用这个
 	public void getPage2(Integer pageNum, String cookie) {
 		System.out.println(pageNum);
-		Document doc = getDoc2(pageNum+"", cookie);
+		Document doc = getDoc2(pageNum+"", cookie, "201");
 		Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
 		for (int i = 0; i < trs.size() - 1; i++) {
 			Elements ins = trs.get(i).getElementsByTag("td");
@@ -297,7 +299,7 @@ public class ReplyController extends Controller {
 			String transfer_opinion = tbody.getElementById("remark").text();//转办意见
 			String transfer_process = tbody.getElementById("banliFlow").text();//转办流程
 			String remark = tbody.getElementById("beizhu").text();//备注
-			Element table = doc.getElementsByClass("tablebgcolor").get(1).getElementsByTag("tbody").get(0);
+			Element table = doc1.getElementsByClass("tablebgcolor").get(1).getElementsByTag("tbody").get(0);
 			String reply_type = table.getElementsByTag("tr").get(1).getElementsByTag("td").get(2).text();//答复类型
 			String finish_time = table.getElementsByTag("tr").get(1).getElementsByTag("td").get(4).text();//预计完成时间
 			String reply_satisfy = table.getElementsByTag("tr").get(2).getElementsByTag("td").get(1).text();//答复来电人情况
@@ -315,6 +317,7 @@ public class ReplyController extends Controller {
 			String reply_phone2 = table.getElementsByTag("tr").get(10).getElementsByTag("td").get(3).text();//回复电话
 			Reply reply = new Reply();
 			reply.set("order_guid",order_guid)
+					.set("file_guid",file_guid)
 					.set("order_state",order_state)
 					.set("order_code",order_code)
 					.set("link_person",link_person)
