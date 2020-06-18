@@ -40,6 +40,10 @@ public class StatisticService {
 	}
 
 	public void add(Statistic statistic){
+		if (statistic.get("problem_description").toString().length()>5000){
+			String un = statistic.get("problem_description").toString().substring(0,4999);
+			statistic.set("problem_description",un);
+		}
 		statistic.save();
 	}
 

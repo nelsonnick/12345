@@ -29,6 +29,10 @@ public class ReplyService {
 		return dao.findFirst("SELECT * FROM reply WHERE reply.order_guid LIKE '%" + order_guid + "%' ");
 	}
 	public void add(Reply reply){
+		if (reply.get("problem_description").toString().length()>5000){
+			String un = reply.get("problem_description").toString().substring(0,4999);
+			reply.set("problem_description",un);
+		}
 		reply.save();
 	}
 	public void add(String file_guid,String order_guid,String order_state, String order_code, String link_person,String link_phone,

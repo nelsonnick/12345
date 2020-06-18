@@ -29,6 +29,10 @@ public class FallbackService {
 		return dao.findFirst("SELECT * FROM fallback WHERE fallback.order_guid LIKE '%" + order_guid + "%' ");
 	}
 	public void add(Fallback fallback){
+		if (fallback.get("problem_description").toString().length()>5000){
+			String un = fallback.get("problem_description").toString().substring(0,4999);
+			fallback.set("problem_description",un);
+		}
 		fallback.save();
 	}
 	public void add(String file_guid,String order_guid,String order_state, String order_code, String link_person,String link_phone,

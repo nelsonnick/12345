@@ -31,6 +31,10 @@ public class UnhandleService {
 		return dao.findFirst("SELECT * FROM unhandle WHERE unhandle.order_guid LIKE '%" + order_guid + "%' ");
 	}
 	public void add(Unhandle unhandle){
+		if (unhandle.get("problem_description").toString().length()>5000){
+			String un = unhandle.get("problem_description").toString().substring(0,4999);
+			unhandle.set("problem_description",un);
+		}
 		unhandle.save();
 	}
 	public void add(String file_guid, String order_guid,String order_state, String order_code, String link_person,String link_phone,

@@ -27,6 +27,10 @@ public class ExpireService {
 		return dao.findFirst("SELECT * FROM expire WHERE expire.order_guid LIKE '%" + order_guid + "%' ");
 	}
 	public void add(Expire expire){
+		if (expire.get("problem_description").toString().length()>5000){
+			String un = expire.get("problem_description").toString().substring(0,4999);
+			expire.set("problem_description",un);
+		}
 		expire.save();
 	}
 	public void add(String file_guid, String order_guid, String order_code, String end_date) {

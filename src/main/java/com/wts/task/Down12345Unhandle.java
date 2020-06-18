@@ -207,7 +207,7 @@ public class Down12345Unhandle implements Runnable{
             CreatWordByModel("D:\\TemplateDoc.docx", map, path2 + order_code + "-" + order_guid + ".docx");
             String printerName = PropKit.use("config-dev.txt").get("printer");
 //            String printerName = "HP LaserJet 1020";//打印机名包含字串
-            printWord(path + order_code + "-" + order_guid + ".docx",printerName);
+//            printWord(path + order_code + "-" + order_guid + ".docx",printerName);
         }
     }
 

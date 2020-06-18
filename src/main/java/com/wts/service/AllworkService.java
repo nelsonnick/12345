@@ -35,6 +35,10 @@ public class AllworkService {
 		}
 	}
 	public void add(Allwork allwork){
+		if (allwork.get("problem_description").toString().length()>5000){
+			String un = allwork.get("problem_description").toString().substring(0,4999);
+			allwork.set("problem_description",un);
+		}
 		allwork.save();
 	}
 	public void add(String file_guid, String order_guid,String order_code,String link_person,String link_phone,String link_address,String send_time,String problem_description){
