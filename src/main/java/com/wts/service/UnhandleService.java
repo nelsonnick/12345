@@ -44,6 +44,10 @@ public class UnhandleService {
 					String is_reply,String reply_remark,String problem_description,String send_person,
 					String send_time,String end_date,String transfer_opinion,String transfer_process,String remark,String enclosure) {
 		Unhandle unhandle = new Unhandle();
+		String pd = "";
+		if (problem_description.length()>5000){
+			pd = problem_description.substring(0,4999);
+		}
 		unhandle.set("file_guid",file_guid)
 				.set("order_guid",order_guid)
 				.set("order_state",order_state)
@@ -64,7 +68,7 @@ public class UnhandleService {
 				.set("is_secret",is_secret)
 				.set("is_reply",is_reply)
 				.set("reply_remark",reply_remark)
-				.set("problem_description",problem_description)
+				.set("problem_description",pd)
 				.set("send_person",send_person)
 				.set("send_time",send_time)
 				.set("end_date",end_date)

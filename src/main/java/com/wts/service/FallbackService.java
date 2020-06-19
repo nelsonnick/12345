@@ -44,6 +44,10 @@ public class FallbackService {
 					String enclosure, String fallback_reason, String leader_opinions, String suggestion,
 					String fallback_department, String fallback_time, String fallback_person, String fallback_phone) {
 		Fallback fallback = new Fallback();
+		String pd = "";
+		if (problem_description.length()>5000){
+			pd = problem_description.substring(0,4999);
+		}
 		fallback.set("file_guid",file_guid)
 				.set("order_guid",order_guid)
 				.set("order_state",order_state)
@@ -64,7 +68,7 @@ public class FallbackService {
 				.set("is_secret",is_secret)
 				.set("is_reply",is_reply)
 				.set("reply_remark",reply_remark)
-				.set("problem_description",problem_description)
+				.set("problem_description",pd)
 				.set("send_person",send_person)
 				.set("send_time",send_time)
 				.set("end_date",end_date)

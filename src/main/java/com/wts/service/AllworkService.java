@@ -43,6 +43,10 @@ public class AllworkService {
 	}
 	public void add(String file_guid, String order_guid,String order_code,String link_person,String link_phone,String link_address,String send_time,String problem_description){
 		Allwork allwork = new Allwork();
+		String pd = "";
+		if (problem_description.length()>5000){
+			pd = problem_description.substring(0,4999);
+		}
 		allwork.set("file_guid",file_guid)
 				.set("order_guid",order_guid)
 				.set("order_code",order_code)
@@ -50,7 +54,7 @@ public class AllworkService {
 				.set("link_phone",link_phone)
 				.set("link_address",link_address)
 				.set("send_time",send_time)
-				.set("problem_description",problem_description)
+				.set("problem_description",pd)
 				.save();
 	}
 }

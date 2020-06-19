@@ -46,7 +46,10 @@ public class ReplyService {
 					String subordinate_department,String if_nodo,String nodo_reason,String reply_enclosure,
 					String reply_person2,String reply_phone2) {
 		Reply reply = new Reply();
-
+		String pd = "";
+		if (problem_description.length()>5000){
+			pd = problem_description.substring(0,4999);
+		}
 		reply.set("file_guid",file_guid)
 				.set("order_guid",order_guid)
 				.set("order_state",order_state)
@@ -67,7 +70,7 @@ public class ReplyService {
 				.set("is_secret",is_secret)
 				.set("is_reply",is_reply)
 				.set("reply_remark",reply_remark)
-				.set("problem_description",problem_description)
+				.set("problem_description",pd)
 				.set("send_person",send_person)
 				.set("send_time",send_time)
 				.set("end_date",end_date)
