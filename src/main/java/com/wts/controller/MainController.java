@@ -55,8 +55,8 @@ public class MainController extends Controller {
                 save(allwork);
             }
         }
-//        for (int i=2;i<7;i++){
-//            getPage(i,cookie);
+//        for (int i=2;i<774;i++){
+//            getPage2(i,cookie);
 //        }
 //        for (int i=7;i<758;i++){
 //            getPage2(i,cookie);
@@ -94,7 +94,7 @@ public class MainController extends Controller {
             save(allwork);
         }
     }
-//    7页以后用这个
+//    7页以后用这个（所有第2页之后的可能都能用？？？）
     public void getPage2(Integer pageNum, String cookie) {
         System.out.println(pageNum);
         Document doc = getDoc2(pageNum+"", cookie, "-1");
