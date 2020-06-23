@@ -122,7 +122,8 @@ public class Down12345Unhandle implements Runnable{
         String transfer_process = tbody.getElementById("banliFlow").text();//转办流程
         String remark = tbody.getElementById("beizhu").text();//备注
         Unhandle unhandle = new Unhandle();
-        unhandle.set("order_guid",order_guid)
+        unhandle.set("file_guid",file_guid)
+                .set("order_guid",order_guid)
                 .set("order_state",order_state)
                 .set("order_code",order_code)
                 .set("link_person",link_person)
@@ -158,6 +159,7 @@ public class Down12345Unhandle implements Runnable{
         AllworkService service2 = new AllworkService();
         if (service.findNumByGUID(unhandle.get("order_guid"))==0){
             service.add(unhandle);
+            String file_guid = unhandle.get("file_guid");
             String order_guid = unhandle.get("order_guid");
             String order_state = unhandle.get("order_state");
             String order_code = unhandle.get("order_code");
@@ -185,7 +187,7 @@ public class Down12345Unhandle implements Runnable{
             String transfer_process = unhandle.get("transfer_process");
             String remark = unhandle.get("remark");
             String enclosure = unhandle.get("enclosure");
-            service2.add(order_guid,order_code,link_person,link_phone,link_address,send_time,problem_description);
+            service2.add(file_guid, order_guid,order_code,link_person,link_phone,link_address,send_time,problem_description);
             Map<String, String> map = new HashMap<String, String>();
             map.put("accept_person_code",accept_person_code);
             map.put("end_date",end_date);
