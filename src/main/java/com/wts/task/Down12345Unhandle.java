@@ -34,10 +34,16 @@ public class Down12345Unhandle implements Runnable{
         for (int i = 0; i < trs.size() - 1; i++) {
             Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
             String value = in.attr("value");
-            String file_guid = value.substring(9, 47);
-            String order_guid = value.substring(53, 91);
+            String file_guid = "";
+            String order_guid = "";
+            if (value.substring(9,10).equals("{")){
+                file_guid = value.substring(9, 47);
+                order_guid = value.substring(53, 91);
+            }else{
+                file_guid = value.substring(8, 46);
+                order_guid = value.substring(51, 89);
+            }
             Unhandle unhandle = get(file_guid, order_guid, cookie);
-
             try {
                 save(unhandle);
 //                WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();
@@ -77,7 +83,13 @@ public class Down12345Unhandle implements Runnable{
     public Unhandle get(String file_guid, String order_guid, String cookie){
         String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid="+file_guid+"&GUID=" +order_guid+ "&IsZDDB=&xxlyid=1";
         Document doc = getDoc(url,cookie);
-        Element tbody = doc.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
+        Element tbody = null;
+        try{
+            tbody = doc.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
+        }catch (Exception e){
+            System.out.println(url);
+            System.out.println(doc);
+        }
         Element td = tbody.getElementsByTag("tr").get(8).getElementsByTag("td").get(1);
         String enclosure = "";
         if (!td.text().trim().equals("")){
@@ -110,8 +122,7 @@ public class Down12345Unhandle implements Runnable{
         String transfer_process = tbody.getElementById("banliFlow").text();//转办流程
         String remark = tbody.getElementById("beizhu").text();//备注
         Unhandle unhandle = new Unhandle();
-        unhandle.set("file_guid",file_guid)
-                .set("order_guid",order_guid)
+        unhandle.set("order_guid",order_guid)
                 .set("order_state",order_state)
                 .set("order_code",order_code)
                 .set("link_person",link_person)
@@ -147,7 +158,6 @@ public class Down12345Unhandle implements Runnable{
         AllworkService service2 = new AllworkService();
         if (service.findNumByGUID(unhandle.get("order_guid"))==0){
             service.add(unhandle);
-            String file_guid = unhandle.get("file_guid");
             String order_guid = unhandle.get("order_guid");
             String order_state = unhandle.get("order_state");
             String order_code = unhandle.get("order_code");
@@ -175,7 +185,7 @@ public class Down12345Unhandle implements Runnable{
             String transfer_process = unhandle.get("transfer_process");
             String remark = unhandle.get("remark");
             String enclosure = unhandle.get("enclosure");
-            service2.add(file_guid,order_guid,order_code,link_person,link_phone,link_address,send_time,problem_description);
+            service2.add(order_guid,order_code,link_person,link_phone,link_address,send_time,problem_description);
             Map<String, String> map = new HashMap<String, String>();
             map.put("accept_person_code",accept_person_code);
             map.put("end_date",end_date);
@@ -205,9 +215,9 @@ public class Down12345Unhandle implements Runnable{
 //            service.add(order_guid,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark,enclosure);
             CreatWordByModel("D:\\TemplateDoc.docx", map, path + order_code + "-" + order_guid + ".docx");
             CreatWordByModel("D:\\TemplateDoc.docx", map, path2 + order_code + "-" + order_guid + ".docx");
-            String printerName = PropKit.use("config-dev.txt").get("printer");
-//            String printerName = "HP LaserJet 1020";//打印机名包含字串
-//            printWord(path + order_code + "-" + order_guid + ".docx",printerName);
+            String printerName = "HP LaserJet 1020";//打印机名包含字串
+//            String printerName = "HP LaserJet MFP M227-M231 PCL-6 (V4)";//打印机名包含字串
+            printWord(path + order_code + "-" + order_guid + ".docx",printerName);
         }
     }
 
