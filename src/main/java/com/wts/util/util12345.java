@@ -60,12 +60,16 @@ public class util12345 {
     // 第7页之后的列表（所有第2页之后的可能都能用？？？）
     public static Document getDoc2(String PageNum, String cookie,String MessageTypeFlag) {
         String sqlwhereHidden = "";
+        String u = "";
         if (MessageTypeFlag.equals("-1")){//全部
             sqlwhereHidden = "   and messagetype!=1  and ownerguid='c443f956-8101-48ec-bf0a-80c97039a90e'";
+            u = "http://15.1.0.24/jhoagch_huaiyinqu/taskhotline/listTaskHotLine.aspx?MessageType=-1";
         }else if(MessageTypeFlag.equals("202")) {//回退
             sqlwhereHidden = "   and  issend=1 and (messageType=0 or messagetype=2) and gdzt=4  and ownerguid='c443f956-8101-48ec-bf0a-80c97039a90e'";
+            u = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/listTaskHotLine.aspx?MessageType=202&issend=1";
         }else if(MessageTypeFlag.equals("201")) {//回复
             sqlwhereHidden = "   and  issend=1 and (messageType=0 or messagetype=2) and gdzt=5  and ownerguid='c443f956-8101-48ec-bf0a-80c97039a90e'";
+            u = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/listTaskHotLine.aspx?MessageType=201&issend=1";
         }else{
 
         }
@@ -75,9 +79,9 @@ public class util12345 {
                     .build();
             MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
             RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                    .addFormDataPart("__VIEWSTATE", "/wEPDwUKMTAxNTE0MzAxMQ9kFgJmD2QWAgIDDzwrAAsBAA8WDB4LXyFJdGVtQ291bnQCKB4IRGF0YUtleXMWAB4JUGFnZUNvdW50AvUFHhVfIURhdGFTb3VyY2VJdGVtQ291bnQCxewBHhBWaXJ0dWFsSXRlbUNvdW50AsXsAR4IUGFnZVNpemUCKGRkGAEFHl9fQ29udHJvbHNSZXF1aXJlUG9zdEJhY2tLZXlfXxYBBRhKaG9hR3JpZDEkY3RsMDIkQ2hlY2tBbGx0gCijDzrjICWM03IlqTbzO6cQhw==")
-                    .addFormDataPart("__VIEWSTATEGENERATOR", "C55A3254")
-                    .addFormDataPart("__EVENTVALIDATION", "/wEWCwLOjo/5BQKfk5XkBwKciorSAgKxuZzKDwLTgZzcDgLy3Z3uCwKAyt2nDQKKhMKUDgKh893yBgKm4dCKDAKM54rGBkUnLuFKgGsYKVjyDzW9E+oofqBy")
+//                    .addFormDataPart("__VIEWSTATE", "/wEPDwUKMTAxNTE0MzAxMQ9kFgJmD2QWAgIDDzwrAAsBAA8WDB4LXyFJdGVtQ291bnQCKB4IRGF0YUtleXMWAB4JUGFnZUNvdW50AvUFHhVfIURhdGFTb3VyY2VJdGVtQ291bnQCxewBHhBWaXJ0dWFsSXRlbUNvdW50AsXsAR4IUGFnZVNpemUCKGRkGAEFHl9fQ29udHJvbHNSZXF1aXJlUG9zdEJhY2tLZXlfXxYBBRhKaG9hR3JpZDEkY3RsMDIkQ2hlY2tBbGx0gCijDzrjICWM03IlqTbzO6cQhw==")
+//                    .addFormDataPart("__VIEWSTATEGENERATOR", "CAECE07B")
+//                    .addFormDataPart("__EVENTVALIDATION", "/wEWCwLOjo/5BQKfk5XkBwKciorSAgKxuZzKDwLTgZzcDgLy3Z3uCwKAyt2nDQKKhMKUDgKh893yBgKm4dCKDAKM54rGBkUnLuFKgGsYKVjyDzW9E+oofqBy")
                     .addFormDataPart("_lkocok_signThisForm", "1")
                     .addFormDataPart("operationType", "")
                     .addFormDataPart("sort", "desc")
@@ -93,10 +97,12 @@ public class util12345 {
                     .addFormDataPart("timeflagTxt", "")
                     .addFormDataPart("GuidPrint", "")
                     .addFormDataPart("type", "")
+                    .addFormDataPart("IsTwoUnitFlag","")
+                    .addFormDataPart("hdsqlWhere","")
                     .build();
             Long l = body.contentLength();
             Request request = new Request.Builder()
-                    .url("http://15.1.0.24/jhoagch_huaiyinqu/taskhotline/listTaskHotLine.aspx?MessageType=-1")
+                    .url(u)
                     .method("POST", body)
                     .addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
 //                    .addHeader("Accept-Encoding", "gzip, deflate")
@@ -109,7 +115,8 @@ public class util12345 {
 //                    .addHeader("Cookie", "jn.gov.cn=UserID=GVl7MZ9hnbtfzpPrOq3B9A==&UserPass=bXnKpxw85yw=&ADGuid=HP79/4nMJ6xJ9s+VHA4+I5fM/D3BpZvY79O9dyE2cvkvhUuktBvziQ==&UserName=LKgasW++KiD/0oOuF4OIoAmaekB6iJy4OiygaTn++HU=&TicketData=y/cmJRNtGBo=; ASP.NET_SessionId=ebvqgb55zvxlgmi1d3cugrev; .jhoa=E65EBF1D86A489E27A7358BE71AC8C85E0AF0B878D43FF1F1381F37FD6DAD6E43539BA3D351A3A9E00F352B594F6E7A3F33D50B2B3FEB4002F3CD69B02333B8ACD7CAB6DDE2B3DF11C91C4304CE2BD3C86044A4E49AD599C586404E0C63A009DF50681CD58E79CC4B0D4AF70E0FF5F9D5FE8F2FCA452AE2584BC3CA96E1017F58C7178991BD4F7F44CA9BFC39A71C7702212B622")
                     .addHeader("Host", "15.1.0.24")
                     .addHeader("Origin", "http://15.1.0.24")
-                    .addHeader("Referer", "http://15.1.0.24/jhoagch_huaiyinqu/taskhotline/listTaskHotLine.aspx?MessageType=-1")
+                    .addHeader("Referer", u)
+//                    .addHeader("Referer", "http://15.1.0.24/jhoagch_huaiyinqu/taskhotline/listTaskHotLine.aspx?MessageType=-1")
                     .addHeader("Upgrade-Insecure-Requests", "1")
                     .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36")
                     .build();

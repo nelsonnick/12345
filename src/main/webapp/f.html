@@ -1,288 +1,89 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-<head>
-    <title>办理单</title>
-    <meta name="GENERATOR" content="Microsoft Visual Studio .NET 7.1">
-    <meta name="CODE_LANGUAGE" content="C#">
-    <meta name="vs_defaultClientScript" content="JavaScript">
-    <meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5">
-    <link href="../yaweiscripts/pagemanage.css" type="text/css" rel="stylesheet">
-    <script src="../YaweiScripts/layer/jquery-1.9.1.min.js" type="text/javascript"></script>
-    <script src="../YaweiScripts/layer/layer.js" type="text/javascript"></script>
-    <script language="javascript" src="../yaweiscripts/basic.js"></script>
-    <script language="javascript" src="Scripts/taskHotLine.js"></script>
-    <script language="javascript" src="../yaweiScripts/xmlHttp.js"></script>
-    <script language="javascript" src="Scripts/printName.js"></script>
-    <script language="javascript" src="../yaweiscripts/fileOperate.js"></script>
-    <script type="text/javascript" language="javascript">
-        function connectCLS() {
-            var gdId = document.getElementById("HotLineWorkNumber").innerHTML;
-            var sFeature = "dialogWidth:560px; dialogHeight:130px;center:yes;help:no;resizable:yes;scroll:yes;status:no";
-            var sPath = "http://15.1.125.175/rec/getRecordsList.aspx?id=" + gdId;
-
-            var arg = new Object();
-            showModalDialog(sPath, arg, sFeature)
-        }
-
-        function connectCLSHF() {
-            var gdId = document.getElementById("HotLineWorkNumber").innerHTML;
-            var sFeature = "dialogWidth:560px; dialogHeight:130px;center:yes;help:no;resizable:yes;scroll:yes;status:no";
-            var sPath = "http://15.1.125.175/rec/GetReturnVisitRecordsList.aspx?id=" + gdId;
-
-            var arg = new Object();
-            showModalDialog(sPath, arg, sFeature)
-        }
-    </script>
-</head>
-<body leftmargin="0" topmargin="0" rightmargin="0" bottommargin="0" ms_positioning="GridLayout">
-<form name="userForm" method="post"
-      action="ViewTaskHotLine.aspx?fileGuid=%7bc32e7cbb-082b-4acd-9546-0325b1763d80%7d&amp;GUID=%7b27d8f6df-d86c-4557-b884-feaaf4b96106%7d&amp;IsZDDB=&amp;xxlyid=1"
-      id="userForm" style="font-size: 12px" enctype="multipart/form-data" autocomplete="off">
-    <div>
-        <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE"
-               value="/wEPDwUJNzkxMDM1OTQxD2QWAgIBD2QWMgIBDw8WAh4EVGV4dAUa5rWO5Y2XMTIzNDXlip7nkIbpgJrnn6XljZVkZAIDDxYCHglpbm5lcmh0bWwFCeW3suWbnumAgGQCBA8WAh8BBRIyMDA2MTExNTEzNTM4OTMzMzFkAgUPFgIeBXN0eWxlBQ1kaXNwbGF5Om5vbmU7ZAIGDxYCHwEFD+WwueaJv+WHpOWls+Wjq2QCBw8WAh8BBQsxODQ1MzE3NTU1MGQCCA8WAh8BZWQCCQ8WAh8BZWQCCg8WAh8BBQnmnajlj6/lv4NkAgsPFgIfAQUENDU3MWQCDA8WAh8BBQbmnaXnlLVkAg0PFgIfAQUG6L2s5YqeZAIODxYCHwEFBuWSqOivomQCDw8WAh8BBRIyMDIwLzYvMTEgMTU6MTk6NDdkAhEPFgIfAQU55Lq65Yqb6LWE5rqQ5L+d6Zqc77yN5LyB5Lia56a75LyR6YCA5LyR77yN56a76YCA5LyR5pS/562WZAISDxYCHwEFCeS4jeS/neWvhmQCEw8WAh8BBQblm57lpI1kAhQPFgIfAWVkAhUPFgIfAQWPAuWwueaJv+WHpOWls+Wjq+adpeeUteWPjeaYoO+8muiHquW3sTE5NzblubTlvIDlp4vlnKjmp5DojavljLrov5DovpPlhazlj7jkuIvkuaHliLDku7Llrqvpl6jniZnmnZHvvIzlhbHorqHlm5vlubTvvIzkuIvkuaHml7boh6rlt7Hlt6XpvoTmnKrnrpfvvIzlkqjor6LmmK/lkKblj6/ku6Xnrpflt6XpvoTjgILvvIjlsLnmib/lh6QzNzAxMDUxOTU5MDcyNDE3MjDvvInluIzmnJvnm7jlhbPljZXkvY3okL3lrp7lpITnkIbvvIzor7flpITnkIblubblm57lpI3mnaXnlLXkurrjgIJkAhYPFgIfAQUb5qeQ6I2r5Yy65pS/5bqc54Ot57q/5Yqe55CGZAIXDxYCHwEFEjIwMjAvNi8xMSAxNjoxMTozNmQCGA8WAh8BBQoyMDIwLTA2LTE3ZAIaDxYCHwFlZAIbDxYCHwFlZAIcDxYCHwFlZGQbd4G5WCRnr0h2HfswZgoo/4uONg==">
-    </div>
-    <script type="text/javascript" src="/jhoa_huaiyinqu/ajax/common.ashx"></script>
-    <script type="text/javascript"
-            src="/jhoa_huaiyinqu/ajax/Yawei.Jhoa.UI.TaskHotLine.ViewTaskHotLine,JHOA.ashx"></script>
-    <div>
-        <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="EF05B836">
-        <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION"
-               value="/wEWCgL3uPXLCgKM54rGBgLZr8e4DwLN6rK/DALW4bf/BALLrfPPDgKno+S2DgL5hLCrDgKh893yBgKm4dCKDKlAYW3L6uwGpIQIERhAHIm8azGT">
-    </div>
-    <link href="../yaweiscripts/msnMenu.css" type="text/css" rel="stylesheet">
-    <script language="javascript" src="../yaweiscripts/msnMenu.js"></script>
-    <iframe class="NN" id="Hfrm" src="about:blank"></iframe>
-    <table class="N" id="HMTB" cellspacing="0" cellpadding="0" width="100%" border="0">
-        <tbody>
-        <tr>
-            <td>
-                <table class="O" id="menuTable" cellspacing="0" cellpadding="0" width="100%" border="0">
-                    <tbody>
-                    <tr>
-                        <td style="WIDTH: 8px"><img height="1" src="../images/spacer.gif" width="8"></td>
-                        <td class="P" onmouseover="MO()" onclick="history.back()" onmouseout="MU()" nowrap><img
-                                alt="返回到前一个页面" hspace="1" src="../images/functionkey/back.gif" align="absMiddle"
-                                border="0">返回
-                        </td>
-                        <td class="LL">|</td>
-                        <td class="P" onmouseover="MO()"
-                            onclick="printHotlinework('{27d8f6df-d86c-4557-b884-feaaf4b96106}')" onmouseout="MU()"
-                            nowrap><img alt="打印" hspace="1" src="../images/functionkey/print.gif" align="absMiddle"
-                                        border="0">打印1
-                        </td>
-                        <td class="LL">|</td>
-                        <td class="P" onmouseover="MO()"
-                            onclick="printHotlineworkNew('{27d8f6df-d86c-4557-b884-feaaf4b96106}')" onmouseout="MU()"
-                            nowrap><img alt="打印" hspace="1" src="../images/functionkey/print.gif" align="absMiddle"
-                                        border="0">打印2
-                        </td>
-                        <td class="LL">|</td>
-                        <td class="P" onmouseover="MO()" onclick="serachTaskHotLine('200611151353893331','0')"
-                            onmouseout="MU()" nowrap><img alt="查相同办理单" hspace="1" src="../images/functionkey/8.gif"
-                                                          align="absMiddle" border="0">查相同办理单
-                        </td>
-                        <td class="LL">|</td>
-                        <td width="100%" align="right"></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </td>
-            <td style="CURSOR: auto">
-                <table class="O" id="endTable" cellspacing="0" cellpadding="0" width="100%" border="0">
-                    <tbody>
-                    <tr>
-                        <td width="100%">&nbsp;</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <table cellspacing="0" cellpadding="1" width="100%" border="0" height="50">
-        <tbody>
-        <tr>
-            <td width="100%" align="center" valign="middle"><br> <font color="red" size="5"> <span id="headerTitle">济南12345办理通知单</span></font>
-            </td>
-        </tr>
-        <tr>
-        </tr>
-        <tr style="display: none">
-            <td><input type="submit" name="Button1" value="Button" id="Button1"></td>
-        </tr>
-        </tbody>
-    </table>
-    <table class="tablebgcolor" cellspacing="1" cellpadding="1" width="100%" align="center" bgcolor="#000000"
-           border="0">
-        <tbody>
-        <tr>
-            <td class="tdbgcolor" align="right" width="10%"><font color="#000090">工单状态：</font></td>
-            <td class="tdbgcolor" align="left" width="20%" colspan="5"><span id="gdzt" class="str">已回退</span></td>
-        </tr>
-        <tr>
-            <td class="tdbgcolor" align="right" width="10%"><font color="#000090">工单编号：</font></td>
-            <td class="tdbgcolor" align="left" width="20%"><span id="HotLineWorkNumber" class="str" style="width: 99%"
-                                                                 tabindex="50" maxlength="30">200611151353893331</span>
-                <input name="playRecord" type="button" id="playRecord" style="display:none;" class="buttonSelected"
-                       value="播放录音" onclick="connectCLS()"></td>
-            <td class="tdbgcolor" align="right" width="10%"><font color="#000090">联&nbsp;系&nbsp;人：</font></td>
-            <td class="tdbgcolor" align="left" width="20%"><span id="linkPerson" class="str" tabindex="5"
-                                                                 name="linkPerson">尹承凤女士</span></td>
-            <td class="tdbgcolor" align="right" width="15%"><font color="#000090">联系电话：</font></td>
-            <td class="tdbgcolor" align="left" width="25%"><span id="linkPhone" class="str">18453175550</span></td>
-        </tr>
-        <tr>
-            <td class="tdbgcolor" align="right" width="15%"><font color="#000090">联系地址：</font></td>
-            <td class="tdbgcolor" align="left" width="35%" colspan="3"><span id="address" class="str" tabindex="5"
-                                                                             name="address"></span></td>
-            <td class="tdbgcolor" align="right" width="15%"><font color="#000090">营商环境：</font></td>
-            <td class="tdbgcolor" align="left" width="35%"><span id="yshj" class="str" tabindex="5" name="yshj"></span>
-            </td>
-        </tr>
-        <tr width="100%">
-            <td class="tdbgcolor" align="right" width="10%"><font color="#000090">受理人员：</font></td>
-            <td class="tdbgcolor" align="left" width="20%"><span id="acceptPerson" class="str" style="width: 99%"
-                                                                 tabindex="80" maxlength="30"
-                                                                 name="acceptPerson">杨可心</span></td>
-            <td class="tdbgcolor" align="right" width="10%"><font color="#000090">受理员编号：</font></td>
-            <td class="tdbgcolor" align="left" width="20%"><span id="hwyId" class="str" style="width: 100%"
-                                                                 tabindex="80" maxlength="30" name="hwyId">4571</span>
-            </td>
-            <td class="tdbgcolor" align="right" width="10%"><font color="#000090">受理渠道：</font></td>
-            <td class="tdbgcolor" align="left" width="30%"><span id="xxlyId" tabindex="130" maxlength="10"
-                                                                 name="xxlyId">来电</span></td>
-        </tr>
-        <tr>
-            <td class="tdbgcolor" align="right" width="10%"><font color="#000090">办理类型：</font></td>
-            <td class="tdbgcolor" align="left" width="20%"><span id="sllx" tabindex="130" maxlength="10"
-                                                                 name="sllx">转办</span></td>
-            <td class="tdbgcolor" align="right" width="10%"><font color="#000090">来电类别：</font></td>
-            <td class="tdbgcolor" align="left" width="20%"><span id="ldlbid" tabindex="130" maxlength="10"
-                                                                 name="ldlbid">咨询</span></td>
-            <td class="tdbgcolor" align="right" width="10%"><font color="#000090">录入时间：</font></td>
-            <td class="tdbgcolor" align="left" width="30%"><span id="writeTime" class="str" style="width: 99%"
-                                                                 tabindex="120" maxlength="10" name="writeTime">2020/6/11 15:19:47</span>
-            </td>
-        </tr>
-        <tr width="100%">
-            <td class="tdbgcolor" align="right" width="10%"><font color="#000090">紧急程度：</font></td>
-            <td class="tdbgcolor" align="left" width="20%"><select name="urgencyDegree" id="urgencyDegree"
-                                                                   unselectable="off">
-                <option selected value="1">一般</option>
-                <option value="2">复杂</option>
-                <option value="3">紧急</option>
-                <option value="4">特急</option>
-            </select></td>
-            <td class="tdbgcolor" align="right" width="10%"><font color="#000090">问题分类：</font></td>
-            <td class="tdbgcolor" align="left" width="60%" colspan="3"><span id="quesTypeInfo" tabindex="90">人力资源保障－企业离休退休－离退休政策</span>
-            </td>
-        </tr>
-        <tr>
-            <td class="tdbgcolor" align="right" width="10%"><font color="#000090">是否保密：</font></td>
-            <td class="tdbgcolor" align="left" width="20%"><span id="isSecret" tabindex="130" maxlength="10"
-                                                                 name="isSecret">不保密</span></td>
-            <td class="tdbgcolor" align="right" width="10%"><font color="#000090">是否回复：</font></td>
-            <td class="tdbgcolor" align="left" width="20%"><span id="isReply" tabindex="130" maxlength="10"
-                                                                 name="isReply">回复</span></td>
-            <td class="tdbgcolor" align="right" width="10%"><font color="#000090">回复备注：</font></td>
-            <td class="tdbgcolor" align="left" width="30%"><span id="hfdh" tabindex="130" maxlength="10"
-                                                                 name="hfdh"></span></td>
-        </tr>
-        <tr>
-            <td class="tdbgcolor" align="right" width="10%"><font color="#000090">问题描述：</font></td>
-            <td class="tdbgcolor" width="90%" colspan="5"><textarea name="content" id="content" style="width: 99%;"
-                                                                    rows="4" readonly>尹承凤女士来电反映：自己1976年开始在槐荫区运输公司下乡到仲宫门牙村，共计四年，下乡时自己工龄未算，咨询是否可以算工龄。（尹承凤370105195907241720）希望相关单位落实处理，请处理并回复来电人。</textarea>
-            </td>
-        </tr>
-        <tr>
-            <td class="tdbgcolor" align="right" width="10%"><font color="#000090">附&nbsp;&nbsp;&nbsp;&nbsp;件：</font>
-            </td>
-            <td class="tdbgcolor" width="90%" colspan="5"></td>
-        </tr>
-        <tr>
-            <td align="center" class="tdbgcolor" colspan="6"> 办理信息</td>
-        </tr>
-        <tr>
-            <td class="tdbgcolor" align="right" width="10%"><font color="#000090">发送人：</font></td>
-            <td class="tdbgcolor" align="left" width="20%"><span id="sendPerson" class="str" tabindex="5"
-                                                                 name="sendPerson">槐荫区政府热线办理</span></td>
-            <td class="tdbgcolor" align="right" width="10%"><font color="#000090">发送时间：</font></td>
-            <td class="tdbgcolor" align="left" width="20%"><span id="sendTime" class="str" tabindex="5" name="sendTime">2020/6/11 16:11:36</span>
-            </td>
-            <td class="tdbgcolor" align="right" width="10%"><font color="#000090">办理时限：</font></td>
-            <td class="tdbgcolor" align="left" width="20%"><span id="endDate" class="str" tabindex="140" type="text"
-                                                                 style="width: 99%" name="endDate">2020-06-17</span>
-            </td>
-        </tr>
-        <tr id="txlxTr" style="display: none">
-            <td id="txlxLab" class="tdbgcolor" align="right" width="10%"><font color="#000090">督办类型：</font></td>
-            <td id="txlxSelect" class="tdbgcolor" align="left" width="20%"><span id="txlx" class="str" tabindex="141"
-                                                                                 type="text" style="width: 99%"> </span>
-            </td>
-            <td id="Td1" class="tdbgcolor" align="right" width="10%"></td>
-            <td id="Td2" class="tdbgcolor" align="left" width="20%"></td>
-            <td id="Td3" class="tdbgcolor" align="right" width="10%"></td>
-            <td id="Td4" class="tdbgcolor" align="left" width="20%"></td>
-        </tr>
-        <tr>
-            <td class="tdbgcolor" align="right" width="15%"><font color="#000090">转办意见：</font></td>
-            <td class="tdbgcolor" align="right" colspan="5" width="85%"><textarea name="remark" id="remark" rows="4"
-                                                                                  style="width: 100%"
-                                                                                  readonly></textarea></td>
-        </tr>
-        <tr>
-            <td class="tdbgcolor" align="right" width="15%"><font color="#000090">转办流程：</font></td>
-            <td class="tdbgcolor" align="right" colspan="5" width="85%"><textarea name="banliFlow" id="banliFlow"
-                                                                                  rows="4" style="width: 100%"
-                                                                                  readonly></textarea></td>
-        </tr>
-        <tr>
-            <td class="tdbgcolor" align="right" width="15%"><font color="#000090">备&nbsp;&nbsp;&nbsp;&nbsp;注：</font>
-            </td>
-            <td class="tdbgcolor" align="right" colspan="5" width="85%"><textarea name="beizhu" id="beizhu" rows="4"
-                                                                                  style="width: 100%"
-                                                                                  readonly></textarea></td>
-        </tr>
-        </tbody>
-    </table>
-    <table width="100%" cellspacing="1" cellpadding="2" border="0" class="tablebgcolor">
-        <tbody>
-        <tr>
-            <td class="tdbgcolor" align="left" colspan="5" width="100%"><b>反馈报告</b></td>
-        </tr>
-        <tr>
-            <td class="tdbgcolor" rowspan="5" width="10%" align="center"><font color="#000090">部门回退</font></td>
-            <td class="tdbgcolor" height="25px" align="center"><font color="#000090">回退理由</font></td>
-            <td class="tdbgcolor" colspan="3">工龄计算相关问题建议转至市社会保险事业中心槐荫办事处</td>
-        </tr>
-        <tr>
-            <td class="tdbgcolor" height="25px" align="center"><font color="#000090">领导意见</font></td>
-            <td class="tdbgcolor" colspan="3">同意</td>
-        </tr>
-        <tr>
-            <td class="tdbgcolor" height="25px" align="center"><font color="#000090">建&nbsp;&nbsp;&nbsp;&nbsp;议</font>
-            </td>
-            <td class="tdbgcolor" colspan="3">建议转至市社会保险事业中心槐荫办事处</td>
-        </tr>
-        <tr>
-            <td class="tdbgcolor" width="12%" height="25px" align="center"><font color="#000090">回退部门</font></td>
-            <td class="tdbgcolor" width="32%">槐荫区人力资源和社会保障局</td>
-            <td class="tdbgcolor" width="12%" align="center"><font color="#000090">回退时间</font></td>
-            <td class="tdbgcolor"> 2020/6/11 16:20:33</td>
-        </tr>
-        <tr>
-            <td class="tdbgcolor" height="25px" align="center"><font color="#000090">联系人</font></td>
-            <td class="tdbgcolor">朱晓庆</td>
-            <td class="tdbgcolor" align="center"><font color="#000090">联系电话</font></td>
-            <td class="tdbgcolor">87957281</td>
-        </tr>
-        </tbody>
-    </table>
-    <input name="GuidPrint" type="hidden" id="GuidPrint">
-    <input name="type" type="hidden" id="type">
-</form>
-<object id="WordContainer" style="display: none" codebase="../yaweiscripts/OfficeAgent.CAB#version=2,0,0,1"
-        classid="CLSID:5EE00CCC-4762-47C1-ADDB-FE530AF99C25" viewastext></object>
-</body>
-</html>
+<table width="100%" cellspacing="1" cellpadding="2" border="0" class="tablebgcolor">
+    <tbody>
+    <tr>
+        <td class="tdbgcolor" align="left" colspan="5" width="100%"><b>反馈报告</b></td>
+    </tr>
+    <tr>
+        <td class="tdbgcolor" rowspan="6" width="10%" align="center"><font color="#000090">部门回退</font></td>
+        <td class="tdbgcolor" height="25px" align="center"><font color="#000090">回退理由</font></td>
+        <td class="tdbgcolor" colspan="3">来电人咨询的是签字后退休职工就跟公司没有关系？所有档案、人事全部转到社区、咨询此做法是否合理？</td>
+    </tr>
+    <tr>
+        <td class="tdbgcolor" height="25px" align="center"><font color="#000090">领导意见</font></td>
+        <td class="tdbgcolor" colspan="3">同意</td>
+    </tr>
+    <tr>
+        <td class="tdbgcolor" height="25px" align="center"><font color="#000090">建&nbsp;&nbsp;&nbsp;&nbsp;议</font></td>
+        <td class="tdbgcolor" colspan="3">建议转槐荫社会保险事业中心槐荫办事处</td>
+    </tr>
+    <tr>
+        <td class="tdbgcolor" width="12%" height="25px" align="center"><font color="#000090">回退部门</font></td>
+        <td class="tdbgcolor" width="32%">槐荫区人力资源和社会保障局</td>
+        <td class="tdbgcolor" width="12%" align="center"><font color="#000090">回退时间</font></td>
+        <td class="tdbgcolor"> 未发送</td>
+    </tr>
+    <tr>
+        <td class="tdbgcolor" height="25px" align="center"><font color="#000090">附件</font></td>
+        <td class="tdbgcolor" colspan="3"></td>
+    </tr>
+    <tr>
+        <td class="tdbgcolor" height="25px" align="center"><font color="#000090">联系人</font></td>
+        <td class="tdbgcolor">李名菊</td>
+        <td class="tdbgcolor" align="center"><font color="#000090">联系电话</font></td>
+        <td class="tdbgcolor">87958369</td>
+    </tr>
+    <tr>
+        <td rowspan="10" class="tdbgcolor" width="10%" align="center"> <font color="#000090">回复信息</font></td>
+        <td class="tdbgcolor" height="25px" align="center"><font color="#000090">答复类型</font></td>
+        <td class="tdbgcolor">办结回复</td>
+        <td class="tdbgcolor" height="25px" align="center"><font color="#000090">预计完成时间</font></td>
+        <td class="tdbgcolor"></td>
+    </tr>
+    <tr>
+        <td class="tdbgcolor" height="25px" align="center"><font color="#000090">答复来电人情况</font></td>
+        <td class="tdbgcolor">当事人联系不上</td>
+        <td class="tdbgcolor" height="25px" align="center"><font color="#000090">答复时间</font></td>
+        <td class="tdbgcolor">2020-06-12 14:11:34</td>
+    </tr>
+    <tr>
+        <td class="tdbgcolor" height="25px" align="center"><font color="#000090">答 复 人</font></td>
+        <td class="tdbgcolor">朱晓庆</td>
+        <td class="tdbgcolor" height="25px" align="center"><font color="#000090">答复电话</font></td>
+        <td class="tdbgcolor">87957281</td>
+    </tr>
+    <tr>
+        <td class="tdbgcolor" height="25px" align="center"><font color="#000090">办理情况</font></td>
+        <td colspan="3" class="tdbgcolor">工单为匿名，无法联系来电人了解具体情况。工单中未提供具体的单位名称，所以无法判断管辖权。如果单在槐荫区劳动保障的受理范围内，可通过劳动仲裁程序处理。如来电人想通过劳动仲裁程序处理，需携带相关材料（身份证复印件、企业登记信息、仲裁申请书、相关证据复印件）到区劳动争议仲裁院（北小辛庄西街24号）申请，或拨打电话87956160进行咨询。 </td>
+    </tr>
+    <tr>
+        <td class="tdbgcolor" width="12%" height="25px" align="center"><font color="#000090">回复单位</font></td>
+        <td class="tdbgcolor" width="32%">槐荫区人力资源和社会保障局</td>
+        <td class="tdbgcolor" width="12%" align="center"><font color="#000090">回复时间</font></td>
+        <td class="tdbgcolor"> 2020/6/12 14:07:05</td>
+    </tr>
+    <tr>
+        <td class="tdbgcolor" height="25px" align="center"><font color="#000090">下级办理单位</font></td>
+        <td colspan="3" class="tdbgcolor"></td>
+    </tr>
+    <tr>
+        <td class="tdbgcolor" height="25px" align="center"><font color="#000090">不再办理</font></td>
+        <td class="tdbgcolor">否</td>
+        <td class="tdbgcolor" height="25px" align="center"><font color="#000090"></font></td>
+        <td class="tdbgcolor"></td>
+    </tr>
+    <tr>
+        <td class="tdbgcolor" height="25px" align="center"><font color="#000090">不再办理原因</font></td>
+        <td class="tdbgcolor" colspan="3"></td>
+    </tr>
+    <tr>
+        <td class="tdbgcolor" height="25px" align="center"><font color="#000090">附件</font></td>
+        <td class="tdbgcolor" colspan="3"></td>
+    </tr>
+    <tr>
+        <td class="tdbgcolor" height="25px" align="center"><font color="#000090">联系人</font></td>
+        <td class="tdbgcolor"></td>
+        <td class="tdbgcolor" align="center"><font color="#000090">联系电话</font></td>
+        <td class="tdbgcolor"></td>
+    </tr>
+    </tbody>
+</table>
