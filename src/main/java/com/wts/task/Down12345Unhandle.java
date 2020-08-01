@@ -87,7 +87,7 @@ public class Down12345Unhandle implements Runnable{
         try{
             tbody = doc.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
         }catch (Exception e){
-            System.out.println(url);
+            System.out.println("未打印工单：" + url);
             System.out.println(doc);
         }
         Element td = tbody.getElementsByTag("tr").get(8).getElementsByTag("td").get(1);
@@ -215,7 +215,9 @@ public class Down12345Unhandle implements Runnable{
             String path = "D:\\工单备份\\"+date.format(yyyy)+ "\\"+date.format(MM)+ "\\"+date.format(dd)+ "\\";
             System.out.println("待办理工单：" + order_code + "-" + link_person + "-" + send_time);
 //            service.add(order_guid,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark,enclosure);
-            CreatWordByModel("D:\\TemplateDoc.docx", map, path + order_code + "-" + order_guid + ".docx");
+
+            String personCode = service.getPersonCode();
+            CreatWordByModel("D:\\TemplateDoc"+personCode+".docx", map, path + order_code + "-" + order_guid + ".docx");
             CreatWordByModel("D:\\TemplateDoc.docx", map, path2 + order_code + "-" + order_guid + ".docx");
             String printerName = "HP LaserJet 1020";//打印机名包含字串
 //            String printerName = "HP LaserJet MFP M227-M231 PCL-6 (V4)";//打印机名包含字串
@@ -223,4 +225,77 @@ public class Down12345Unhandle implements Runnable{
         }
     }
 
+    public static void main(String[] args) {
+        String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid={50b948eb-cdee-44f4-b795-8a3d5423fd38}&GUID={a13bcd62-e598-4753-aa04-701ff8442131}&IsZDDB=&xxlyid=1";
+        String cookie = PropKit.use("config-dev.txt").get("cookie");
+        Document doc = getDoc(url,cookie);
+        Element tbody = null;
+        try{
+            tbody = doc.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
+        }catch (Exception e){
+            System.out.println("未打印工单：" + url);
+            System.out.println(doc);
+        }
+        Element td = tbody.getElementsByTag("tr").get(8).getElementsByTag("td").get(1);
+        String enclosure = "";
+        if (!td.text().trim().equals("")){
+            enclosure = "请查看附件";
+        }
+        String order_state = tbody.getElementById("gdzt").text();//工单状态
+        String order_code = tbody.getElementById("HotLineWorkNumber").text();//工单编号
+        String link_person = tbody.getElementById("linkPerson").text();//联系人
+        String link_phone = tbody.getElementById("linkPhone").text();//联系电话
+        String link_address = tbody.getElementById("address").text();//联系地址
+        String business_environment = tbody.getElementById("yshj").text();//营商环境
+//        String new_supervision = tbody.getElementById("isNewDuCha").text();//新版督察
+        String accept_person = tbody.getElementById("acceptPerson").text();//受理人员
+        String accept_person_code = tbody.getElementById("hwyId").text();//受理员编号
+        String accept_channel = tbody.getElementById("xxlyId").text();//受理渠道
+        String handle_type = tbody.getElementById("sllx").text();//办理类型
+        String phone_type = tbody.getElementById("ldlbid").text();//来电类别
+        String write_time = tbody.getElementById("writeTime").text();//录入时间
+        String urgency_degree = getUrgencyDegree(tbody.getElementById("urgencyDegree"));//紧急程度
+        String problem_classification = tbody.getElementById("quesTypeInfo").text();//问题分类
+        String is_secret = tbody.getElementById("isSecret").text();//是否保密
+        String is_reply = tbody.getElementById("isReply").text();//是否回复
+        String reply_remark = tbody.getElementById("hfdh").text();//回复备注
+        String problem_description = tbody.getElementById("content").text();//问题描述
+        String send_person = tbody.getElementById("sendPerson").text();//发送人
+        String send_time = tbody.getElementById("sendTime").text();//发送时间
+        String end_date = tbody.getElementById("endDate").text();//办理时限
+        String txlx = tbody.getElementById("txlx").text();//督办类型---暂无
+        String transfer_opinion = tbody.getElementById("remark").text();//转办意见
+        String transfer_process = tbody.getElementById("banliFlow").text();//转办流程
+        String remark = tbody.getElementById("beizhu").text();//备注
+        Unhandle unhandle = new Unhandle();
+        unhandle.set("file_guid","{50b948eb-cdee-44f4-b795-8a3d5423fd38}")
+                .set("order_guid","{a13bcd62-e598-4753-aa04-701ff8442131}")
+                .set("order_state",order_state)
+                .set("order_code",order_code)
+                .set("link_person",link_person)
+                .set("link_phone",link_phone)
+                .set("link_address",link_address)
+                .set("business_environment",business_environment)
+//                .set("new_supervision",new_supervision)
+                .set("accept_person",accept_person)
+                .set("accept_person_code",accept_person_code)
+                .set("accept_channel",accept_channel)
+                .set("handle_type",handle_type)
+                .set("phone_type",phone_type)
+                .set("write_time",write_time)
+                .set("urgency_degree",urgency_degree)
+                .set("problem_classification",problem_classification)
+                .set("is_secret",is_secret)
+                .set("is_reply",is_reply)
+                .set("reply_remark",reply_remark)
+                .set("problem_description",problem_description)
+                .set("send_person",send_person)
+                .set("send_time",send_time)
+                .set("end_date",end_date)
+                .set("transfer_opinion",transfer_opinion)
+                .set("transfer_process",transfer_process)
+                .set("enclosure",enclosure)
+                .set("remark",remark);
+        System.out.println(unhandle);;
+    }
 }

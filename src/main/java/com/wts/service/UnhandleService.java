@@ -26,6 +26,10 @@ public class UnhandleService {
 		return Db.queryInt("SELECT COUNT(*) FROM unhandle WHERE unhandle.order_guid LIKE '%" + order_guid + "%' ");
 	}
 
+	public String getPersonCode(){
+		Integer total = Db.queryInt("SELECT COUNT(*) FROM unhandle");
+		return  total%4 + "";
+	}
 
 	public Unhandle findByGUID(String order_guid) {
 		return dao.findFirst("SELECT * FROM unhandle WHERE unhandle.order_guid LIKE '%" + order_guid + "%' ");
