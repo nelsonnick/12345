@@ -225,6 +225,6 @@ public class wxUtil {
 //        String error = addUnhandle(token,"2","1","1","1","1","1","1","1","1","1","1","1","1","1","1");
 //        String error = addReply(token,"1","1","1","1");
         String error = addFallback(token,"2","1","1","1","1","1");
-        System.out.println(error);
+//        System.out.println(error);
     }
 }
