@@ -18,7 +18,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class WordUtil {
+public class
+WordUtil {
 
     /*
      * 替换表格里面的变量

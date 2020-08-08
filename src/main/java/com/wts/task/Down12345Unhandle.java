@@ -21,6 +21,7 @@ import java.util.Map;
 import static com.wts.util.WordUtil.*;
 import static com.wts.util.util12345.getDoc;
 import static com.wts.util.util12345.getPageUrl;
+import static com.wts.util.wxUtil.*;
 
 public class Down12345Unhandle implements Runnable{
 
@@ -150,7 +151,7 @@ public class Down12345Unhandle implements Runnable{
                 .set("transfer_process",transfer_process)
                 .set("enclosure",enclosure)
                 .set("remark",remark);
-         return unhandle;
+        return unhandle;
 
     }
 
@@ -222,9 +223,38 @@ public class Down12345Unhandle implements Runnable{
             String printerName = "HP LaserJet 1020";//打印机名包含字串
 //            String printerName = "HP LaserJet MFP M227-M231 PCL-6 (V4)";//打印机名包含字串
             printWord(path + order_code + "-" + order_guid + ".docx",printerName);
+            send(unhandle, service2);
         }
     }
 
+    public void send (Unhandle unhandle, AllworkService allworkService) throws Exception{
+        Boolean network = goWaiWang();
+        if (network) {
+            String token = getToken();
+            String errcode = addUnhandle(token,
+                    unhandle.get("order_guid"),
+                    unhandle.get("order_code"),
+                    unhandle.get("link_person"),
+                    unhandle.get("link_phone"),
+                    allworkService.findNumByPhone(unhandle.get("link_phone")),
+                    unhandle.get("write_time"),
+                    unhandle.get("send_time"),
+                    unhandle.get("urgency_degree"),
+                    unhandle.get("is_secret"),
+                    unhandle.get("is_reply"),
+                    unhandle.get("end_date"),
+                    unhandle.get("problem_description").toString().substring(0,500),
+                    unhandle.get("transfer_opinion").toString().substring(0,500),
+                    unhandle.get("transfer_process").toString().substring(0,500),
+                    unhandle.get("accept_channel"));
+            if (errcode.equals("0")){
+                System.out.println("待办理工单已推送：" + unhandle.get("order_code") + "-" + unhandle.get("link_person"));
+            } else {
+                System.out.println("待办理工单推送失败：" + unhandle.get("order_code") + "-" + unhandle.get("link_person"));
+            }
+        }
+        goNeiWang();
+    }
     public static void main(String[] args) {
         String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid={50b948eb-cdee-44f4-b795-8a3d5423fd38}&GUID={a13bcd62-e598-4753-aa04-701ff8442131}&IsZDDB=&xxlyid=1";
         String cookie = PropKit.use("config-dev.txt").get("cookie");
