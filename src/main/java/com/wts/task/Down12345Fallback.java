@@ -8,6 +8,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import static com.wts.util.WordUtil.*;
+import static com.wts.util.others.IpKit.getLocalHostIP;
 import static com.wts.util.util12345.getDoc;
 import static com.wts.util.util12345.getPageUrl;
 
@@ -15,20 +16,31 @@ public class Down12345Fallback implements Runnable{
 
     @Override
     public void run() {
-        String url = getPageUrl("202", "1");
-        String cookie = PropKit.use("config-dev.txt").get("cookie");
-        Document doc = getDoc(url,cookie);
-        Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
-        for (int i = 0; i < trs.size() - 1; i++) {
-            Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
-            String value = in.attr("value");
-            String file_guid = value.substring(9, 47);
-            String order_guid = value.substring(53, 91);
-            Fallback fallback = get(file_guid, order_guid, cookie);
-            try {
-                save(fallback);
-            } catch (Exception e) {
-                e.printStackTrace();
+        String ip = getLocalHostIP();
+        String neiwangIP = PropKit.use("config-dev.txt").get("neiwangIP");
+        if (ip.equals(neiwangIP)){
+            String url = getPageUrl("202", "1");
+            String cookie = PropKit.use("config-dev.txt").get("cookie");
+            Document doc = getDoc(url,cookie);
+            Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
+            for (int i = 0; i < trs.size() - 1; i++) {
+                Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
+                String value = in.attr("value");
+                String file_guid = "";
+                String order_guid = "";
+                if (value.substring(9,10).equals("{")){
+                    file_guid = value.substring(9, 47);
+                    order_guid = value.substring(53, 91);
+                }else{
+                    file_guid = value.substring(8, 46);
+                    order_guid = value.substring(51, 89);
+                }
+                Fallback fallback = get(file_guid, order_guid, cookie);
+                try {
+                    save(fallback);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

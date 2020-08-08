@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.wts.util.WordUtil.*;
+import static com.wts.util.others.IpKit.getLocalHostIP;
 import static com.wts.util.util12345.getDoc;
 import static com.wts.util.util12345.getPageUrl;
 import static com.wts.util.wxUtil.*;
@@ -28,25 +29,28 @@ public class Down12345Unhandle implements Runnable{
     String path2 = "D:\\当前下载\\";
     @Override
     public void run() {
-        String url = getPageUrl("0", "0");
-        String cookie = PropKit.use("config-dev.txt").get("cookie");
-        Document doc = getDoc(url,cookie);
-        Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
-        for (int i = 0; i < trs.size() - 1; i++) {
-            Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
-            String value = in.attr("value");
-            String file_guid = "";
-            String order_guid = "";
-            if (value.substring(9,10).equals("{")){
-                file_guid = value.substring(9, 47);
-                order_guid = value.substring(53, 91);
-            }else{
-                file_guid = value.substring(8, 46);
-                order_guid = value.substring(51, 89);
-            }
-            Unhandle unhandle = get(file_guid, order_guid, cookie);
-            try {
-                save(unhandle);
+        String ip = getLocalHostIP();
+        String neiwangIP = PropKit.use("config-dev.txt").get("neiwangIP");
+        if (ip.equals(neiwangIP)){
+            String url = getPageUrl("0", "0");
+            String cookie = PropKit.use("config-dev.txt").get("cookie");
+            Document doc = getDoc(url,cookie);
+            Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
+            for (int i = 0; i < trs.size() - 1; i++) {
+                Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
+                String value = in.attr("value");
+                String file_guid = "";
+                String order_guid = "";
+                if (value.substring(9,10).equals("{")){
+                    file_guid = value.substring(9, 47);
+                    order_guid = value.substring(53, 91);
+                }else{
+                    file_guid = value.substring(8, 46);
+                    order_guid = value.substring(51, 89);
+                }
+                Unhandle unhandle = get(file_guid, order_guid, cookie);
+                try {
+                    save(unhandle);
 //                WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();
 //                config.setCorpId(ParamesAPI.corpId);      // 设置微信企业号的appid
 //                config.setCorpSecret(ParamesAPI.secret);  // 设置微信企业号的app corpSecret
@@ -75,8 +79,9 @@ public class Down12345Unhandle implements Runnable{
 //
 //
 //                wxCpService.messageSend(message);
-            } catch (Exception e) {
-                e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

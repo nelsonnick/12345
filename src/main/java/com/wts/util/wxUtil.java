@@ -1,6 +1,7 @@
 package com.wts.util;
 
 import com.alibaba.fastjson.JSONObject;
+import com.jfinal.kit.PropKit;
 import okhttp3.*;
 
 import static com.wts.util.others.IpKit.getLocalHostIP;
@@ -37,10 +38,9 @@ public class wxUtil {
         return str;
     }
 
-    public static String getReplyStr(String guid, String HotLineWorkNumber, String linkPerson, String linkPhone, String countNum, String writeTime, String sendTime,
-                                     String urgencyDegree, String isSecret, String isReply, String endDate, String content, String remark, String banliFlow, String xxlyId,
-                                     String replyTime, String replyPerson, String replyContent) {
-        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"reply\\\").add({data:[{_id:\\\"${_id}\\\",HotLineWorkNumber:\\\"${HotLineWorkNumber}\\\",linkPerson:\\\"${linkPerson}\\\",linkPhone:\\\"${linkPhone}\\\",countNum:\\\"${countNum}\\\",writeTime:\\\"${writeTime}\\\",sendTime:\\\"${sendTime}\\\",urgencyDegree:\\\"${urgencyDegree}\\\",isSecret:\\\"${isSecret}\\\",isReply:\\\"${isReply}\\\",endDate:\\\"${endDate}\\\",content:\\\"${content}\\\",remark:\\\"${remark}\\\",banliFlow:\\\"${banliFlow}\\\",xxlyId:\\\"${xxlyId}\\\",replyTime:\\\"${replyTime}\\\",replyPerson:\\\"${replyPerson}\\\",replyContent:\\\"${replyContent}\\\",replyType:\\\"${replyType}\\\"}]})\"}";
+    public static String getReplyStr(String guid, String replyTime, String replyPerson, String replyContent) {
+//        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"reply\\\").add({data:[{_id:\\\"${_id}\\\",HotLineWorkNumber:\\\"${HotLineWorkNumber}\\\",linkPerson:\\\"${linkPerson}\\\",linkPhone:\\\"${linkPhone}\\\",countNum:\\\"${countNum}\\\",writeTime:\\\"${writeTime}\\\",sendTime:\\\"${sendTime}\\\",urgencyDegree:\\\"${urgencyDegree}\\\",isSecret:\\\"${isSecret}\\\",isReply:\\\"${isReply}\\\",endDate:\\\"${endDate}\\\",content:\\\"${content}\\\",remark:\\\"${remark}\\\",banliFlow:\\\"${banliFlow}\\\",xxlyId:\\\"${xxlyId}\\\",replyTime:\\\"${replyTime}\\\",replyPerson:\\\"${replyPerson}\\\",replyContent:\\\"${replyContent}\\\",replyType:\\\"${replyType}\\\"}]})\"}";
+        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"reply\\\").add({data:[{_id:\\\"${_id}\\\",replyTime:\\\"${replyTime}\\\",replyPerson:\\\"${replyPerson}\\\",replyContent:\\\"${replyContent}\\\",replyType:\\\"${replyType}\\\"}]})\"}";
         String t = replyContent.substring(0,1);
         String replyType;
         if (t.equals("A")){
@@ -55,20 +55,6 @@ public class wxUtil {
             replyType = "其他";
         }
         String str = temp.replace("${_id}", guid)
-                .replace("${HotLineWorkNumber}", HotLineWorkNumber)
-                .replace("${linkPerson}", linkPerson)
-                .replace("${linkPhone}", linkPhone)
-                .replace("${countNum}", countNum)
-                .replace("${writeTime}", writeTime)
-                .replace("${sendTime}", sendTime)
-                .replace("${urgencyDegree}", urgencyDegree)
-                .replace("${isSecret}", isSecret)
-                .replace("${isReply}", isReply)
-                .replace("${endDate}", endDate)
-                .replace("${content}", getSubStr(content))
-                .replace("${remark}", getSubStr(remark))
-                .replace("${banliFlow}", getSubStr(banliFlow))
-                .replace("${xxlyId}", xxlyId)
                 .replace("${replyTime}", replyTime)
                 .replace("${replyPerson}", replyPerson)
                 .replace("${replyContent}", getSubStr(replyContent))
@@ -76,25 +62,10 @@ public class wxUtil {
         return str;
     }
 
-    public static String getFallbackStr(String guid, String HotLineWorkNumber, String linkPerson, String linkPhone, String countNum, String writeTime, String sendTime,
-                                        String urgencyDegree, String isSecret, String isReply, String endDate, String content, String remark, String banliFlow, String xxlyId,
-                                        String fallbackTime, String fallbackPerson, String fallbackReason, String suggestion, String fallbackDepartment) {
-        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"fallback\\\").add({data:[{_id:\\\"${_id}\\\",HotLineWorkNumber:\\\"${HotLineWorkNumber}\\\",linkPerson:\\\"${linkPerson}\\\",linkPhone:\\\"${linkPhone}\\\",countNum:\\\"${countNum}\\\",writeTime:\\\"${writeTime}\\\",sendTime:\\\"${sendTime}\\\",urgencyDegree:\\\"${urgencyDegree}\\\",isSecret:\\\"${isSecret}\\\",isReply:\\\"${isReply}\\\",endDate:\\\"${endDate}\\\",content:\\\"${content}\\\",remark:\\\"${remark}\\\",banliFlow:\\\"${banliFlow}\\\",xxlyId:\\\"${xxlyId}\\\",fallbackTime:\\\"${fallbackTime}\\\",fallbackPerson:\\\"${fallbackPerson}\\\",fallbackReason:\\\"${fallbackReason}\\\",suggestion:\\\"${suggestion}\\\",fallbackDepartment:\\\"${fallbackDepartment}\\\"}]})\"}";
+    public static String getFallbackStr(String guid, String fallbackTime, String fallbackPerson, String fallbackReason, String suggestion, String fallbackDepartment) {
+//        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"fallback\\\").add({data:[{_id:\\\"${_id}\\\",HotLineWorkNumber:\\\"${HotLineWorkNumber}\\\",linkPerson:\\\"${linkPerson}\\\",linkPhone:\\\"${linkPhone}\\\",countNum:\\\"${countNum}\\\",writeTime:\\\"${writeTime}\\\",sendTime:\\\"${sendTime}\\\",urgencyDegree:\\\"${urgencyDegree}\\\",isSecret:\\\"${isSecret}\\\",isReply:\\\"${isReply}\\\",endDate:\\\"${endDate}\\\",content:\\\"${content}\\\",remark:\\\"${remark}\\\",banliFlow:\\\"${banliFlow}\\\",xxlyId:\\\"${xxlyId}\\\",fallbackTime:\\\"${fallbackTime}\\\",fallbackPerson:\\\"${fallbackPerson}\\\",fallbackReason:\\\"${fallbackReason}\\\",suggestion:\\\"${suggestion}\\\",fallbackDepartment:\\\"${fallbackDepartment}\\\"}]})\"}";
+        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"fallback\\\").add({data:[{_id:\\\"${_id}\\\",fallbackTime:\\\"${fallbackTime}\\\",fallbackPerson:\\\"${fallbackPerson}\\\",fallbackReason:\\\"${fallbackReason}\\\",suggestion:\\\"${suggestion}\\\",fallbackDepartment:\\\"${fallbackDepartment}\\\"}]})\"}";
         String str = temp.replace("${_id}", guid)
-                .replace("${HotLineWorkNumber}", HotLineWorkNumber)
-                .replace("${linkPerson}", linkPerson)
-                .replace("${linkPhone}", linkPhone)
-                .replace("${countNum}", countNum)
-                .replace("${writeTime}", writeTime)
-                .replace("${sendTime}", sendTime)
-                .replace("${urgencyDegree}", urgencyDegree)
-                .replace("${isSecret}", isSecret)
-                .replace("${isReply}", isReply)
-                .replace("${endDate}", endDate)
-                .replace("${content}", getSubStr(content))
-                .replace("${remark}", getSubStr(remark))
-                .replace("${banliFlow}", getSubStr(banliFlow))
-                .replace("${xxlyId}", xxlyId)
                 .replace("${fallbackTime}", fallbackTime)
                 .replace("${fallbackPerson}", fallbackPerson)
                 .replace("${fallbackReason}", getSubStr(fallbackReason))
@@ -159,15 +130,11 @@ public class wxUtil {
        添加Reply
        返回0表示正常
        */
-    public static String addReply(String token, String guid, String HotLineWorkNumber, String linkPerson, String linkPhone, String countNum, String writeTime, String sendTime,
-                                  String urgencyDegree, String isSecret, String isReply, String endDate, String content, String remark, String banliFlow, String xxlyId,
-                                  String replyTime, String replyPerson, String replyContent) throws Exception {
+    public static String addReply(String token, String guid, String replyTime, String replyPerson, String replyContent) throws Exception {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("text/plain");
-        String replyStr = getReplyStr(guid, HotLineWorkNumber, linkPerson, linkPhone, countNum, writeTime, sendTime,
-                urgencyDegree, isSecret, isReply, endDate, content, remark, banliFlow, xxlyId,
-                replyTime, replyPerson, replyContent);
+        String replyStr = getReplyStr(guid, replyTime, replyPerson, replyContent);
         RequestBody body = RequestBody.create(mediaType, replyStr);
         Request request = new Request.Builder()
                 .url("https://api.weixin.qq.com/tcb/databaseadd?access_token=" + token)
@@ -183,15 +150,11 @@ public class wxUtil {
        添加Fallback
        返回0表示正常
        */
-    public static String addFallback(String token, String guid, String HotLineWorkNumber, String linkPerson, String linkPhone, String countNum, String writeTime, String sendTime,
-                                     String urgencyDegree, String isSecret, String isReply, String endDate, String content, String remark, String banliFlow, String xxlyId,
-                                     String fallbackTime, String fallbackPerson, String fallbackReason, String suggestion, String fallbackDepartment) throws Exception {
+    public static String addFallback(String token, String guid, String fallbackTime, String fallbackPerson, String fallbackReason, String suggestion, String fallbackDepartment) throws Exception {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("text/plain");
-        String fallbackStr = getFallbackStr(guid, HotLineWorkNumber, linkPerson, linkPhone, countNum, writeTime, sendTime,
-                urgencyDegree, isSecret, isReply, endDate, content, remark, banliFlow, xxlyId,
-                fallbackTime, fallbackPerson, fallbackReason, suggestion, fallbackDepartment);
+        String fallbackStr = getFallbackStr(guid, fallbackTime, fallbackPerson, fallbackReason, suggestion, fallbackDepartment);
         RequestBody body = RequestBody.create(mediaType, fallbackStr);
         Request request = new Request.Builder()
                 .url("https://api.weixin.qq.com/tcb/databaseadd?access_token=" + token)
@@ -232,7 +195,8 @@ public class wxUtil {
         Runtime.getRuntime().exec("netsh interface set interface \"WLAN\" enabled");
         Thread.sleep(2000);
         String ip = getLocalHostIP();
-        if (ip.equals("192.168.2.80")){
+        String waiwangIP = PropKit.use("config-dev.txt").get("waiwangIP");
+        if (ip.equals(waiwangIP)){
             System.out.println("切换外网状态成功");
             return true;
         }else{
@@ -246,7 +210,8 @@ public class wxUtil {
         Runtime.getRuntime().exec("netsh interface set interface \"LAN\" enabled");
         Thread.sleep(2000);
         String ip = getLocalHostIP();
-        if (ip.equals("10.110.135.80")){
+        String neiwangIP = PropKit.use("config-dev.txt").get("neiwangIP");
+        if (ip.equals(neiwangIP)){
             System.out.println("切换内网状态成功");
             return true;
         }else{
@@ -256,10 +221,10 @@ public class wxUtil {
     }
 
     public static void main(String[] args) throws Exception{
-//        String token = getToken();
-//        String error = addUnhandle(token,"1","1","1","1","1","1","1","1","1","1","1","1","1","1","1");
-//        System.out.println(error);
-        String a = "11111111111111111111111111111111111111111";
-        System.out.println(getSubStr(a));
+        String token = getToken();
+//        String error = addReply(token,"1","1","1","1");
+        String error = addFallback(token,"1","1","1","1","1","1");
+        System.out.println(error);
+
     }
 }
