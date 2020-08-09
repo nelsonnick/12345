@@ -2,7 +2,6 @@ package com.wts.task;
 
 import com.jfinal.kit.PropKit;
 import com.wts.entity.model.Fallback;
-import com.wts.entity.model.Reply;
 import com.wts.service.FallbackService;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -143,7 +142,6 @@ public class Down12345Fallback implements Runnable{
 //            service.add(order_guid,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark,enclosure,fallback_reason,leader_opinions,suggestion,fallback_department,fallback_time,fallback_person,fallback_phone);
         }
     }
-
 
     public void send (Fallback fallback) throws Exception{
         Boolean network = goWaiWang();
