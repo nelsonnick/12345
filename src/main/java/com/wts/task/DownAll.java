@@ -14,7 +14,9 @@ import org.jsoup.select.Elements;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.wts.util.WordUtil.*;
@@ -26,17 +28,48 @@ import static com.wts.util.wxUtil.goNeiWang;
 
 public class DownAll  implements Runnable{
     String path2 = "D:\\当前下载\\";
+    List<Unhandle> unhandleList = new ArrayList<>();
+    List<Reply> replyList = new ArrayList<>();
+    List<Fallback> fallbackList = new ArrayList<>();
+
     @Override
     public void run() {
         String ip = getLocalHostIP();
         String neiwangIP = PropKit.use("config-dev.txt").get("neiwangIP");
         String cookie = PropKit.use("config-dev.txt").get("cookie");
-        if (ip.equals(neiwangIP)){
+        if (ip.equals(neiwangIP)) {
             unhandle(cookie);
             reply(cookie);
             fallback(cookie);
+            try {
+                Boolean network = goWaiWang();
+                if (network) {
+                    for (Unhandle u : unhandleList) {
+                        sendUnhandle(u);
+                    }
+                    for (Reply r : replyList) {
+                        sendReply(r);
+                    }
+                    for (Fallback f : fallbackList) {
+                        sendFallback(f);
+                    }
+                    for (int i = unhandleList.size() - 1; i >= 0; i--) {
+                        unhandleList.remove(i);
+                    }
+                    for (int i = replyList.size() - 1; i >= 0; i--) {
+                        replyList.remove(i);
+                    }
+                    for (int i = fallbackList.size() - 1; i >= 0; i--) {
+                        fallbackList.remove(i);
+                    }
+                }
+                goNeiWang();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
+
     public void unhandle(String cookie){
         String url = getPageUrl("0", "0");
         Document doc = getDoc(url,cookie);
@@ -205,37 +238,36 @@ public class DownAll  implements Runnable{
             String printerName = "HP LaserJet 1020";//打印机名包含字串
 //            String printerName = "HP LaserJet MFP M227-M231 PCL-6 (V4)";//打印机名包含字串
             printWord(path + order_code + "-" + order_guid + ".docx",printerName);
-            sendUnhandle(unhandle, service2);
+//            sendUnhandle(unhandle, service2);
+            unhandleList.add(unhandle);
         }
     }
 
-    public void sendUnhandle (Unhandle unhandle, AllworkService allworkService) throws Exception{
-        Boolean network = goWaiWang();
-        if (network) {
-            String token = getToken();
-            String errcode = addUnhandle(token,
-                    unhandle.get("order_guid"),
-                    unhandle.get("order_code"),
-                    unhandle.get("link_person"),
-                    unhandle.get("link_phone"),
-                    allworkService.findNumByPhone(unhandle.get("link_phone")),
-                    unhandle.get("write_time"),
-                    unhandle.get("send_time"),
-                    unhandle.get("urgency_degree"),
-                    unhandle.get("is_secret"),
-                    unhandle.get("is_reply"),
-                    unhandle.get("end_date"),
-                    unhandle.get("problem_description"),
-                    unhandle.get("transfer_opinion"),
-                    unhandle.get("transfer_process"),
-                    unhandle.get("accept_channel"));
-            if (errcode.equals("0")){
-                System.out.println("待办理工单已推送：" + unhandle.get("order_code") + "-" + unhandle.get("link_person"));
-            } else {
-                System.out.println("待办理工单推送失败：" + unhandle.get("order_code") + "-" + unhandle.get("link_person"));
-            }
+    public void sendUnhandle(Unhandle unhandle) throws Exception {
+        AllworkService allworkService = new AllworkService();
+        String token = getToken();
+        String errcode = addUnhandle(token,
+                unhandle.get("order_guid"),
+                unhandle.get("order_code"),
+                unhandle.get("link_person"),
+                unhandle.get("link_phone"),
+                allworkService.findNumByPhone(unhandle.get("link_phone")),
+                unhandle.get("write_time"),
+                unhandle.get("send_time"),
+                unhandle.get("urgency_degree"),
+                unhandle.get("is_secret"),
+                unhandle.get("is_reply"),
+                unhandle.get("end_date"),
+                unhandle.get("problem_description"),
+                unhandle.get("transfer_opinion"),
+                unhandle.get("transfer_process"),
+                unhandle.get("accept_channel"));
+        if (errcode.equals("0")) {
+            System.out.println("待办理工单已推送：" + unhandle.get("order_code") + "-" + unhandle.get("link_person"));
+        } else {
+            System.out.println("待办理工单推送失败：" + unhandle.get("order_code") + "-" + unhandle.get("link_person"));
         }
-        goNeiWang();
+
     }
 
     public void reply(String cookie){
@@ -370,27 +402,25 @@ public class DownAll  implements Runnable{
             String send_time = reply.get("send_time");
             System.out.println("已回复工单：" + order_code + "-" + link_person + "-" + send_time);
             service.add(reply);
-            sendReply(reply);
+            replyList.add(reply);
+//            sendReply(reply);
 //            service.add(order_guid,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark,enclosure, reply_type, finish_time, reply_satisfy, reply_day, reply_person, reply_phone, reply_content, reply_department, reply_time, subordinate_department, if_nodo, nodo_reason, reply_enclosure, reply_person2, reply_phone2);
         }
     }
 
     public void sendReply (Reply reply) throws Exception{
-        Boolean network = goWaiWang();
-        if (network) {
-            String token = getToken();
-            String errcode = addReply(token,
-                    reply.get("order_guid"),
-                    reply.get("reply_time"),
-                    reply.get("reply_person"),
-                    reply.get("reply_content"));
-            if (errcode.equals("0")){
-                System.out.println("已回复工单已推送：" + reply.get("order_code") + "-" + reply.get("link_person"));
-            } else {
-                System.out.println("已回复工单推送失败：" + reply.get("order_code") + "-" + reply.get("link_person"));
-            }
+        String token = getToken();
+        String errcode = addReply(token,
+                reply.get("order_guid"),
+                reply.get("reply_time"),
+                reply.get("reply_person"),
+                reply.get("reply_content"));
+        if (errcode.equals("0")) {
+            System.out.println("已回复工单已推送：" + reply.get("order_code") + "-" + reply.get("link_person"));
+        } else {
+            System.out.println("已回复工单推送失败：" + reply.get("order_code") + "-" + reply.get("link_person"));
         }
-        goNeiWang();
+
     }
 
     public void fallback(String cookie){
@@ -510,29 +540,26 @@ public class DownAll  implements Runnable{
             String send_time = fallback.get("send_time");
             System.out.println("已回退工单：" + order_code + "-" + link_person + "-" + send_time);
             service.add(fallback);
-            sendFallback(fallback);
+            fallbackList.add(fallback);
+//            sendFallback(fallback);
 //            service.add(order_guid,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark,enclosure,fallback_reason,leader_opinions,suggestion,fallback_department,fallback_time,fallback_person,fallback_phone);
         }
     }
 
     public void sendFallback (Fallback fallback) throws Exception{
-        Boolean network = goWaiWang();
-        if (network) {
-            String token = getToken();
-            String errcode = addFallback(token,
-                    fallback.get("order_guid"),
-                    fallback.get("fallback_time"),
-                    fallback.get("fallback_person"),
-                    fallback.get("fallback_reason"),
-                    fallback.get("suggestion"),
-                    fallback.get("fallback_department"));
-            if (errcode.equals("0")){
-                System.out.println("已回退工单已推送：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
-            } else {
-                System.out.println("已回退工单推送失败：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
-            }
+        String token = getToken();
+        String errcode = addFallback(token,
+                fallback.get("order_guid"),
+                fallback.get("fallback_time"),
+                fallback.get("fallback_person"),
+                fallback.get("fallback_reason"),
+                fallback.get("suggestion"),
+                fallback.get("fallback_department"));
+        if (errcode.equals("0")) {
+            System.out.println("已回退工单已推送：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
+        } else {
+            System.out.println("已回退工单推送失败：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
         }
-        goNeiWang();
     }
 
 }

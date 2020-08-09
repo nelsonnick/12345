@@ -228,7 +228,7 @@ public class Down12345Unhandle implements Runnable{
             String printerName = "HP LaserJet 1020";//打印机名包含字串
 //            String printerName = "HP LaserJet MFP M227-M231 PCL-6 (V4)";//打印机名包含字串
             printWord(path + order_code + "-" + order_guid + ".docx",printerName);
-            send(unhandle, service2);
+//            send(unhandle, service2);
         }
     }
 

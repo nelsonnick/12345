@@ -209,7 +209,7 @@ public class wxUtil {
     public static Boolean goWaiWang() throws Exception {
         Runtime.getRuntime().exec("netsh interface set interface \"LAN\" disabled");
         Runtime.getRuntime().exec("netsh interface set interface \"WLAN\" enabled");
-        Thread.sleep(2000);
+        Thread.sleep(3000);
         String ip = getLocalHostIP();
         String waiwangIP = PropKit.use("config-dev.txt").get("waiwangIP");
         if (ip.equals(waiwangIP)){
@@ -224,7 +224,7 @@ public class wxUtil {
     public static Boolean goNeiWang() throws Exception {
         Runtime.getRuntime().exec("netsh interface set interface \"WLAN\" disabled");
         Runtime.getRuntime().exec("netsh interface set interface \"LAN\" enabled");
-        Thread.sleep(2000);
+        Thread.sleep(3000);
         String ip = getLocalHostIP();
         String neiwangIP = PropKit.use("config-dev.txt").get("neiwangIP");
         if (ip.equals(neiwangIP)){
