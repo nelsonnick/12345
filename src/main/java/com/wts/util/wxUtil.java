@@ -64,13 +64,29 @@ public class wxUtil {
 
     public static String getFallbackStr(String guid, String fallbackTime, String fallbackPerson, String fallbackReason, String suggestion, String fallbackDepartment) {
 //        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"fallback\\\").add({data:[{_id:\\\"${_id}\\\",HotLineWorkNumber:\\\"${HotLineWorkNumber}\\\",linkPerson:\\\"${linkPerson}\\\",linkPhone:\\\"${linkPhone}\\\",countNum:\\\"${countNum}\\\",writeTime:\\\"${writeTime}\\\",sendTime:\\\"${sendTime}\\\",urgencyDegree:\\\"${urgencyDegree}\\\",isSecret:\\\"${isSecret}\\\",isReply:\\\"${isReply}\\\",endDate:\\\"${endDate}\\\",content:\\\"${content}\\\",remark:\\\"${remark}\\\",banliFlow:\\\"${banliFlow}\\\",xxlyId:\\\"${xxlyId}\\\",fallbackTime:\\\"${fallbackTime}\\\",fallbackPerson:\\\"${fallbackPerson}\\\",fallbackReason:\\\"${fallbackReason}\\\",suggestion:\\\"${suggestion}\\\",fallbackDepartment:\\\"${fallbackDepartment}\\\"}]})\"}";
-        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"fallback\\\").add({data:[{_id:\\\"${_id}\\\",fallbackTime:new Date(\\\"${fallbackTime}\\\"),fallbackPerson:\\\"${fallbackPerson}\\\",fallbackReason:\\\"${fallbackReason}\\\",suggestion:\\\"${suggestion}\\\",fallbackDepartment:\\\"${fallbackDepartment}\\\"}]})\"}";
+        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"fallback\\\").add({data:[{_id:\\\"${_id}\\\",fallbackTime:new Date(\\\"${fallbackTime}\\\"),fallbackPerson:\\\"${fallbackPerson}\\\",fallbackReason:\\\"${fallbackReason}\\\",suggestion:\\\"${suggestion}\\\",fallbackDepartment:\\\"${fallbackDepartment}\\\",fallbackType:\\\"${fallbackType}\\\"}]})\"}";
+        String t = fallbackReason.substring(0,1);
+        String fallbackType;
+        if (t.equals("A")){
+            fallbackType = "其他劳动";
+        } else if (t.equals("B")){
+            fallbackType = "区住建局";
+        } else if (t.equals("C")){
+            fallbackType = "区社保办";
+        } else if (t.equals("D")){
+            fallbackType = "市人社局";
+        } else if (t.equals("E")){
+            fallbackType = "各街道办";
+        } else {
+            fallbackType = "其他部门";
+        }
         String str = temp.replace("${_id}", guid)
                 .replace("${fallbackTime}", fallbackTime)
                 .replace("${fallbackPerson}", fallbackPerson)
                 .replace("${fallbackReason}", getSubStr(fallbackReason))
                 .replace("${suggestion}", getSubStr(suggestion))
-                .replace("${fallbackDepartment}", fallbackDepartment);
+                .replace("${fallbackDepartment}", fallbackDepartment)
+                .replace("${fallbackType}", fallbackType);
         return str;
     }
 

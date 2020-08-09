@@ -248,9 +248,9 @@ public class Down12345Unhandle implements Runnable{
                     unhandle.get("is_secret"),
                     unhandle.get("is_reply"),
                     unhandle.get("end_date"),
-                    unhandle.get("problem_description").toString().substring(0,500),
-                    unhandle.get("transfer_opinion").toString().substring(0,500),
-                    unhandle.get("transfer_process").toString().substring(0,500),
+                    unhandle.get("problem_description"),
+                    unhandle.get("transfer_opinion"),
+                    unhandle.get("transfer_process"),
                     unhandle.get("accept_channel"));
             if (errcode.equals("0")){
                 System.out.println("待办理工单已推送：" + unhandle.get("order_code") + "-" + unhandle.get("link_person"));
@@ -260,6 +260,7 @@ public class Down12345Unhandle implements Runnable{
         }
         goNeiWang();
     }
+
     public static void main(String[] args) {
         String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid={50b948eb-cdee-44f4-b795-8a3d5423fd38}&GUID={a13bcd62-e598-4753-aa04-701ff8442131}&IsZDDB=&xxlyid=1";
         String cookie = PropKit.use("config-dev.txt").get("cookie");

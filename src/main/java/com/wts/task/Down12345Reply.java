@@ -2,6 +2,7 @@ package com.wts.task;
 
 import com.jfinal.kit.PropKit;
 import com.wts.entity.model.Reply;
+import com.wts.service.AllworkService;
 import com.wts.service.ReplyService;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -12,6 +13,8 @@ import static com.wts.util.WordUtil.getUrgencyDegree;
 import static com.wts.util.others.IpKit.getLocalHostIP;
 import static com.wts.util.util12345.getDoc;
 import static com.wts.util.util12345.getPageUrl;
+import static com.wts.util.wxUtil.*;
+import static com.wts.util.wxUtil.goNeiWang;
 
 public class Down12345Reply implements Runnable{
 
@@ -156,6 +159,24 @@ public class Down12345Reply implements Runnable{
             service.add(reply);
 //            service.add(order_guid,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark,enclosure, reply_type, finish_time, reply_satisfy, reply_day, reply_person, reply_phone, reply_content, reply_department, reply_time, subordinate_department, if_nodo, nodo_reason, reply_enclosure, reply_person2, reply_phone2);
         }
+    }
+
+    public void send (Reply reply) throws Exception{
+        Boolean network = goWaiWang();
+        if (network) {
+            String token = getToken();
+            String errcode = addReply(token,
+                    reply.get("order_guid"),
+                    reply.get("reply_time"),
+                    reply.get("reply_person"),
+                    reply.get("reply_content"));
+            if (errcode.equals("0")){
+                System.out.println("已回复工单已推送：" + reply.get("order_code") + "-" + reply.get("link_person"));
+            } else {
+                System.out.println("已回复工单推送失败：" + reply.get("order_code") + "-" + reply.get("link_person"));
+            }
+        }
+        goNeiWang();
     }
 
 }

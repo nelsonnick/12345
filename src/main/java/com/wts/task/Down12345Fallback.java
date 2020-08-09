@@ -2,6 +2,7 @@ package com.wts.task;
 
 import com.jfinal.kit.PropKit;
 import com.wts.entity.model.Fallback;
+import com.wts.entity.model.Reply;
 import com.wts.service.FallbackService;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -11,6 +12,8 @@ import static com.wts.util.WordUtil.*;
 import static com.wts.util.others.IpKit.getLocalHostIP;
 import static com.wts.util.util12345.getDoc;
 import static com.wts.util.util12345.getPageUrl;
+import static com.wts.util.wxUtil.*;
+import static com.wts.util.wxUtil.goNeiWang;
 
 public class Down12345Fallback implements Runnable{
 
@@ -141,5 +144,25 @@ public class Down12345Fallback implements Runnable{
         }
     }
 
+
+    public void send (Fallback fallback) throws Exception{
+        Boolean network = goWaiWang();
+        if (network) {
+            String token = getToken();
+            String errcode = addFallback(token,
+                    fallback.get("order_guid"),
+                    fallback.get("fallback_time"),
+                    fallback.get("fallback_person"),
+                    fallback.get("fallback_reason"),
+                    fallback.get("suggestion"),
+                    fallback.get("fallback_department"));
+            if (errcode.equals("0")){
+                System.out.println("已回退工单已推送：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
+            } else {
+                System.out.println("已回退工单推送失败：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
+            }
+        }
+        goNeiWang();
+    }
 
 }
