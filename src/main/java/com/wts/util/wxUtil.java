@@ -221,6 +221,7 @@ public class wxUtil {
         }
     }
 
+
     public static Boolean goNeiWang() throws Exception {
         Runtime.getRuntime().exec("netsh interface set interface \"WLAN\" disabled");
         Runtime.getRuntime().exec("netsh interface set interface \"LAN\" enabled");
