@@ -39,33 +39,35 @@ public class DownAll  implements Runnable{
         String cookie = PropKit.use("config-dev.txt").get("cookie");
         if (ip.equals(neiwangIP)) {
             unhandle(cookie);
-            reply(cookie);
-            fallback(cookie);
-            try {
-                Boolean network = goWaiWang();
-                if (network) {
-                    for (Unhandle u : unhandleList) {
-                        sendUnhandle(u);
-                    }
+//            reply(cookie);
+//            fallback(cookie);
+            if (unhandleList.size()!=0 || replyList.size()!=0 || fallbackList.size()!=0) {
+                try {
+                    Boolean network = goWaiWang();
+                    if (network) {
+                        for (Unhandle u : unhandleList) {
+                            sendUnhandle(u);
+                        }
                     for (Reply r : replyList) {
                         sendReply(r);
                     }
                     for (Fallback f : fallbackList) {
                         sendFallback(f);
                     }
-                    for (int i = unhandleList.size() - 1; i >= 0; i--) {
-                        unhandleList.remove(i);
-                    }
+                        for (int i = unhandleList.size() - 1; i >= 0; i--) {
+                            unhandleList.remove(i);
+                        }
                     for (int i = replyList.size() - 1; i >= 0; i--) {
                         replyList.remove(i);
                     }
                     for (int i = fallbackList.size() - 1; i >= 0; i--) {
                         fallbackList.remove(i);
                     }
+                    }
+                    goNeiWang();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                goNeiWang();
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         }
     }
@@ -343,7 +345,7 @@ public class DownAll  implements Runnable{
         String subordinate_department = table.getElementsByTag("tr").get(6).getElementsByTag("td").get(1).text();//下级办理单位
         String if_nodo = table.getElementsByTag("tr").get(7).getElementsByTag("td").get(1).text();//不再办理
         String nodo_reason = table.getElementsByTag("tr").get(8).getElementsByTag("td").get(1).text();//不再办理原因
-        String reply_enclosure = table.getElementsByTag("tr").get(9).getElementsByTag("td").get(1).text();//附件
+        String reply_enclosure = table.getElementsByTag("tr").get(9).getElementsByTag("td").get(1).text().substring(0,0);//附件
         String reply_person2 = table.getElementsByTag("tr").get(10).getElementsByTag("td").get(1).text();//回复联系人
         String reply_phone2 = table.getElementsByTag("tr").get(10).getElementsByTag("td").get(3).text();//回复电话
         Reply reply = new Reply();
@@ -463,8 +465,8 @@ public class DownAll  implements Runnable{
         String suggestion = table.getElementsByTag("tr").get(3).getElementsByTag("td").get(1).text();//建议
         String fallback_department = table.getElementsByTag("tr").get(4).getElementsByTag("td").get(1).text();//回退部门
         String fallback_time = table.getElementsByTag("tr").get(4).getElementsByTag("td").get(3).text();//回退时间
-        String fallback_person = table.getElementsByTag("tr").get(5).getElementsByTag("td").get(1).text();//回退人
-        String fallback_phone = table.getElementsByTag("tr").get(5).getElementsByTag("td").get(3).text();//回退联系电话
+        String fallback_person = table.getElementsByTag("tr").get(6).getElementsByTag("td").get(1).text();//回退人
+        String fallback_phone = table.getElementsByTag("tr").get(6).getElementsByTag("td").get(3).text();//回退联系电话
         String order_state = tbody.getElementById("gdzt").text();//工单状态
         String order_code = tbody.getElementById("HotLineWorkNumber").text();//工单编号
         String link_person = tbody.getElementById("linkPerson").text();//联系人

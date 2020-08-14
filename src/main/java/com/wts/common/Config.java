@@ -94,9 +94,9 @@ public class Config extends JFinalConfig {
 		// 所有映射在 MappingKit 中自动化搞定
 		_MappingKit.mapping(arp);
 		me.add(arp);
-		//配置任务调度插件
+		// 配置任务调度插件
 		Cron4jPlugin cp = new Cron4jPlugin();
-		cp.addTask("*/2 * * * *", new DownAll());//每2分钟下载一次未办理工单+回复工单+回退工单
+		cp.addTask("*/1 * * * *", new DownAll());//每1分钟下载一次未办理工单
 //		cp.addTask("*/1 * * * *", new Down12345Unhandle());//每1分钟下载一次未办理工单
 //		cp.addTask("* */1 * * *", new Down12345Fallback()); //每1小时下载一次回退工单
 //		cp.addTask("* */1 * * *", new Down12345Reply()); //每1小时下载一次回复工单

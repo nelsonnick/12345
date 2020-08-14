@@ -11,9 +11,9 @@ public class wxUtil {
 
     public static String getSubStr(String str){
         if(str.length()<500){
-            return str;
+            return str.replace("\n","").replace("\r","").replace("\t","");
         }else{
-            return str.substring(0, 499);
+            return str.substring(0, 499).replace("\n","").replace("\r","").replace("\t","");
         }
     }
 
@@ -139,6 +139,11 @@ public class wxUtil {
                 .build();
         Response response = client.newCall(request).execute();
         String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
+        if (!errcode.equals("0")){
+            System.out.println(unhandleStr);
+            System.out.println(errcode);
+            System.out.println(response.body().string());
+        }
         return errcode;
     }
 
@@ -209,7 +214,7 @@ public class wxUtil {
     public static Boolean goWaiWang() throws Exception {
         Runtime.getRuntime().exec("netsh interface set interface \"LAN\" disabled");
         Runtime.getRuntime().exec("netsh interface set interface \"WLAN\" enabled");
-        Thread.sleep(3000);
+        Thread.sleep(10000);
         String ip = getLocalHostIP();
         String waiwangIP = PropKit.use("config-dev.txt").get("waiwangIP");
         if (ip.equals(waiwangIP)){
@@ -225,7 +230,7 @@ public class wxUtil {
     public static Boolean goNeiWang() throws Exception {
         Runtime.getRuntime().exec("netsh interface set interface \"WLAN\" disabled");
         Runtime.getRuntime().exec("netsh interface set interface \"LAN\" enabled");
-        Thread.sleep(3000);
+        Thread.sleep(10000);
         String ip = getLocalHostIP();
         String neiwangIP = PropKit.use("config-dev.txt").get("neiwangIP");
         if (ip.equals(neiwangIP)){
@@ -238,10 +243,15 @@ public class wxUtil {
     }
 
     public static void main(String[] args) throws Exception{
-        String token = getToken();
-//        String error = addUnhandle(token,"2","1","1","1","1","1","1","1","1","1","1","1","1","1","1");
-//        String error = addReply(token,"1","1","1","1");
-        String error = addFallback(token,"2","1","1","1","1","1");
-//        System.out.println(error);
+        Runtime.getRuntime().exec("netsh interface set interface \"LAN\" disabled");
+        Runtime.getRuntime().exec("netsh interface set interface \"WLAN\" enabled");
+        Thread.sleep(6000);
+        String ip = getLocalHostIP();
+        String waiwangIP = PropKit.use("config-dev.txt").get("waiwangIP");
+        if (ip.equals(waiwangIP)){
+            System.out.println("切换外网状态成功");
+        }else{
+            System.out.println("切换外网状态失败");
+        }
     }
 }
