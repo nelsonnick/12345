@@ -5,6 +5,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.wts.entity.model.Unhandle;
 
 import java.util.Date;
+import java.util.List;
 
 public class UnhandleService {
 
@@ -12,6 +13,10 @@ public class UnhandleService {
 
 	public Page<Unhandle> paginate(int pageNumber, int pageSize) {
 		return dao.paginate(pageNumber, pageSize, "select *", "from undo order by id asc");
+	}
+
+	public List<Unhandle> findAll(){
+		return dao.findAll();
 	}
 
 	public Unhandle findById(int id) {

@@ -39,8 +39,8 @@ public class DownAll  implements Runnable{
         String cookie = PropKit.use("config-dev.txt").get("cookie");
         if (ip.equals(neiwangIP)) {
             unhandle(cookie);
-//            reply(cookie);
-//            fallback(cookie);
+            reply(cookie);
+            fallback(cookie);
             if (unhandleList.size()!=0 || replyList.size()!=0 || fallbackList.size()!=0) {
                 try {
                     Boolean network = goWaiWang();
@@ -246,14 +246,12 @@ public class DownAll  implements Runnable{
     }
 
     public void sendUnhandle(Unhandle unhandle) throws Exception {
-        AllworkService allworkService = new AllworkService();
         String token = getToken();
         String errcode = addUnhandle(token,
                 unhandle.get("order_guid"),
                 unhandle.get("order_code"),
                 unhandle.get("link_person"),
                 unhandle.get("link_phone"),
-                allworkService.findNumByPhone(unhandle.get("link_phone")),
                 unhandle.get("write_time"),
                 unhandle.get("send_time"),
                 unhandle.get("urgency_degree"),

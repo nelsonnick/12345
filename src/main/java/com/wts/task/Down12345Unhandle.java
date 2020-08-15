@@ -228,11 +228,11 @@ public class Down12345Unhandle implements Runnable{
             String printerName = "HP LaserJet 1020";//打印机名包含字串
 //            String printerName = "HP LaserJet MFP M227-M231 PCL-6 (V4)";//打印机名包含字串
             printWord(path + order_code + "-" + order_guid + ".docx",printerName);
-//            send(unhandle, service2);
+//            send(unhandle);
         }
     }
 
-    public void send (Unhandle unhandle, AllworkService allworkService) throws Exception{
+    public void send (Unhandle unhandle) throws Exception{
         Boolean network = goWaiWang();
         if (network) {
             String token = getToken();
@@ -241,7 +241,6 @@ public class Down12345Unhandle implements Runnable{
                     unhandle.get("order_code"),
                     unhandle.get("link_person"),
                     unhandle.get("link_phone"),
-                    allworkService.findNumByPhone(unhandle.get("link_phone")),
                     unhandle.get("write_time"),
                     unhandle.get("send_time"),
                     unhandle.get("urgency_degree"),
