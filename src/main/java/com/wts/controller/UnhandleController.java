@@ -68,7 +68,7 @@ public class UnhandleController extends Controller {
         render("/detail.html");
     }
 
-    public void saveToWeixin() throws Exception {
+    public void w() throws Exception {
         String token = getToken();
         List<Record> unhandleList = Db.find("SELECT order_guid,order_code,link_person,link_phone,send_time,urgency_degree,is_secret," +
                 "is_reply,end_date,problem_description,transfer_opinion,transfer_process,accept_channel FROM unhandle");
