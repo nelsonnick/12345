@@ -2,7 +2,7 @@
 jdbcUrl = jdbc:mysql://localhost/12345?characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull
 user = root
 password = root
-devMode = true
+devMode = false
 printer = HP LaserJet 1020
 neiwangIP = 10.110.135.181
 waiwangIP = 192.168.0.106

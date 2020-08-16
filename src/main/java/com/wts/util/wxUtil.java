@@ -2,7 +2,12 @@ package com.wts.util;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.kit.PropKit;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Record;
 import okhttp3.*;
+
+import java.io.*;
+import java.util.List;
 
 import static com.wts.util.others.IpKit.getLocalHostIP;
 
@@ -11,9 +16,9 @@ public class wxUtil {
 
     public static String getSubStr(String str){
         if(str.length()<500){
-            return str.replace("\n","").replace("\r","").replace("\t","");
+            return str.replace("\n","").replace("\r","").replace("\t","").replace("\"","").replace("\\","");
         }else{
-            return str.substring(0, 499).replace("\n","").replace("\r","").replace("\t","");
+            return str.substring(0, 499).replace("\n","").replace("\r","").replace("\t","").replace("\"","").replace("\\","");
         }
     }
 
@@ -252,15 +257,6 @@ public class wxUtil {
     }
 
     public static void main(String[] args) throws Exception{
-        Runtime.getRuntime().exec("netsh interface set interface \"LAN\" disabled");
-        Runtime.getRuntime().exec("netsh interface set interface \"WLAN\" enabled");
-        Thread.sleep(6000);
-        String ip = getLocalHostIP();
-        String waiwangIP = PropKit.use("config-dev.txt").get("waiwangIP");
-        if (ip.equals(waiwangIP)){
-            System.out.println("切换外网状态成功");
-        }else{
-            System.out.println("切换外网状态失败");
-        }
+
     }
 }
