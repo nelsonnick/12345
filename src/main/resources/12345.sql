@@ -146,6 +146,8 @@ CREATE TABLE `allwork`
     `link_address`        varchar(255) CHARACTER SET utf8  NULL COMMENT '联系地址',
     `send_time`           varchar(50) CHARACTER SET utf8   NULL COMMENT '发送时间',
     `problem_description` varchar(5220) CHARACTER SET utf8 NULL COMMENT '问题描述',
+    `transfer_opinion`    varchar(5220) CHARACTER SET utf8 NULL COMMENT '转办意见',
+    `transfer_process`    varchar(5220) CHARACTER SET utf8 NULL COMMENT '转办流程',
     PRIMARY KEY (`id`)
 );
 

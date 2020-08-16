@@ -42,8 +42,8 @@ public class UnhandleController extends Controller {
                     + "\",\"HotLineWorkNumber\":\"" + unhandle.get("order_code")
                     + "\",\"linkPerson\":\"" + unhandle.get("link_person")
                     + "\",\"linkPhone\":\"" + unhandle.get("link_phone")
-                    + "\",\"writeTime\":{\"$date\":\"" + getTimeStr(unhandle.get("write_time"))
-                    + "\"},\"sendTime\":{\"$date\":\"" + getTimeStr(unhandle.get("send_time"))
+//                    + "\",\"writeTime\":{\"$date\":\"" + getTimeStr(unhandle.get("write_time"))
+                    + "\",\"sendTime\":{\"$date\":\"" + getTimeStr(unhandle.get("send_time"))
                     + "\"},\"urgencyDegree\":\"" + unhandle.get("urgency_degree")
                     + "\",\"isSecret\":\"" + unhandle.get("is_secret")
                     + "\",\"isReply\":\"" + unhandle.get("is_reply")
@@ -70,7 +70,7 @@ public class UnhandleController extends Controller {
 
     public void saveToWeixin() throws Exception {
         String token = getToken();
-        List<Record> unhandleList = Db.find("SELECT order_guid,order_code,link_person,link_phone,write_time,send_time,urgency_degree,is_secret," +
+        List<Record> unhandleList = Db.find("SELECT order_guid,order_code,link_person,link_phone,send_time,urgency_degree,is_secret," +
                 "is_reply,end_date,problem_description,transfer_opinion,transfer_process,accept_channel FROM unhandle");
 //		List<Unhandle> unhandleList = service.findAll();
         for (Record unhandle : unhandleList) {
@@ -79,7 +79,6 @@ public class UnhandleController extends Controller {
                     unhandle.get("order_code"),
                     unhandle.get("link_person"),
                     unhandle.get("link_phone"),
-                    unhandle.get("write_time"),
                     unhandle.get("send_time"),
                     unhandle.get("urgency_degree"),
                     unhandle.get("is_secret"),

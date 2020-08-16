@@ -41,7 +41,7 @@ public class AllworkService {
 		}
 		allwork.save();
 	}
-	public void add(String file_guid, String order_guid,String order_code,String link_person,String link_phone,String link_address,String send_time,String problem_description){
+	public void add(String file_guid, String order_guid,String order_code,String link_person,String link_phone,String link_address,String send_time,String problem_description,String transfer_opinion,String transfer_process){
 		Allwork allwork = new Allwork();
 		String pd = "";
 		if (problem_description.length()>5000){
@@ -55,6 +55,8 @@ public class AllworkService {
 				.set("link_address",link_address)
 				.set("send_time",send_time)
 				.set("problem_description",pd)
+				.set("transfer_opinion",transfer_opinion)
+				.set("transfer_process",transfer_process)
 				.save();
 	}
 }

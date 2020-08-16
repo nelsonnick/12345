@@ -134,5 +134,32 @@ public abstract class BaseAllwork<M extends BaseAllwork<M>> extends Model<M> imp
 	public java.lang.String getProblemDescription() {
 		return getStr("problem_description");
 	}
+	/**
+	 * 转办意见
+	 */
+	public void setTransferOpinion(java.lang.String transferOpinion) {
+		set("transfer_opinion", transferOpinion);
+	}
+
+	/**
+	 * 转办意见
+	 */
+	public java.lang.String getTransferOpinion() {
+		return getStr("transfer_opinion");
+	}
+
+	/**
+	 * 转办流程
+	 */
+	public void setTransferProcess(java.lang.String transferProcess) {
+		set("transfer_process", transferProcess);
+	}
+
+	/**
+	 * 转办流程
+	 */
+	public java.lang.String getTransferProcess() {
+		return getStr("transfer_process");
+	}
 
 }

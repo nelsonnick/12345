@@ -2,12 +2,8 @@ package com.wts.util;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.kit.PropKit;
-import com.jfinal.plugin.activerecord.Db;
-import com.jfinal.plugin.activerecord.Record;
 import okhttp3.*;
 
-import java.io.*;
-import java.util.List;
 
 import static com.wts.util.others.IpKit.getLocalHostIP;
 
@@ -22,14 +18,13 @@ public class wxUtil {
         }
     }
 
-    public static String getUnhandleStr(String guid, String HotLineWorkNumber, String linkPerson, String linkPhone, String writeTime, String sendTime,
+    public static String getUnhandleStr(String guid, String HotLineWorkNumber, String linkPerson, String linkPhone, String sendTime,
                                         String urgencyDegree, String isSecret, String isReply, String endDate, String content, String remark, String banliFlow, String xxlyId) {
-        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"unhandle\\\").add({data:[{_id:\\\"${_id}\\\",HotLineWorkNumber:\\\"${HotLineWorkNumber}\\\",linkPerson:\\\"${linkPerson}\\\",linkPhone:\\\"${linkPhone}\\\",writeTime:new Date(\\\"${writeTime}\\\"),sendTime:new Date(\\\"${sendTime}\\\"),urgencyDegree:\\\"${urgencyDegree}\\\",isSecret:\\\"${isSecret}\\\",isReply:\\\"${isReply}\\\",endDate:\\\"${endDate}\\\",content:\\\"${content}\\\",remark:\\\"${remark}\\\",banliFlow:\\\"${banliFlow}\\\",xxlyId:\\\"${xxlyId}\\\"}]})\"}";
+        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"unhandle\\\").add({data:[{_id:\\\"${_id}\\\",HotLineWorkNumber:\\\"${HotLineWorkNumber}\\\",linkPerson:\\\"${linkPerson}\\\",linkPhone:\\\"${linkPhone}\\\",sendTime:new Date(\\\"${sendTime}\\\"),urgencyDegree:\\\"${urgencyDegree}\\\",isSecret:\\\"${isSecret}\\\",isReply:\\\"${isReply}\\\",endDate:\\\"${endDate}\\\",content:\\\"${content}\\\",remark:\\\"${remark}\\\",banliFlow:\\\"${banliFlow}\\\",xxlyId:\\\"${xxlyId}\\\"}]})\"}";
         String str = temp.replace("${_id}", guid)
                 .replace("${HotLineWorkNumber}", HotLineWorkNumber)
                 .replace("${linkPerson}", linkPerson)
                 .replace("${linkPhone}", linkPhone)
-                .replace("${writeTime}", writeTime.replace("/","-"))
                 .replace("${sendTime}", sendTime.replace("/","-"))
                 .replace("${urgencyDegree}", urgencyDegree)
                 .replace("${isSecret}", isSecret)
@@ -128,12 +123,12 @@ public class wxUtil {
        添加Unhandle
        返回0表示正常
        */
-    public static String addUnhandle(String token, String guid, String HotLineWorkNumber, String linkPerson, String linkPhone, String writeTime, String sendTime,
+    public static String addUnhandle(String token, String guid, String HotLineWorkNumber, String linkPerson, String linkPhone, String sendTime,
                                      String urgencyDegree, String isSecret, String isReply, String endDate, String content, String remark, String banliFlow, String xxlyId) throws Exception {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("text/plain");
-        String unhandleStr = getUnhandleStr(guid, HotLineWorkNumber, linkPerson, linkPhone, writeTime, sendTime,
+        String unhandleStr = getUnhandleStr(guid, HotLineWorkNumber, linkPerson, linkPhone, sendTime,
                 urgencyDegree, isSecret, isReply, endDate, content, remark, banliFlow, xxlyId);
         RequestBody body = RequestBody.create(mediaType, unhandleStr);
         Request request = new Request.Builder()

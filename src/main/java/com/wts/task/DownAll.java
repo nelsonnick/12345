@@ -205,7 +205,7 @@ public class DownAll  implements Runnable{
             String transfer_process = unhandle.get("transfer_process");
             String remark = unhandle.get("remark");
             String enclosure = unhandle.get("enclosure");
-            service2.add(file_guid, order_guid,order_code,link_person,link_phone,link_address,send_time,problem_description);
+            service2.add(file_guid, order_guid,order_code,link_person,link_phone,link_address,send_time,problem_description,transfer_opinion,transfer_process);
             Map<String, String> map = new HashMap<String, String>();
             map.put("accept_person_code",accept_person_code);
             map.put("end_date",end_date);
@@ -252,7 +252,6 @@ public class DownAll  implements Runnable{
                 unhandle.get("order_code"),
                 unhandle.get("link_person"),
                 unhandle.get("link_phone"),
-                unhandle.get("write_time"),
                 unhandle.get("send_time"),
                 unhandle.get("urgency_degree"),
                 unhandle.get("is_secret"),
