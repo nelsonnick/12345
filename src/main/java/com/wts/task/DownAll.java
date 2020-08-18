@@ -48,21 +48,21 @@ public class DownAll  implements Runnable{
                         for (Unhandle u : unhandleList) {
                             sendUnhandle(u);
                         }
-                    for (Reply r : replyList) {
-                        sendReply(r);
-                    }
-                    for (Fallback f : fallbackList) {
-                        sendFallback(f);
-                    }
+                        for (Reply r : replyList) {
+                            sendReply(r);
+                        }
+                        for (Fallback f : fallbackList) {
+                            sendFallback(f);
+                        }
                         for (int i = unhandleList.size() - 1; i >= 0; i--) {
                             unhandleList.remove(i);
                         }
-                    for (int i = replyList.size() - 1; i >= 0; i--) {
-                        replyList.remove(i);
-                    }
-                    for (int i = fallbackList.size() - 1; i >= 0; i--) {
-                        fallbackList.remove(i);
-                    }
+                        for (int i = replyList.size() - 1; i >= 0; i--) {
+                            replyList.remove(i);
+                        }
+                        for (int i = fallbackList.size() - 1; i >= 0; i--) {
+                            fallbackList.remove(i);
+                        }
                     }
                     goNeiWang();
                 } catch (Exception e) {
@@ -88,8 +88,8 @@ public class DownAll  implements Runnable{
                 file_guid = value.substring(8, 46);
                 order_guid = value.substring(51, 89);
             }
-            Unhandle unhandle = getUnhandle(file_guid, order_guid, cookie);
             try {
+                Unhandle unhandle = getUnhandle(file_guid, order_guid, cookie);
                 saveUnhandle(unhandle);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -285,8 +285,8 @@ public class DownAll  implements Runnable{
                 file_guid = value.substring(8, 46);
                 order_guid = value.substring(51, 89);
             }
-            Reply reply = getReply(file_guid, order_guid, cookie);
             try {
+                Reply reply = getReply(file_guid, order_guid, cookie);
                 saveReply(reply);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -392,7 +392,7 @@ public class DownAll  implements Runnable{
 
     }
 
-    public void saveReply(Reply reply) throws Exception {
+    public void saveReply(Reply reply){
         ReplyService service = new ReplyService();
         if (service.findNumByGUID(reply.get("order_guid"))==0){
             String order_guid = reply.get("order_guid");
@@ -438,8 +438,8 @@ public class DownAll  implements Runnable{
                 file_guid = value.substring(8, 46);
                 order_guid = value.substring(51, 89);
             }
-            Fallback fallback = getFallback(file_guid, order_guid, cookie);
             try {
+                Fallback fallback = getFallback(file_guid, order_guid, cookie);
                 saveFallback(fallback);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -464,6 +464,7 @@ public class DownAll  implements Runnable{
         String fallback_time = table.getElementsByTag("tr").get(4).getElementsByTag("td").get(3).text();//回退时间
         String fallback_person = table.getElementsByTag("tr").get(6).getElementsByTag("td").get(1).text();//回退人
         String fallback_phone = table.getElementsByTag("tr").get(6).getElementsByTag("td").get(3).text();//回退联系电话
+
         String order_state = tbody.getElementById("gdzt").text();//工单状态
         String order_code = tbody.getElementById("HotLineWorkNumber").text();//工单编号
         String link_person = tbody.getElementById("linkPerson").text();//联系人
@@ -530,7 +531,7 @@ public class DownAll  implements Runnable{
 
     }
 
-    public void saveFallback(Fallback fallback) throws Exception{
+    public void saveFallback(Fallback fallback){
         FallbackService service = new FallbackService();
         if (service.findNumByGUID(fallback.get("order_guid"))==0){
             String order_guid = fallback.get("order_guid");
