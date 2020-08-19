@@ -265,7 +265,7 @@ public class DownAll  implements Runnable{
         String OA_token = oaUtil.getToken();
         String run_id = oaUtil.getRun_id(OA_token);
         String OA_content = oaUtil.getContent(run_id,unhandle.get("order_code"), unhandle.get("link_person"), unhandle.get("end_date"), unhandle.get("urgency_degree"), unhandle.get("link_phone"),
-                unhandle.get("problem_description"), unhandle.get("transfer_process"), "XXX");
+                unhandle.get("problem_description"), unhandle.get("transfer_opinion"), unhandle.get("transfer_process"), "XXX");
         oaUtil.inputOA(OA_token,OA_content);
         if (errcode.equals("0")) {
             System.out.println("待办理工单已推送：" + unhandle.get("order_code") + "-" + unhandle.get("link_person"));
