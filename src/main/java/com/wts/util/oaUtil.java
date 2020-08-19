@@ -120,7 +120,7 @@ public class oaUtil {
                 .replace("${问题分类}", "")
                 .replace("${问题描述}", problem_description)
                 .replace("${问题核实情况}", transfer_process)
-                .replace("${处理意见}", suggestion)
+                .replace("${处理意见}", "建议转" + suggestion + "进行答复。")
                 .replace("${办件类型}", "承办件")
                 .replace("${处理意见时间}", ft.format(dNow));
 
@@ -129,7 +129,7 @@ public class oaUtil {
         } else {
             str.replace("${紧急编号}", "2");
         }
-        System.out.println(run_id + "-" + order_code + "-" + link_person + "-" + end_date);
+        System.out.println("拟提交OA数据：" + run_id + "-" + order_code + "-" + link_person + "-" + end_date);
         return str;
     }
     /*

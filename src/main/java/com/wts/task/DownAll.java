@@ -264,7 +264,7 @@ public class DownAll  implements Runnable{
                 unhandle.get("accept_channel"));
         String OA_token = oaUtil.getToken();
         String run_id = oaUtil.getRun_id(OA_token);
-        String OA_content = oaUtil.getContent(run_id,unhandle.get("order_guid"), unhandle.get("link_person"), unhandle.get("end_date"), unhandle.get("urgency_degree"), unhandle.get("link_phone"),
+        String OA_content = oaUtil.getContent(run_id,unhandle.get("order_code"), unhandle.get("link_person"), unhandle.get("end_date"), unhandle.get("urgency_degree"), unhandle.get("link_phone"),
                 unhandle.get("problem_description"), unhandle.get("transfer_process"), "XXX");
         oaUtil.inputOA(OA_token,OA_content);
         if (errcode.equals("0")) {
