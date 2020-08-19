@@ -39,9 +39,15 @@ public class UnhandleService {
 	public Unhandle findByGUID(String order_guid) {
 		return dao.findFirst("SELECT * FROM unhandle WHERE unhandle.order_guid LIKE '%" + order_guid + "%' ");
 	}
+
+	public Boolean has(String order_guid) {
+		return dao.findFirst("SELECT * FROM unhandle WHERE unhandle.order_guid LIKE '%" + order_guid + "%' ")!=null;
+	}
+
+
 	public void add(Unhandle unhandle){
-		if (unhandle.get("problem_description").toString().length()>5000){
-			String un = unhandle.get("problem_description").toString().substring(0,4999);
+		if (unhandle.get("problem_description").toString().length()>3000){
+			String un = unhandle.get("problem_description").toString().substring(0,2999);
 			unhandle.set("problem_description",un);
 		}
 		unhandle.save();
@@ -54,8 +60,8 @@ public class UnhandleService {
 					String send_time,String end_date,String transfer_opinion,String transfer_process,String remark,String enclosure) {
 		Unhandle unhandle = new Unhandle();
 		String pd = "";
-		if (problem_description.length()>5000){
-			pd = problem_description.substring(0,4999);
+		if (problem_description.length()>3000){
+			pd = problem_description.substring(0,2999);
 		}
 		unhandle.set("file_guid",file_guid)
 				.set("order_guid",order_guid)

@@ -74,62 +74,62 @@ public class oaUtil {
     /*
     写数据：通过修改流程写入数据
     */
-    public static void inputOA(String token, String content) throws IOException {
+    public static void inputOA(String token, String content){
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("application/json;charset=UTF-8");
         RequestBody body = RequestBody.create(mediaType, content);
-        Request request = new Request.Builder()
-                .url("http://120.221.150.148:8010/eoffice10/server/public/api/flow/run/save-flow-run-info")
-                .method("POST", body)
-                .addHeader("Accept", "application/json, text/plain, */*")
-                .addHeader("Accept-Encoding", "gzip, deflate")
-                .addHeader("Accept-Language", "zh-CN,zh;q=0.9")
-                .addHeader("Authorization", "Bearer " + token)
-                .addHeader("Connection", "keep-alive")
-                .addHeader("Content-Type", "application/json;charset=UTF-8")
+        try{
+            Request request = new Request.Builder()
+                    .url("http://120.221.150.148:8010/eoffice10/server/public/api/flow/run/save-flow-run-info")
+                    .method("POST", body)
+                    .addHeader("Accept", "application/json, text/plain, */*")
+                    .addHeader("Accept-Encoding", "gzip, deflate")
+                    .addHeader("Accept-Language", "zh-CN,zh;q=0.9")
+                    .addHeader("Authorization", "Bearer " + token)
+                    .addHeader("Connection", "keep-alive")
+                    .addHeader("Content-Type", "application/json;charset=UTF-8")
 //                .addHeader("Cookie", "io=iWbkGUXbzfy4s0_XAD_K")
-                .addHeader("Host", "120.221.150.148:8010")
-                .addHeader("Content-Length", content.getBytes("UTF-8").length + "")
-                .build();
-        Response response = client.newCall(request).execute();
-        String run_id = JSONObject.parseObject(JSONObject.parseObject(response.body().string()).getString("data")).getString("run_id");
+                    .addHeader("Host", "120.221.150.148:8010")
+                    .addHeader("Content-Length", content.getBytes("UTF-8").length + "")
+                    .build();
+            Response response = client.newCall(request).execute();
+            String run_id = JSONObject.parseObject(JSONObject.parseObject(response.body().string()).getString("data")).getString("run_id");
+            System.out.println("已提交OA系统！");
+        }catch (Exception e){
+            System.out.println("提交OA系统失败！");
+        }
+
     }
 
     /*
     type:直办件、转办件、退办件
      */
-    public static String getContent(String run_id, String order_code, String phone_type, String link_person, String end_date, String urgency_degree, String link_phone,
-                                    String problem_classification, String problem_description, String transfer_process, String suggestion, String type) {
+    public static String getContent(String run_id, String order_code, String link_person, String end_date, String urgency_degree, String link_phone,
+                                    String problem_description, String transfer_process, String suggestion) {
         Date dNow = new Date();
         SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String temp = "{\"run_id\":\"${run_id}\",\"run_name\":\"12345转办件${工单编号}\",\"run_name_html\":\"<div contenteditable=\\\"false\\\" class=\\\"title-item\\\">12345转办件</div><div class=\\\"title-item control\\\" data-type=\\\"formData\\\" ng-click=\\\"vm.choiceControl('DATA_2')\\\" data-id=\\\"DATA_2\\\" title=\\\"值来源于-工单编号\\\" ng-bind=\\\"vm.praseData('DATA_2')\\\">${工单编号}</div><div contenteditable=\\\"false\\\" class=\\\"title-item\\\"></div>\",\"instancy_type\":\"${紧急编号}\",\"form_data\":{\"DATA_31\":\"${办件类型}\",\"DATA_2\":\"${工单编号}\",\"DATA_7\":\"${办结时限}\",\"DATA_3\":\"${来电类别}\",\"DATA_8\":\"${紧急程度}\",\"DATA_5\":\"${联系人}\",\"DATA_10\":\"${联系电话}\",\"DATA_13\":\"${问题分类}\",\"DATA_16\":\"${问题描述}\",\"DATA_27\":\"经核实实际情况与12345描述一致\",\"DATA_30\":\"${问题核实情况}\",\"DATA_15\":\"${处理意见}\",\"DATA_17\":\"${处理意见时间}\",\"DATA_18\":\"\",\"DATA_19\":\"\",\"DATA_20\":\"\",\"DATA_21\":\"\",\"DATA_24\":\"\",\"DATA_25\":\"\"},\"flow_process\":66,\"process_id\":1}";
         String str = temp.replace("${run_id}", run_id)
                 .replace("${工单编号}", order_code)
-                .replace("${来电类别}", phone_type)
+                .replace("${来电类别}", "求助")
                 .replace("${联系人}", link_person)
                 .replace("${办结时限}", end_date)
                 .replace("${紧急程度}", urgency_degree)
                 .replace("${联系电话}", link_phone)
-                .replace("${问题分类}", problem_classification)
+                .replace("${问题分类}", "")
                 .replace("${问题描述}", problem_description)
                 .replace("${问题核实情况}", transfer_process)
                 .replace("${处理意见}", suggestion)
-                .replace("${办件类型}", type)
+                .replace("${办件类型}", "承办件")
                 .replace("${处理意见时间}", ft.format(dNow));
-        if (type.equals("退办件")) {
-            str.replace("${紧急编号}", "0").replace("${办件类型}", "直办件");
-        }else if(type.equals("转办件")){
-            str.replace("${办件类型}", "承办件");
-        }else{
-            str.replace("${办件类型}", type);
-        }
+
         if (urgency_degree.equals("一般")){
             str.replace("${紧急编号}", "0");
         } else {
             str.replace("${紧急编号}", "2");
         }
-        System.out.println(run_id + "-" + order_code + "-" + link_person + "-" + type + "-" + end_date);
+        System.out.println(run_id + "-" + order_code + "-" + link_person + "-" + end_date);
         return str;
     }
     /*
@@ -155,7 +155,7 @@ public class oaUtil {
             String department = rows.get(12).getTableCells().get(3).getText();
             String suggestion = "建议转" +department + "进行答复。";
             String run_id = getRun_id(token);
-            String content = getContent(run_id,order_code,phone_type,link_person,end_date,urgency_degree,link_phone,problem_classification,problem_description,transfer_process,suggestion,type);
+            String content = getContent(run_id,order_code,link_person,end_date,urgency_degree,link_phone,problem_description,transfer_process,suggestion);
             inputOA(token,content);
         } catch (Exception e) {
             e.printStackTrace();

@@ -28,10 +28,17 @@ public class ReplyService {
 	public Reply findByGUID(String order_guid) {
 		return dao.findFirst("SELECT * FROM reply WHERE reply.order_guid LIKE '%" + order_guid + "%' ");
 	}
+	public Boolean has(String order_guid) {
+		return dao.findFirst("SELECT * FROM reply WHERE reply.order_guid LIKE '%" + order_guid + "%' ")!=null;
+	}
 	public void add(Reply reply){
-		if (reply.get("problem_description").toString().length()>5000){
-			String un = reply.get("problem_description").toString().substring(0,4999);
+		if (reply.get("problem_description").toString().length()>3000){
+			String un = reply.get("problem_description").toString().substring(0,2999);
 			reply.set("problem_description",un);
+		}
+		if (reply.get("reply_enclosure").toString().length()>30){
+			String re = reply.get("reply_enclosure").toString().substring(0,29);
+			reply.set("reply_enclosure",re);
 		}
 		reply.save();
 	}
@@ -47,8 +54,8 @@ public class ReplyService {
 					String reply_person2,String reply_phone2) {
 		Reply reply = new Reply();
 		String pd = "";
-		if (problem_description.length()>5000){
-			pd = problem_description.substring(0,4999);
+		if (problem_description.length()>3000){
+			pd = problem_description.substring(0,2999);
 		}
 		reply.set("file_guid",file_guid)
 				.set("order_guid",order_guid)

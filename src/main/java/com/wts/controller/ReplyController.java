@@ -257,7 +257,7 @@ public class ReplyController extends Controller {
 	//    7页以后用这个
 	public void getPage2(Integer pageNum, String cookie) {
 		System.out.println(pageNum);
-		Document doc = getDoc2(pageNum+"", cookie, "201");
+		Document doc = getPageInfo(pageNum+"", cookie, "201");
 		Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
 		for (int i = 0; i < trs.size() - 1; i++) {
 			Elements ins = trs.get(i).getElementsByTag("td");

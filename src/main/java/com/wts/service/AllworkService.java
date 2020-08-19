@@ -26,6 +26,9 @@ public class AllworkService {
 	public Allwork findByGUID(String order_guid) {
 		return dao.findFirst("SELECT * FROM allwork WHERE allwork.order_guid LIKE '%" + order_guid + "%' ");
 	}
+	public Boolean has(String order_guid) {
+		return dao.findFirst("SELECT * FROM allwork WHERE allwork.order_guid LIKE '%" + order_guid + "%' ")!=null;
+	}
 	public String findNumByPhone(String link_phone) {
 		if (link_phone.equals("******")){
 			return "";
@@ -35,8 +38,8 @@ public class AllworkService {
 		}
 	}
 	public void add(Allwork allwork){
-		if (allwork.get("problem_description").toString().length()>5000){
-			String un = allwork.get("problem_description").toString().substring(0,4999);
+		if (allwork.get("problem_description").toString().length()>3000){
+			String un = allwork.get("problem_description").toString().substring(0,2999);
 			allwork.set("problem_description",un);
 		}
 		allwork.save();
@@ -44,8 +47,8 @@ public class AllworkService {
 	public void add(String file_guid, String order_guid,String order_code,String link_person,String link_phone,String link_address,String send_time,String problem_description,String transfer_opinion,String transfer_process){
 		Allwork allwork = new Allwork();
 		String pd = "";
-		if (problem_description.length()>5000){
-			pd = problem_description.substring(0,4999);
+		if (problem_description.length()>3000){
+			pd = problem_description.substring(0,2999);
 		}
 		allwork.set("file_guid",file_guid)
 				.set("order_guid",order_guid)

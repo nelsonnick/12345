@@ -1,5 +1,6 @@
 package com.wts.util;
 
+import com.jfinal.kit.PropKit;
 import okhttp3.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -29,7 +30,7 @@ public class util12345 {
         }
     }
 
-    //  分页用的
+    //  获取分页的URL
     public static String getPageUrl(String pageNo) {
         return "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/listTaskHotLine.aspx?pageNo=" + pageNo + "&sort=desc&sortColumn=sendTime";
     }
@@ -57,8 +58,9 @@ public class util12345 {
         }
         return doc;
     }
-    // 第7页之后的列表（所有第2页之后的可能都能用？？？）
-    public static Document getDoc2(String PageNum, String cookie,String MessageTypeFlag) {
+
+    // 获取更多的页面的信息
+    public static Document getPageInfo(String PageNum, String cookie, String MessageTypeFlag) {
         String sqlwhereHidden = "";
         String u = "";
         if (MessageTypeFlag.equals("-1")){//全部
@@ -70,6 +72,9 @@ public class util12345 {
         }else if(MessageTypeFlag.equals("201")) {//回复
             sqlwhereHidden = "   and  issend=1 and (messageType=0 or messagetype=2) and gdzt=5  and ownerguid='c443f956-8101-48ec-bf0a-80c97039a90e'";
             u = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/listTaskHotLine.aspx?MessageType=201&issend=1";
+        }else if(MessageTypeFlag.equals("0")) {//未处理
+            sqlwhereHidden = " and  issend=0 and messageType=0 and (gdzt!=3 or gdzt is null)  and ownerguid='c443f956-8101-48ec-bf0a-80c97039a90e'";
+            u = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/listTaskHotLine.aspx?MessageType=0&issend=0";
         }else{
 
         }
@@ -79,19 +84,17 @@ public class util12345 {
                     .build();
             MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
             RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
-//                    .addFormDataPart("__VIEWSTATE", "/wEPDwUKMTAxNTE0MzAxMQ9kFgJmD2QWAgIDDzwrAAsBAA8WDB4LXyFJdGVtQ291bnQCKB4IRGF0YUtleXMWAB4JUGFnZUNvdW50AvUFHhVfIURhdGFTb3VyY2VJdGVtQ291bnQCxewBHhBWaXJ0dWFsSXRlbUNvdW50AsXsAR4IUGFnZVNpemUCKGRkGAEFHl9fQ29udHJvbHNSZXF1aXJlUG9zdEJhY2tLZXlfXxYBBRhKaG9hR3JpZDEkY3RsMDIkQ2hlY2tBbGx0gCijDzrjICWM03IlqTbzO6cQhw==")
-//                    .addFormDataPart("__VIEWSTATEGENERATOR", "CAECE07B")
-//                    .addFormDataPart("__EVENTVALIDATION", "/wEWCwLOjo/5BQKfk5XkBwKciorSAgKxuZzKDwLTgZzcDgLy3Z3uCwKAyt2nDQKKhMKUDgKh893yBgKm4dCKDAKM54rGBkUnLuFKgGsYKVjyDzW9E+oofqBy")
+                    .addFormDataPart("__VIEWSTATE", "/wEPDwUKMTAxNTE0MzAxMQ9kFgJmD2QWAgIDDzwrAAsBAA8WDB4LXyFJdGVtQ291bnQCKB4IRGF0YUtleXMWAB4JUGFnZUNvdW50AvUFHhVfIURhdGFTb3VyY2VJdGVtQ291bnQCxewBHhBWaXJ0dWFsSXRlbUNvdW50AsXsAR4IUGFnZVNpemUCKGRkGAEFHl9fQ29udHJvbHNSZXF1aXJlUG9zdEJhY2tLZXlfXxYBBRhKaG9hR3JpZDEkY3RsMDIkQ2hlY2tBbGx0gCijDzrjICWM03IlqTbzO6cQhw==")
+                    .addFormDataPart("__VIEWSTATEGENERATOR", "CAECE07B")
+                    .addFormDataPart("__EVENTVALIDATION", "/wEWCwLOjo/5BQKfk5XkBwKciorSAgKxuZzKDwLTgZzcDgLy3Z3uCwKAyt2nDQKKhMKUDgKh893yBgKm4dCKDAKM54rGBkUnLuFKgGsYKVjyDzW9E+oofqBy")
                     .addFormDataPart("_lkocok_signThisForm", "1")
                     .addFormDataPart("operationType", "")
                     .addFormDataPart("sort", "desc")
                     .addFormDataPart("sortColumn", "sendTime")
-//                    .addFormDataPart("cmbPageNo", "7")
                     .addFormDataPart("cmbPageNo", PageNum)
                     .addFormDataPart("fenleiXmlStringHidden", "")
                     .addFormDataPart("gouxuandaochuXml", "")
                     .addFormDataPart("oneBLDxml", "")
-//                    .addFormDataPart("MessageTypeFlag", "-1")
                     .addFormDataPart("MessageTypeFlag", MessageTypeFlag)
                     .addFormDataPart("sqlwhereHidden", sqlwhereHidden)
                     .addFormDataPart("timeflagTxt", "")
@@ -112,24 +115,23 @@ public class util12345 {
                     .addHeader("Content-Length", l.toString())
                     .addHeader("Content-Type", "application/x-www-form-urlencoded")
                     .addHeader("Cookie", cookie)
-//                    .addHeader("Cookie", "jn.gov.cn=UserID=GVl7MZ9hnbtfzpPrOq3B9A==&UserPass=bXnKpxw85yw=&ADGuid=HP79/4nMJ6xJ9s+VHA4+I5fM/D3BpZvY79O9dyE2cvkvhUuktBvziQ==&UserName=LKgasW++KiD/0oOuF4OIoAmaekB6iJy4OiygaTn++HU=&TicketData=y/cmJRNtGBo=; ASP.NET_SessionId=ebvqgb55zvxlgmi1d3cugrev; .jhoa=E65EBF1D86A489E27A7358BE71AC8C85E0AF0B878D43FF1F1381F37FD6DAD6E43539BA3D351A3A9E00F352B594F6E7A3F33D50B2B3FEB4002F3CD69B02333B8ACD7CAB6DDE2B3DF11C91C4304CE2BD3C86044A4E49AD599C586404E0C63A009DF50681CD58E79CC4B0D4AF70E0FF5F9D5FE8F2FCA452AE2584BC3CA96E1017F58C7178991BD4F7F44CA9BFC39A71C7702212B622")
                     .addHeader("Host", "15.1.0.24")
                     .addHeader("Origin", "http://15.1.0.24")
                     .addHeader("Referer", u)
-//                    .addHeader("Referer", "http://15.1.0.24/jhoagch_huaiyinqu/taskhotline/listTaskHotLine.aspx?MessageType=-1")
                     .addHeader("Upgrade-Insecure-Requests", "1")
                     .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36")
                     .build();
             Response response = client.newCall(request).execute();
             doc = Jsoup.parse(response.body().string());
+//            System.out.println(doc);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return doc;
     }
 
-    //  分页用的-----似乎用不到了
-    public static Document getDoc(String url, String cookie, String Referer) {
+    //  分页用的
+    public static Document getDoc(String url, String cookie, String referer) {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         Request request = new Request.Builder()
@@ -141,7 +143,7 @@ public class util12345 {
                 .addHeader("Cookie", cookie)
                 .addHeader("Connection", "Keep-Alive")
                 .addHeader("Host", "15.1.0.24")
-                .addHeader("Referer", Referer)
+                .addHeader("Referer", referer)
                 .addHeader("Upgrade-Insecure-Requests", "1")
                 .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko Core/1.70.3756.400 QQBrowser/10.5.4039.400")
                 .build();
@@ -173,5 +175,8 @@ public class util12345 {
 //            e.printStackTrace();
 //        }
 //    }
-
+    public static void main(String[] args) {
+        String cookie = PropKit.use("config-dev.txt").get("cookie");
+        getPageInfo("1",cookie,"-1");
+    }
 }

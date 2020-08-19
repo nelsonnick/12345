@@ -69,6 +69,7 @@ public class Config extends JFinalConfig {
 	 */
 	public void configRoute(Routes me) {
 		me.add("/", MainController.class);
+		me.add("/a", AllworkController.class);
 		me.add("/u", UnhandleController.class);
 		me.add("/e", ExpireController.class);
 		me.add("/f", FallbackController.class);

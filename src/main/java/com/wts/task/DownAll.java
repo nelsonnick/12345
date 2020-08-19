@@ -8,6 +8,7 @@ import com.wts.service.AllworkService;
 import com.wts.service.FallbackService;
 import com.wts.service.ReplyService;
 import com.wts.service.UnhandleService;
+import com.wts.util.oaUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -261,6 +262,11 @@ public class DownAll  implements Runnable{
                 unhandle.get("transfer_opinion"),
                 unhandle.get("transfer_process"),
                 unhandle.get("accept_channel"));
+        String OA_token = oaUtil.getToken();
+        String run_id = oaUtil.getRun_id(OA_token);
+        String OA_content = oaUtil.getContent(run_id,unhandle.get("order_guid"), unhandle.get("link_person"), unhandle.get("end_date"), unhandle.get("urgency_degree"), unhandle.get("link_phone"),
+                unhandle.get("problem_description"), unhandle.get("transfer_process"), "XXX");
+        oaUtil.inputOA(OA_token,OA_content);
         if (errcode.equals("0")) {
             System.out.println("待办理工单已推送：" + unhandle.get("order_code") + "-" + unhandle.get("link_person"));
         } else {
@@ -561,5 +567,6 @@ public class DownAll  implements Runnable{
             System.out.println("已回退工单推送失败：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
         }
     }
+
 
 }

@@ -10,7 +10,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import static com.wts.util.util12345.getDoc;
-import static com.wts.util.util12345.getDoc2;
+import static com.wts.util.util12345.getPageInfo;
 import static com.wts.util.util12345.getPageUrl;
 
 public class MainController extends Controller {
@@ -18,7 +18,7 @@ public class MainController extends Controller {
     public void index() {
         renderText("服务正常");
     }
-    public void a() {
+    public void aa() {
         setAttr("num1",20);//#(num1)
         render("a.html");
     }
@@ -97,7 +97,7 @@ public class MainController extends Controller {
 //    7页以后用这个（所有第2页之后的可能都能用？？？）
     public void getPage2(Integer pageNum, String cookie) {
         System.out.println(pageNum);
-        Document doc = getDoc2(pageNum+"", cookie, "-1");
+        Document doc = getPageInfo(pageNum+"", cookie, "-1");
         Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
         for (int i = 0; i < trs.size() - 1; i++) {
             Elements ins = trs.get(i).getElementsByTag("td");

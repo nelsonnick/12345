@@ -28,9 +28,12 @@ public class FallbackService {
 	public Fallback findByGUID(String order_guid) {
 		return dao.findFirst("SELECT * FROM fallback WHERE fallback.order_guid LIKE '%" + order_guid + "%' ");
 	}
+	public Boolean has(String order_guid) {
+		return dao.findFirst("SELECT * FROM fallback WHERE fallback.order_guid LIKE '%" + order_guid + "%' ")!=null;
+	}
 	public void add(Fallback fallback){
-		if (fallback.get("problem_description").toString().length()>5000){
-			String un = fallback.get("problem_description").toString().substring(0,4999);
+		if (fallback.get("problem_description").toString().length()>3000){
+			String un = fallback.get("problem_description").toString().substring(0,2999);
 			fallback.set("problem_description",un);
 		}
 		fallback.save();
@@ -45,8 +48,8 @@ public class FallbackService {
 					String fallback_department, String fallback_time, String fallback_person, String fallback_phone) {
 		Fallback fallback = new Fallback();
 		String pd = "";
-		if (problem_description.length()>5000){
-			pd = problem_description.substring(0,4999);
+		if (problem_description.length()>3000){
+			pd = problem_description.substring(0,2999);
 		}
 		fallback.set("file_guid",file_guid)
 				.set("order_guid",order_guid)

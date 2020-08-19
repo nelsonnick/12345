@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS `unhandle`;
 CREATE TABLE `unhandle`
 (
     `id`                     int(11)                          NOT NULL AUTO_INCREMENT COMMENT '序号',
@@ -21,18 +22,18 @@ CREATE TABLE `unhandle`
     `is_secret`              varchar(10) CHARACTER SET utf8   NULL COMMENT '是否保密',
     `is_reply`               varchar(10) CHARACTER SET utf8   NULL COMMENT '是否回复',
     `reply_remark`           varchar(255) CHARACTER SET utf8  NULL COMMENT '回复备注',
-    `problem_description`    varchar(5220) CHARACTER SET utf8 NULL COMMENT '问题描述',
+    `problem_description`    varchar(3220) CHARACTER SET utf8 NULL COMMENT '问题描述',
     `enclosure`              varchar(50) CHARACTER SET utf8   NULL COMMENT '附件',
     `send_person`            varchar(50) CHARACTER SET utf8   NULL COMMENT '发送人',
     `send_time`              varchar(50) CHARACTER SET utf8   NULL COMMENT '发送时间',
     `end_date`               varchar(50) CHARACTER SET utf8   NULL COMMENT '办理时限',
-    `transfer_opinion`       varchar(5220) CHARACTER SET utf8 NULL COMMENT '转办意见',
-    `transfer_process`       varchar(5220) CHARACTER SET utf8 NULL COMMENT '转办流程',
+    `transfer_opinion`       varchar(3220) CHARACTER SET utf8 NULL COMMENT '转办意见',
+    `transfer_process`       varchar(3220) CHARACTER SET utf8 NULL COMMENT '转办流程',
     `remark`                 varchar(255) CHARACTER SET utf8  NULL COMMENT '备注',
     `down_time`              datetime(0)                      NULL DEFAULT NULL COMMENT '下载时间',
     PRIMARY KEY (`id`)
 );
-
+DROP TABLE IF EXISTS `fallback`;
 CREATE TABLE `fallback`
 (
     `id`                     int(11)                          NOT NULL AUTO_INCREMENT COMMENT '序号',
@@ -56,25 +57,25 @@ CREATE TABLE `fallback`
     `is_secret`              varchar(10) CHARACTER SET utf8   NULL COMMENT '是否保密',
     `is_reply`               varchar(10) CHARACTER SET utf8   NULL COMMENT '是否回复',
     `reply_remark`           varchar(255) CHARACTER SET utf8  NULL COMMENT '回复备注',
-    `problem_description`    varchar(5220) CHARACTER SET utf8 NULL COMMENT '问题描述',
+    `problem_description`    varchar(3220) CHARACTER SET utf8 NULL COMMENT '问题描述',
     `enclosure`              varchar(50) CHARACTER SET utf8   NULL COMMENT '附件',
     `send_person`            varchar(50) CHARACTER SET utf8   NULL COMMENT '发送人',
     `send_time`              varchar(50) CHARACTER SET utf8   NULL COMMENT '发送时间',
     `end_date`               varchar(50) CHARACTER SET utf8   NULL COMMENT '办理时限',
-    `transfer_opinion`       varchar(5220) CHARACTER SET utf8 NULL COMMENT '转办意见',
-    `transfer_process`       varchar(5220) CHARACTER SET utf8 NULL COMMENT '转办流程',
+    `transfer_opinion`       varchar(3220) CHARACTER SET utf8 NULL COMMENT '转办意见',
+    `transfer_process`       varchar(3220) CHARACTER SET utf8 NULL COMMENT '转办流程',
     `remark`                 varchar(255) CHARACTER SET utf8  NULL COMMENT '备注',
     `down_time`              datetime(0)                      NULL DEFAULT NULL COMMENT '下载时间',
-    `fallback_reason`        varchar(5220) CHARACTER SET utf8 NULL COMMENT '回退原因',
+    `fallback_reason`        varchar(3220) CHARACTER SET utf8 NULL COMMENT '回退原因',
     `leader_opinions`        varchar(255) CHARACTER SET utf8  NULL COMMENT '领导意见',
-    `suggestion`             varchar(5220) CHARACTER SET utf8 NULL COMMENT '建议',
+    `suggestion`             varchar(3220) CHARACTER SET utf8 NULL COMMENT '建议',
     `fallback_department`    varchar(255) CHARACTER SET utf8  NULL COMMENT '回退部门',
     `fallback_time`          varchar(50) CHARACTER SET utf8   NULL COMMENT '回退时间',
     `fallback_person`        varchar(50) CHARACTER SET utf8   NULL COMMENT '回退人',
     `fallback_phone`         varchar(50) CHARACTER SET utf8   NULL COMMENT '回退联系电话',
     PRIMARY KEY (`id`)
 );
-
+DROP TABLE IF EXISTS `reply`;
 CREATE TABLE `reply`
 (
     `id`                     int(11)                          NOT NULL AUTO_INCREMENT COMMENT '序号',
@@ -98,13 +99,13 @@ CREATE TABLE `reply`
     `is_secret`              varchar(10) CHARACTER SET utf8   NULL COMMENT '是否保密',
     `is_reply`               varchar(10) CHARACTER SET utf8   NULL COMMENT '是否回复',
     `reply_remark`           varchar(255) CHARACTER SET utf8  NULL COMMENT '回复备注',
-    `problem_description`    varchar(5220) CHARACTER SET utf8 NULL COMMENT '问题描述',
+    `problem_description`    varchar(3220) CHARACTER SET utf8 NULL COMMENT '问题描述',
     `enclosure`              varchar(50) CHARACTER SET utf8   NULL COMMENT '附件',
     `send_person`            varchar(50) CHARACTER SET utf8   NULL COMMENT '发送人',
     `send_time`              varchar(50) CHARACTER SET utf8   NULL COMMENT '发送时间',
     `end_date`               varchar(50) CHARACTER SET utf8   NULL COMMENT '办理时限',
-    `transfer_opinion`       varchar(5220) CHARACTER SET utf8 NULL COMMENT '转办意见',
-    `transfer_process`       varchar(5220) CHARACTER SET utf8 NULL COMMENT '转办流程',
+    `transfer_opinion`       varchar(3220) CHARACTER SET utf8 NULL COMMENT '转办意见',
+    `transfer_process`       varchar(3220) CHARACTER SET utf8 NULL COMMENT '转办流程',
     `remark`                 varchar(255) CHARACTER SET utf8  NULL COMMENT '备注',
     `down_time`              datetime(0)                      NULL DEFAULT NULL COMMENT '下载时间',
     `reply_type`             varchar(50) CHARACTER SET utf8   NULL COMMENT '答复类型',
@@ -113,7 +114,7 @@ CREATE TABLE `reply`
     `reply_day`              varchar(50) CHARACTER SET utf8   NULL COMMENT '答复时间',
     `reply_person`           varchar(50) CHARACTER SET utf8   NULL COMMENT '答复人',
     `reply_phone`            varchar(50) CHARACTER SET utf8   NULL COMMENT '答复电话',
-    `reply_content`          varchar(5220) CHARACTER SET utf8 NULL COMMENT '办理情况',
+    `reply_content`          varchar(3220) CHARACTER SET utf8 NULL COMMENT '办理情况',
     `reply_department`       varchar(255) CHARACTER SET utf8  NULL COMMENT '回复单位',
     `reply_time`             varchar(50) CHARACTER SET utf8   NULL COMMENT '回复时间',
     `subordinate_department` varchar(255) CHARACTER SET utf8  NULL COMMENT '下级办理单位',
@@ -124,7 +125,7 @@ CREATE TABLE `reply`
     `reply_phone2`           varchar(50) CHARACTER SET utf8   NULL COMMENT '回复电话',
     PRIMARY KEY (`id`)
 );
-
+DROP TABLE IF EXISTS `expire`;
 CREATE TABLE `expire`
 (
     `id`         int(11)                         NOT NULL AUTO_INCREMENT COMMENT '序号',
@@ -134,7 +135,7 @@ CREATE TABLE `expire`
     `end_date`   varchar(255) CHARACTER SET utf8 NULL COMMENT '办理时限',
     PRIMARY KEY (`id`)
 );
-
+DROP TABLE IF EXISTS `allwork`;
 CREATE TABLE `allwork`
 (
     `id`                  int(11)                          NOT NULL AUTO_INCREMENT COMMENT '序号',
@@ -145,13 +146,13 @@ CREATE TABLE `allwork`
     `link_phone`          varchar(50) CHARACTER SET utf8   NULL COMMENT '联系电话',
     `link_address`        varchar(255) CHARACTER SET utf8  NULL COMMENT '联系地址',
     `send_time`           varchar(50) CHARACTER SET utf8   NULL COMMENT '发送时间',
-    `problem_description` varchar(5220) CHARACTER SET utf8 NULL COMMENT '问题描述',
-    `transfer_opinion`    varchar(5220) CHARACTER SET utf8 NULL COMMENT '转办意见',
-    `transfer_process`    varchar(5220) CHARACTER SET utf8 NULL COMMENT '转办流程',
+    `problem_description` varchar(3220) CHARACTER SET utf8 NULL COMMENT '问题描述',
+    `transfer_opinion`    varchar(3220) CHARACTER SET utf8 NULL COMMENT '转办意见',
+    `transfer_process`    varchar(3220) CHARACTER SET utf8 NULL COMMENT '转办流程',
     PRIMARY KEY (`id`)
 );
 
-
+DROP TABLE IF EXISTS `statistic`;
 CREATE TABLE `statistic`
 (
     `id`                     int(11)                          NOT NULL AUTO_INCREMENT COMMENT '序号',
@@ -169,9 +170,9 @@ CREATE TABLE `statistic`
     `link_phone`             varchar(50) CHARACTER SET utf8   NULL COMMENT '联系电话',
     `link_address`           varchar(255) CHARACTER SET utf8  NULL COMMENT '联系地址',
     `problem_classification` varchar(255) CHARACTER SET utf8  NULL COMMENT '问题分类',
-    `problem_description`    varchar(5220) CHARACTER SET utf8 NULL COMMENT '问题描述',
-    `transfer_opinion`       varchar(5220) CHARACTER SET utf8 NULL COMMENT '转办意见',
-    `transfer_process`       varchar(5220) CHARACTER SET utf8 NULL COMMENT '转办流程',
+    `problem_description`    varchar(3220) CHARACTER SET utf8 NULL COMMENT '问题描述',
+    `transfer_opinion`       varchar(3220) CHARACTER SET utf8 NULL COMMENT '转办意见',
+    `transfer_process`       varchar(3220) CHARACTER SET utf8 NULL COMMENT '转办流程',
     `enclosure`              varchar(50) CHARACTER SET utf8   NULL COMMENT '附件',
     `reply_remark`           varchar(255) CHARACTER SET utf8  NULL COMMENT '回复备注',
     `type`                   varchar(255) CHARACTER SET utf8  NULL COMMENT '办理类型：直办件、转办件、退办件',

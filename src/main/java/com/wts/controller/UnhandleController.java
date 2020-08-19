@@ -105,6 +105,10 @@ public class UnhandleController extends Controller {
         }
     }
 
+    public void i(){
+        System.out.println(service.has("{bd153fc8-5135-42fc-88c0-60227f9c176d}"));
+        renderText("kk");
+    }
 
     public static String getTimeStr(String str){
         return str.replace(" ","T")
