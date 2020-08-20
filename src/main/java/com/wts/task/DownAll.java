@@ -8,11 +8,17 @@ import com.wts.service.AllworkService;
 import com.wts.service.FallbackService;
 import com.wts.service.ReplyService;
 import com.wts.service.UnhandleService;
+import com.wts.util.ParamesAPI;
 import com.wts.util.oaUtil;
+import me.chanjar.weixin.common.bean.result.WxMediaUploadResult;
+import me.chanjar.weixin.cp.api.impl.WxCpServiceImpl;
+import me.chanjar.weixin.cp.bean.WxCpMessage;
+import me.chanjar.weixin.cp.config.impl.WxCpDefaultConfigImpl;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -267,6 +273,7 @@ public class DownAll  implements Runnable{
         String OA_content = oaUtil.getContent(run_id,unhandle.get("order_code"), unhandle.get("link_person"), unhandle.get("end_date"), unhandle.get("urgency_degree"), unhandle.get("link_phone"),
                 unhandle.get("problem_description"), unhandle.get("transfer_opinion"), unhandle.get("transfer_process"), "XXX");
         oaUtil.inputOA(OA_token,OA_content);
+        sendMessageToWeiXin("收到新工单：" + unhandle.get("order_code"),"WangTianShuo");
         if (errcode.equals("0")) {
             System.out.println("待办理工单已推送：" + unhandle.get("order_code") + "-" + unhandle.get("link_person"));
         } else {
@@ -420,6 +427,7 @@ public class DownAll  implements Runnable{
                 reply.get("reply_time"),
                 reply.get("reply_person"),
                 reply.get("reply_content"));
+        sendMessageToWeiXin("工单：" + reply.get("order_code") + "-->已回复","WangTianShuo");
         if (errcode.equals("0")) {
             System.out.println("已回复工单已推送：" + reply.get("order_code") + "-" + reply.get("link_person"));
         } else {
@@ -561,6 +569,7 @@ public class DownAll  implements Runnable{
                 fallback.get("fallback_reason"),
                 fallback.get("suggestion"),
                 fallback.get("fallback_department"));
+        sendMessageToWeiXin("工单：" + fallback.get("order_code") + "-->已回退","WangTianShuo");
         if (errcode.equals("0")) {
             System.out.println("已回退工单已推送：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
         } else {
@@ -568,5 +577,42 @@ public class DownAll  implements Runnable{
         }
     }
 
+    public void sendFileToWeiXin(String filaPath, String UserID) throws Exception{
+        WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();
+        config.setCorpId(ParamesAPI.corpId);      // 设置微信企业号的appid
+        config.setCorpSecret(ParamesAPI.secret);  // 设置微信企业号的app corpSecret
+        config.setAgentId(ParamesAPI.agentId);     // 设置微信企业号应用ID
+        config.setToken(ParamesAPI.token);       // 设置微信企业号应用的token
+        config.setAesKey(ParamesAPI.encodingAESKey);      // 设置微信企业号应用的EncodingAESKey
+        WxCpServiceImpl wxCpService = new WxCpServiceImpl();
+        wxCpService.setWxCpConfigStorage(config);
+        File file = new File(filaPath);
+        WxMediaUploadResult res = wxCpService.getMediaService().upload("file",file);
+        WxCpMessage message = WxCpMessage
+                .FILE()
+                .toUser(UserID)
+                .agentId(ParamesAPI.agentId)
+                .mediaId(res.getMediaId())
+                .build();
+        wxCpService.messageSend(message);
+    }
+
+    public void sendMessageToWeiXin(String msgContent, String UserID) throws Exception{
+        WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();
+        config.setCorpId(ParamesAPI.corpId);      // 设置微信企业号的appid
+        config.setCorpSecret(ParamesAPI.secret);  // 设置微信企业号的app corpSecret
+        config.setAgentId(ParamesAPI.agentId);     // 设置微信企业号应用ID
+        config.setToken(ParamesAPI.token);       // 设置微信企业号应用的token
+        config.setAesKey(ParamesAPI.encodingAESKey);      // 设置微信企业号应用的EncodingAESKey
+        WxCpServiceImpl wxCpService = new WxCpServiceImpl();
+        wxCpService.setWxCpConfigStorage(config);
+        WxCpMessage message = WxCpMessage
+                .TEXT()
+                .agentId(ParamesAPI.agentId)
+                .toUser(UserID)
+                .content(msgContent)
+                .build();
+        wxCpService.messageSend(message);
+    }
 
 }

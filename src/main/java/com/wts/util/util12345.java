@@ -5,6 +5,8 @@ import okhttp3.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import java.util.concurrent.TimeUnit;
+
 
 public class util12345 {
     /**
@@ -37,6 +39,8 @@ public class util12345 {
 
     public static Document getDoc(String url, String cookie) {
         OkHttpClient client = new OkHttpClient().newBuilder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
                 .build();
         Request request = new Request.Builder()
                 .url(url)
@@ -81,6 +85,8 @@ public class util12345 {
         Document doc = null;
         try {
             OkHttpClient client = new OkHttpClient().newBuilder()
+                    .connectTimeout(10, TimeUnit.SECONDS)
+                    .readTimeout(20, TimeUnit.SECONDS)
                     .build();
             MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
             RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
@@ -133,6 +139,8 @@ public class util12345 {
     //  分页用的
     public static Document getDoc(String url, String cookie, String referer) {
         OkHttpClient client = new OkHttpClient().newBuilder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
                 .build();
         Request request = new Request.Builder()
                 .url(url)

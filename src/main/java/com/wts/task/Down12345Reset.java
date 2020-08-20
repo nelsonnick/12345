@@ -55,9 +55,9 @@ public class Down12345Reset implements Runnable {
         WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();
         config.setCorpId(ParamesAPI.corpId);      // 设置微信企业号的appid
         config.setCorpSecret(ParamesAPI.secret);  // 设置微信企业号的app corpSecret
-        config.setAgentId(1000002);     // 设置微信企业号应用ID
-        config.setToken("...");       // 设置微信企业号应用的token
-        config.setAesKey("...");      // 设置微信企业号应用的EncodingAESKey
+        config.setAgentId(ParamesAPI.agentId);     // 设置微信企业号应用ID
+        config.setToken(ParamesAPI.token);       // 设置微信企业号应用的token
+        config.setAesKey(ParamesAPI.encodingAESKey);      // 设置微信企业号应用的EncodingAESKey
         WxCpServiceImpl wxCpService = new WxCpServiceImpl();
         wxCpService.setWxCpConfigStorage(config);
         File file = new File("D:\\TemplateDoc.docx");
@@ -65,7 +65,7 @@ public class Down12345Reset implements Runnable {
         WxCpMessage message = WxCpMessage
                 .FILE()
                 .toUser("WangTianShuo")
-                .agentId(1000002)
+                .agentId(ParamesAPI.agentId)
                 .mediaId(res.getMediaId())
                 .build();
         wxCpService.messageSend(message);

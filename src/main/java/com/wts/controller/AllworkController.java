@@ -29,7 +29,7 @@ public class AllworkController extends Controller {
     public void index() {
         String cookie = PropKit.use("config-dev.txt").get("cookie");
 //        845
-        for (int i=7;i<11;i++){
+        for (int i=263;i<846;i++){
             getPageInfo(i, cookie);
             System.out.println("第" + i + "页已完成");
         }
@@ -151,119 +151,122 @@ public class AllworkController extends Controller {
                     .set("remark", remark);
             unhandleService.add(unhandle);
         }
-
-        Element table = doc.getElementsByClass("tablebgcolor").last().getElementsByTag("tbody").get(0);
-        if (order_state.equals("已回退")){
-            String fallback_reason = table.getElementsByTag("tr").get(1).getElementsByTag("td").get(2).text();//回退理由
-            String leader_opinions = table.getElementsByTag("tr").get(2).getElementsByTag("td").get(1).text();//领导意见
-            String suggestion = table.getElementsByTag("tr").get(3).getElementsByTag("td").get(1).text();//建议
-            String fallback_department = table.getElementsByTag("tr").get(4).getElementsByTag("td").get(1).text();//回退部门
-            String fallback_time = table.getElementsByTag("tr").get(4).getElementsByTag("td").get(3).text();//回退时间
-            String fallback_person = table.getElementsByTag("tr").get(6).getElementsByTag("td").get(1).text();//回退人
-            String fallback_phone = table.getElementsByTag("tr").get(6).getElementsByTag("td").get(3).text();//回退联系电话
-            if(!fallbackService.has(order_guid)) {
-                Fallback fallback = new Fallback();
-                fallback.set("order_guid", order_guid)
-                        .set("file_guid", file_guid)
-                        .set("order_state", order_state)
-                        .set("order_code", order_code)
-                        .set("link_person", link_person)
-                        .set("link_phone", link_phone)
-                        .set("link_address", link_address)
-                        .set("business_environment", business_environment)
+        String error = "{a846085e-ea93-480f-a23f-a6fcf7221140}";
+        if (doc.getElementsByClass("tablebgcolor").size()!=1 && !order_guid.equals(error)){
+            Element table = doc.getElementsByClass("tablebgcolor").last().getElementsByTag("tbody").get(0);
+            if (order_state.equals("已回退")){
+                String fallback_reason = table.getElementsByTag("tr").get(1).getElementsByTag("td").get(2).text();//回退理由
+                String leader_opinions = table.getElementsByTag("tr").get(2).getElementsByTag("td").get(1).text();//领导意见
+                String suggestion = table.getElementsByTag("tr").get(3).getElementsByTag("td").get(1).text();//建议
+                String fallback_department = table.getElementsByTag("tr").get(4).getElementsByTag("td").get(1).text();//回退部门
+                String fallback_time = table.getElementsByTag("tr").get(4).getElementsByTag("td").get(3).text();//回退时间
+                String fallback_person = table.getElementsByTag("tr").get(6).getElementsByTag("td").get(1).text();//回退人
+                String fallback_phone = table.getElementsByTag("tr").get(6).getElementsByTag("td").get(3).text();//回退联系电话
+                if(!fallbackService.has(order_guid)) {
+                    Fallback fallback = new Fallback();
+                    fallback.set("order_guid", order_guid)
+                            .set("file_guid", file_guid)
+                            .set("order_state", order_state)
+                            .set("order_code", order_code)
+                            .set("link_person", link_person)
+                            .set("link_phone", link_phone)
+                            .set("link_address", link_address)
+                            .set("business_environment", business_environment)
 //                .set("new_supervision",new_supervision)
-                        .set("accept_person", accept_person)
-                        .set("accept_person_code", accept_person_code)
-                        .set("accept_channel", accept_channel)
-                        .set("handle_type", handle_type)
-                        .set("phone_type", phone_type)
-                        .set("write_time", write_time)
-                        .set("urgency_degree", urgency_degree)
-                        .set("problem_classification", problem_classification)
-                        .set("is_secret", is_secret)
-                        .set("is_reply", is_reply)
-                        .set("reply_remark", reply_remark)
-                        .set("problem_description", problem_description)
-                        .set("send_person", send_person)
-                        .set("send_time", send_time)
-                        .set("end_date", end_date)
-                        .set("transfer_opinion", transfer_opinion)
-                        .set("transfer_process", transfer_process)
-                        .set("enclosure", enclosure)
-                        .set("remark", remark)
-                        .set("fallback_reason", fallback_reason)
-                        .set("leader_opinions", leader_opinions)
-                        .set("suggestion", suggestion)
-                        .set("fallback_department", fallback_department)
-                        .set("fallback_time", fallback_time)
-                        .set("fallback_person", fallback_person)
-                        .set("fallback_phone", fallback_phone);
-                fallbackService.add(fallback);
+                            .set("accept_person", accept_person)
+                            .set("accept_person_code", accept_person_code)
+                            .set("accept_channel", accept_channel)
+                            .set("handle_type", handle_type)
+                            .set("phone_type", phone_type)
+                            .set("write_time", write_time)
+                            .set("urgency_degree", urgency_degree)
+                            .set("problem_classification", problem_classification)
+                            .set("is_secret", is_secret)
+                            .set("is_reply", is_reply)
+                            .set("reply_remark", reply_remark)
+                            .set("problem_description", problem_description)
+                            .set("send_person", send_person)
+                            .set("send_time", send_time)
+                            .set("end_date", end_date)
+                            .set("transfer_opinion", transfer_opinion)
+                            .set("transfer_process", transfer_process)
+                            .set("enclosure", enclosure)
+                            .set("remark", remark)
+                            .set("fallback_reason", fallback_reason)
+                            .set("leader_opinions", leader_opinions)
+                            .set("suggestion", suggestion)
+                            .set("fallback_department", fallback_department)
+                            .set("fallback_time", fallback_time)
+                            .set("fallback_person", fallback_person)
+                            .set("fallback_phone", fallback_phone);
+                    fallbackService.add(fallback);
+                }
             }
-        }
 
-        if (order_state.equals("已回复")){
-            String reply_type = table.getElementsByTag("tr").get(1).getElementsByTag("td").get(2).text();//答复类型
-            String finish_time = table.getElementsByTag("tr").get(1).getElementsByTag("td").get(4).text();//预计完成时间
-            String reply_satisfy = table.getElementsByTag("tr").get(2).getElementsByTag("td").get(1).text();//答复来电人情况
-            String reply_day = table.getElementsByTag("tr").get(2).getElementsByTag("td").get(3).text();//答复时间
-            String reply_person = table.getElementsByTag("tr").get(3).getElementsByTag("td").get(1).text();//答复人
-            String reply_phone = table.getElementsByTag("tr").get(3).getElementsByTag("td").get(3).text();//答复电话
-            String reply_content = table.getElementsByTag("tr").get(4).getElementsByTag("td").get(1).text();//办理情况
-            String reply_department = table.getElementsByTag("tr").get(5).getElementsByTag("td").get(1).text();//回复单位
-            String reply_time = table.getElementsByTag("tr").get(5).getElementsByTag("td").get(3).text();//回复时间
-            String subordinate_department = table.getElementsByTag("tr").get(6).getElementsByTag("td").get(1).text();//下级办理单位
-            String if_nodo = table.getElementsByTag("tr").get(7).getElementsByTag("td").get(1).text();//不再办理
-            String nodo_reason = table.getElementsByTag("tr").get(8).getElementsByTag("td").get(1).text();//不再办理原因
-            String reply_enclosure = table.getElementsByTag("tr").get(9).getElementsByTag("td").get(1).text();//附件
-            String reply_person2 = table.getElementsByTag("tr").get(10).getElementsByTag("td").get(1).text();//回复联系人
-            String reply_phone2 = table.getElementsByTag("tr").get(10).getElementsByTag("td").get(3).text();//回复电话
-            if(!replyService.has(order_guid)) {
-                Reply reply = new Reply();
-                reply.set("order_guid", order_guid)
-                        .set("order_state", order_state)
-                        .set("order_code", order_code)
-                        .set("link_person", link_person)
-                        .set("link_phone", link_phone)
-                        .set("link_address", link_address)
-                        .set("business_environment", business_environment)
+            if (order_state.equals("已回复")){
+                String reply_type = table.getElementsByTag("tr").get(1).getElementsByTag("td").get(2).text();//答复类型
+                String finish_time = table.getElementsByTag("tr").get(1).getElementsByTag("td").get(4).text();//预计完成时间
+                String reply_satisfy = table.getElementsByTag("tr").get(2).getElementsByTag("td").get(1).text();//答复来电人情况
+                String reply_day = table.getElementsByTag("tr").get(2).getElementsByTag("td").get(3).text();//答复时间
+                String reply_person = table.getElementsByTag("tr").get(3).getElementsByTag("td").get(1).text();//答复人
+                String reply_phone = table.getElementsByTag("tr").get(3).getElementsByTag("td").get(3).text();//答复电话
+                String reply_content = table.getElementsByTag("tr").get(4).getElementsByTag("td").get(1).text();//办理情况
+                String reply_department = table.getElementsByTag("tr").get(5).getElementsByTag("td").get(1).text();//回复单位
+                String reply_time = table.getElementsByTag("tr").get(5).getElementsByTag("td").get(3).text();//回复时间
+                String subordinate_department = table.getElementsByTag("tr").get(6).getElementsByTag("td").get(1).text();//下级办理单位
+                String if_nodo = table.getElementsByTag("tr").get(7).getElementsByTag("td").get(1).text();//不再办理
+                String nodo_reason = table.getElementsByTag("tr").get(8).getElementsByTag("td").get(1).text();//不再办理原因
+                String reply_enclosure = table.getElementsByTag("tr").get(9).getElementsByTag("td").get(1).text();//附件
+                String reply_person2 = table.getElementsByTag("tr").get(10).getElementsByTag("td").get(1).text();//回复联系人
+                String reply_phone2 = table.getElementsByTag("tr").get(10).getElementsByTag("td").get(3).text();//回复电话
+                if(!replyService.has(order_guid)) {
+                    Reply reply = new Reply();
+                    reply.set("order_guid", order_guid)
+                            .set("order_state", order_state)
+                            .set("order_code", order_code)
+                            .set("link_person", link_person)
+                            .set("link_phone", link_phone)
+                            .set("link_address", link_address)
+                            .set("business_environment", business_environment)
 //                .set("new_supervision",new_supervision)
-                        .set("accept_person", accept_person)
-                        .set("accept_person_code", accept_person_code)
-                        .set("accept_channel", accept_channel)
-                        .set("handle_type", handle_type)
-                        .set("phone_type", phone_type)
-                        .set("write_time", write_time)
-                        .set("urgency_degree", urgency_degree)
-                        .set("problem_classification", problem_classification)
-                        .set("is_secret", is_secret)
-                        .set("is_reply", is_reply)
-                        .set("reply_remark", reply_remark)
-                        .set("problem_description", problem_description)
-                        .set("send_person", send_person)
-                        .set("send_time", send_time)
-                        .set("end_date", end_date)
-                        .set("transfer_opinion", transfer_opinion)
-                        .set("transfer_process", transfer_process)
-                        .set("enclosure", enclosure)
-                        .set("remark", remark)
-                        .set("reply_type", reply_type)
-                        .set("finish_time", finish_time)
-                        .set("reply_satisfy", reply_satisfy)
-                        .set("reply_day", reply_day)
-                        .set("reply_person", reply_person)
-                        .set("reply_phone", reply_phone)
-                        .set("reply_content", reply_content)
-                        .set("reply_department", reply_department)
-                        .set("reply_time", reply_time)
-                        .set("subordinate_department", subordinate_department)
-                        .set("if_nodo", if_nodo)
-                        .set("nodo_reason", nodo_reason)
-                        .set("reply_enclosure", reply_enclosure)
-                        .set("reply_person2", reply_person2)
-                        .set("reply_phone2", reply_phone2);
-                replyService.add(reply);
+                            .set("accept_person", accept_person)
+                            .set("accept_person_code", accept_person_code)
+                            .set("accept_channel", accept_channel)
+                            .set("handle_type", handle_type)
+                            .set("phone_type", phone_type)
+                            .set("write_time", write_time)
+                            .set("urgency_degree", urgency_degree)
+                            .set("problem_classification", problem_classification)
+                            .set("is_secret", is_secret)
+                            .set("is_reply", is_reply)
+                            .set("reply_remark", reply_remark)
+                            .set("problem_description", problem_description)
+                            .set("send_person", send_person)
+                            .set("send_time", send_time)
+                            .set("end_date", end_date)
+                            .set("transfer_opinion", transfer_opinion)
+                            .set("transfer_process", transfer_process)
+                            .set("enclosure", enclosure)
+                            .set("remark", remark)
+                            .set("reply_type", reply_type)
+                            .set("finish_time", finish_time)
+                            .set("reply_satisfy", reply_satisfy)
+                            .set("reply_day", reply_day)
+                            .set("reply_person", reply_person)
+                            .set("reply_phone", reply_phone)
+                            .set("reply_content", reply_content)
+                            .set("reply_department", reply_department)
+                            .set("reply_time", reply_time)
+                            .set("subordinate_department", subordinate_department)
+                            .set("if_nodo", if_nodo)
+                            .set("nodo_reason", nodo_reason)
+                            .set("reply_enclosure", reply_enclosure)
+                            .set("reply_person2", reply_person2)
+                            .set("reply_phone2", reply_phone2);
+                    replyService.add(reply);
+                }
             }
+
         }
 
 
