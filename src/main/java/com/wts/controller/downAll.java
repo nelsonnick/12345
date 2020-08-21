@@ -29,7 +29,6 @@ public class downAll extends Controller {
 
     public void index() {
         String cookie = PropKit.use("config-dev.txt").get("cookie");
-//        845
         for (int i=1;i<5;i++){
             getPageInfo(i, cookie);
             System.out.println("第" + i + "页已完成");
