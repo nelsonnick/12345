@@ -31,7 +31,7 @@ public class MainController extends Controller {
         // write
         FileWriter fw = new FileWriter(file, true);
         BufferedWriter bw = new BufferedWriter(fw);
-        List<Record> replyList = Db.find("SELECT order_guid,fallback_department,fallback_person,fallback_time,suggestion,fallback_reason FROM fallback");
+        List<Record> replyList = Db.find("SELECT order_guid,fallback_department,fallback_person,fallback_time,suggestion,fallback_reason FROM fallback LIMIT 0,3");
         for (Record record : replyList) {
             String t = record.get("fallback_reason").toString().substring(0,1);
             String fallbackType;
@@ -50,10 +50,10 @@ public class MainController extends Controller {
             }
             String a = "{\"_id\":\"" + record.get("order_guid")
                     + "\",\"fallbackPerson\":\"" + record.get("fallback_person")
-                    + "\",\"fallbackReason\":\"" + record.get("fallback_reason")
+                    + "\",\"fallbackReason\":\"" + record.get("fallback_reason").toString().replace("\"","")
                     + "\",\"fallbackTime\":{\"$date\":\"" + wxUtil.getTimeStr(record.get("fallback_time"))
-                    + "\"},\"suggestion\":\"" + record.get("suggestion")
-                    + "\"},\"fallbackDepartment\":\"" + record.get("fallback_department")
+                    + "\"},\"suggestion\":\"" + record.get("suggestion").toString().replace("\"","")
+                    + "\",\"fallbackDepartment\":\"" + record.get("fallback_department")
                     + "\",\"fallbackType\":\"" + fallbackType
                     + "\"}\n";
             bw.write(a);
@@ -73,7 +73,7 @@ public class MainController extends Controller {
         }
         file.createNewFile();
 
-        // write
+        // write    {a20ff39a-0d0a-4bfb-bb8b-682cceef64c6}
         FileWriter fw = new FileWriter(file, true);
         BufferedWriter bw = new BufferedWriter(fw);
         List<Record> replyList = Db.find("SELECT order_guid,reply_content,reply_person,reply_time,reply_satisfy FROM reply");
@@ -92,7 +92,7 @@ public class MainController extends Controller {
                 replyType = "其他";
             }
             String a = "{\"_id\":\"" + record.get("order_guid")
-                    + "\",\"replyContent\":\"" + record.get("reply_content")
+                    + "\",\"replyContent\":\"" + record.get("reply_content").toString().replace("\"","")
                     + "\",\"replyPerson\":\"" + record.get("reply_person")
                     + "\",\"replyTime\":{\"$date\":\"" + wxUtil.getTimeStr(record.get("reply_time"))
                     + "\"},\"replySatisfy\":\"" + record.get("reply_satisfy")
@@ -120,7 +120,7 @@ public class MainController extends Controller {
         BufferedWriter bw = new BufferedWriter(fw);
         List<Record> unhandleList = Db.find("SELECT order_guid,order_code,link_person,link_phone,write_time,send_time,urgency_degree,is_secret," +
                 "is_reply,end_date,problem_description,transfer_opinion,transfer_process,accept_channel FROM unhandle");
-//        "is_reply,end_date,problem_description,transfer_opinion,transfer_process,accept_channel FROM allwork LIMIT 0,1000");
+//        LIMIT 0,3
         for (Record unhandle : unhandleList) {
             String a = "{\"_id\":\"" + unhandle.get("order_guid")
                     + "\",\"HotLineWorkNumber\":\"" + unhandle.get("order_code")

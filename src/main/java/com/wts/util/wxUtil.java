@@ -27,6 +27,9 @@ public class wxUtil {
                 .replace("/7/", "-07-")
                 .replace("/8/", "-08-")
                 .replace("/9/", "-09-")
+                .replace("/10/", "-10-")
+                .replace("/11/", "-11-")
+                .replace("/12/", "-12-")
                 .replace("-1T", "-01T")
                 .replace("-2T", "-02T")
                 .replace("-3T", "-03T")
@@ -36,7 +39,10 @@ public class wxUtil {
                 .replace("-7T", "-07T")
                 .replace("-8T", "-08T")
                 .replace("-9T", "-09T")
-                + ".882Z";
+                .replace("-10T", "-10T")
+                .replace("-11T", "-11T")
+                .replace("-12T", "-12T")
+                + ".888Z";
     }
 
 
