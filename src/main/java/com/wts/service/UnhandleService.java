@@ -30,7 +30,13 @@ public class UnhandleService {
 	public Integer findNumByGUID(String order_guid) {
 		return Db.queryInt("SELECT COUNT(*) FROM unhandle WHERE unhandle.order_guid LIKE '%" + order_guid + "%' ");
 	}
-
+	public String findNumByPhone(String link_phone){
+		if(link_phone.equals("******")){
+			return "";
+		}else{
+			return Db.queryInt("SELECT COUNT(*) FROM unhandle WHERE unhandle.link_phone = '" + link_phone + "' ") + "";
+		}
+	}
 	public String getPersonCode(){
 		Integer total = Db.queryInt("SELECT COUNT(*) FROM unhandle");
 		return  total%4 + "";

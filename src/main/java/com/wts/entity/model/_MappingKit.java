@@ -16,11 +16,8 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 public class _MappingKit {
 	
 	public static void mapping(ActiveRecordPlugin arp) {
-		arp.addMapping("allwork", "id", Allwork.class);
-		arp.addMapping("expire", "id", Expire.class);
 		arp.addMapping("fallback", "id", Fallback.class);
 		arp.addMapping("reply", "id", Reply.class);
-		arp.addMapping("statistic", "id", Statistic.class);
 		arp.addMapping("unhandle", "id", Unhandle.class);
 	}
 }

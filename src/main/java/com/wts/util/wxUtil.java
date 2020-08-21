@@ -2,13 +2,43 @@ package com.wts.util;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.kit.PropKit;
+import me.chanjar.weixin.common.bean.result.WxMediaUploadResult;
+import me.chanjar.weixin.cp.api.impl.WxCpServiceImpl;
+import me.chanjar.weixin.cp.bean.WxCpMessage;
+import me.chanjar.weixin.cp.config.impl.WxCpDefaultConfigImpl;
 import okhttp3.*;
 
+
+import java.io.File;
 
 import static com.wts.util.others.IpKit.getLocalHostIP;
 
 
 public class wxUtil {
+
+    public static String getTimeStr(String str){
+        return str.replace(" ","T")
+                .replace("/1/", "-01-")
+                .replace("/2/", "-02-")
+                .replace("/3/", "-03-")
+                .replace("/4/", "-04-")
+                .replace("/5/", "-05-")
+                .replace("/6/", "-06-")
+                .replace("/7/", "-07-")
+                .replace("/8/", "-08-")
+                .replace("/9/", "-09-")
+                .replace("-1T", "-01T")
+                .replace("-2T", "-02T")
+                .replace("-3T", "-03T")
+                .replace("-4T", "-04T")
+                .replace("-5T", "-05T")
+                .replace("-6T", "-06T")
+                .replace("-7T", "-07T")
+                .replace("-8T", "-08T")
+                .replace("-9T", "-09T")
+                + ".882Z";
+    }
+
 
     public static String getSubStr(String str){
         if(str.length()<500){
@@ -37,9 +67,9 @@ public class wxUtil {
         return str;
     }
 
-    public static String getReplyStr(String guid, String replyTime, String replyPerson, String replyContent) {
+    public static String getReplyStr(String guid, String replyTime, String replyPerson, String replyContent, String replySatisfy) {
 //        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"reply\\\").add({data:[{_id:\\\"${_id}\\\",HotLineWorkNumber:\\\"${HotLineWorkNumber}\\\",linkPerson:\\\"${linkPerson}\\\",linkPhone:\\\"${linkPhone}\\\",countNum:\\\"${countNum}\\\",writeTime:\\\"${writeTime}\\\",sendTime:\\\"${sendTime}\\\",urgencyDegree:\\\"${urgencyDegree}\\\",isSecret:\\\"${isSecret}\\\",isReply:\\\"${isReply}\\\",endDate:\\\"${endDate}\\\",content:\\\"${content}\\\",remark:\\\"${remark}\\\",banliFlow:\\\"${banliFlow}\\\",xxlyId:\\\"${xxlyId}\\\",replyTime:\\\"${replyTime}\\\",replyPerson:\\\"${replyPerson}\\\",replyContent:\\\"${replyContent}\\\",replyType:\\\"${replyType}\\\"}]})\"}";
-        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"reply\\\").add({data:[{_id:\\\"${_id}\\\",replyTime:new Date(\\\"${replyTime}\\\"),replyPerson:\\\"${replyPerson}\\\",replyContent:\\\"${replyContent}\\\",replyType:\\\"${replyType}\\\"}]})\"}";
+        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"reply\\\").add({data:[{_id:\\\"${_id}\\\",replyTime:new Date(\\\"${replyTime}\\\"),replyPerson:\\\"${replyPerson}\\\",replyContent:\\\"${replyContent}\\\",replySatisfy:\\\"${replySatisfy}\\\",replyType:\\\"${replyType}\\\"}]})\"}";
         String t = replyContent.substring(0,1);
         String replyType;
         if (t.equals("A")){
@@ -57,6 +87,7 @@ public class wxUtil {
                 .replace("${replyTime}", replyTime)
                 .replace("${replyPerson}", replyPerson)
                 .replace("${replyContent}", getSubStr(replyContent))
+                .replace("${replySatisfy}", replySatisfy)
                 .replace("${replyType}", replyType);
         return str;
     }
@@ -150,11 +181,11 @@ public class wxUtil {
        添加Reply
        返回0表示正常
        */
-    public static String addReply(String token, String guid, String replyTime, String replyPerson, String replyContent) throws Exception {
+    public static String addReply(String token, String guid, String replyTime, String replyPerson, String replyContent, String replySatisfy) throws Exception {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("text/plain");
-        String replyStr = getReplyStr(guid, replyTime, replyPerson, replyContent);
+        String replyStr = getReplyStr(guid, replyTime, replyPerson, replyContent, replySatisfy);
         RequestBody body = RequestBody.create(mediaType, replyStr);
         Request request = new Request.Builder()
                 .url("https://api.weixin.qq.com/tcb/databaseadd?access_token=" + token)
@@ -252,6 +283,22 @@ public class wxUtil {
     }
 
     public static void main(String[] args) throws Exception{
-
+        WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();
+        config.setCorpId(ParamesAPI.corpId);      // 设置微信企业号的appid
+        config.setCorpSecret(ParamesAPI.secret);  // 设置微信企业号的app corpSecret
+        config.setAgentId(ParamesAPI.agentId);     // 设置微信企业号应用ID
+        config.setToken(ParamesAPI.token);       // 设置微信企业号应用的token
+        config.setAesKey(ParamesAPI.encodingAESKey);      // 设置微信企业号应用的EncodingAESKey
+        WxCpServiceImpl wxCpService = new WxCpServiceImpl();
+        wxCpService.setWxCpConfigStorage(config);
+        File file = new File("D:\\TemplateDoc.docx");
+        WxMediaUploadResult res = wxCpService.getMediaService().upload("file",file);
+        WxCpMessage message = WxCpMessage
+                .FILE()
+                .toUser("WangTianShuo")
+                .agentId(ParamesAPI.agentId)
+                .mediaId(res.getMediaId())
+                .build();
+        wxCpService.messageSend(message);
     }
 }

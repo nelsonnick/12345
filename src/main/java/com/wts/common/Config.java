@@ -13,10 +13,8 @@ import com.jfinal.plugin.cron4j.Cron4jPlugin;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.server.undertow.UndertowServer;
 import com.jfinal.template.Engine;
-import com.wts.controller.ExpireController;
 import com.wts.controller.*;
 import com.wts.entity.model._MappingKit;
-import com.wts.task.*;
 
 
 /**
@@ -69,12 +67,7 @@ public class Config extends JFinalConfig {
 	 */
 	public void configRoute(Routes me) {
 		me.add("/", MainController.class);
-		me.add("/a", AllworkController.class);
-		me.add("/u", UnhandleController.class);
-		me.add("/e", ExpireController.class);
-		me.add("/f", FallbackController.class);
-		me.add("/r", ReplyController.class);
-		me.add("/s", StatisticController.class);
+		me.add("/a", downAll.class);
 	}
 
 	public void configEngine(Engine me) {
@@ -98,18 +91,6 @@ public class Config extends JFinalConfig {
 		// 配置任务调度插件
 		Cron4jPlugin cp = new Cron4jPlugin();
 //		cp.addTask("*/2 * * * *", new DownAll());//每1分钟下载一次未办理工单
-//		cp.addTask("*/1 * * * *", new Down12345Unhandle());//每1分钟下载一次未办理工单
-//		cp.addTask("* */1 * * *", new Down12345Fallback()); //每1小时下载一次回退工单
-//		cp.addTask("* */1 * * *", new Down12345Reply()); //每1小时下载一次回复工单
-//		cp.addTask("*/1 * * * *", new Down12345Allwork());//每1分钟下载一次未办理工单
-//		cp.addTask("0 8 * * *", new Down12345Expire()); //每天8:00查询当天到期工单
-//		cp.addTask("0 12 * * *", new Down12345Expire()); //每天12:00查询当天到期工单
-//		cp.addTask("30 15 * * *", new Down12345Expire()); //每天15:30查询当天到期工单
-//		cp.addTask("50 15 * * *", new Down12345Expire()); //每天15:50查询当天到期工单
-//		cp.addTask("0 19 * * *", new Send12345Statistic()); //每天19:00保存并统计当天工单情况
-//		cp.addTask("*/10 * * * *", new Down12345Return());//每10分钟查询一次回退办理单
-//		cp.addTask("*/10 * * * *", new Down12345Reset());//每10分钟查询一次重新办理单
-//		cp.addTask("*/5 * * * *", new SendOA());//每5分钟向OA推送一次工单
 		me.add(cp);
 	}
 

@@ -4,7 +4,6 @@ import com.jfinal.kit.PropKit;
 import com.wts.entity.model.Fallback;
 import com.wts.entity.model.Reply;
 import com.wts.entity.model.Unhandle;
-import com.wts.service.AllworkService;
 import com.wts.service.FallbackService;
 import com.wts.service.ReplyService;
 import com.wts.service.UnhandleService;
@@ -181,7 +180,6 @@ public class DownAll  implements Runnable{
 
     public void saveUnhandle(Unhandle unhandle) throws Exception {
         UnhandleService service = new UnhandleService();
-        AllworkService service2 = new AllworkService();
         if (service.findNumByGUID(unhandle.get("order_guid"))==0){
             service.add(unhandle);
             String file_guid = unhandle.get("file_guid");
@@ -212,7 +210,6 @@ public class DownAll  implements Runnable{
             String transfer_process = unhandle.get("transfer_process");
             String remark = unhandle.get("remark");
             String enclosure = unhandle.get("enclosure");
-            service2.add(file_guid, order_guid,order_code,link_person,link_phone,link_address,send_time,problem_description,transfer_opinion,transfer_process);
             Map<String, String> map = new HashMap<String, String>();
             map.put("accept_person_code",accept_person_code);
             map.put("end_date",end_date);
@@ -232,7 +229,7 @@ public class DownAll  implements Runnable{
             map.put("transfer_process",transfer_process);
             map.put("enclosure",enclosure);
             map.put("order_guid",order_guid);
-            map.put("phone_time",service2.findNumByPhone(unhandle.get("link_phone")));
+            map.put("phone_time",service.findNumByPhone(unhandle.get("link_phone")));
             LocalDate date = LocalDate.now();
             DateTimeFormatter yyyy = DateTimeFormatter.ofPattern("yyyy");
             DateTimeFormatter MM = DateTimeFormatter.ofPattern("MM");
@@ -426,7 +423,8 @@ public class DownAll  implements Runnable{
                 reply.get("order_guid"),
                 reply.get("reply_time"),
                 reply.get("reply_person"),
-                reply.get("reply_content"));
+                reply.get("reply_content"),
+                reply.get("reply_satisfy"));
         sendMessageToWeiXin("工单：" + reply.get("order_code") + "-->已回复","WangTianShuo");
         if (errcode.equals("0")) {
             System.out.println("已回复工单已推送：" + reply.get("order_code") + "-" + reply.get("link_person"));

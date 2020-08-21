@@ -1,6 +1,5 @@
 package com.wts.util;
 
-import com.jfinal.kit.PropKit;
 import okhttp3.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -39,8 +38,8 @@ public class util12345 {
 
     public static Document getDoc(String url, String cookie) {
         OkHttpClient client = new OkHttpClient().newBuilder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS)
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(40, TimeUnit.SECONDS)
                 .build();
         Request request = new Request.Builder()
                 .url(url)
@@ -85,8 +84,8 @@ public class util12345 {
         Document doc = null;
         try {
             OkHttpClient client = new OkHttpClient().newBuilder()
-                    .connectTimeout(10, TimeUnit.SECONDS)
-                    .readTimeout(20, TimeUnit.SECONDS)
+                    .connectTimeout(20, TimeUnit.SECONDS)
+                    .readTimeout(40, TimeUnit.SECONDS)
                     .build();
             MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
             RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
@@ -139,8 +138,8 @@ public class util12345 {
     //  分页用的
     public static Document getDoc(String url, String cookie, String referer) {
         OkHttpClient client = new OkHttpClient().newBuilder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS)
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(40, TimeUnit.SECONDS)
                 .build();
         Request request = new Request.Builder()
                 .url(url)
@@ -165,26 +164,4 @@ public class util12345 {
         return doc;
     }
 
-
-//    private void CreatWordByModel(String tmpFile, Map<String, String> contentMap, String exportFile) {
-//        //导出到文件
-//        try {
-//            InputStream in = null;
-//            in = new FileInputStream(new File(tmpFile));
-//            XWPFDocument document = null;
-//            document = new XWPFDocument (in);
-//            replaceInTable(document, contentMap);
-//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//            document.write((OutputStream)byteArrayOutputStream);
-//            OutputStream outputStream = new FileOutputStream(exportFile);
-//            outputStream.write(byteArrayOutputStream.toByteArray());
-//            outputStream.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-    public static void main(String[] args) {
-        String cookie = PropKit.use("config-dev.txt").get("cookie");
-        getPageInfo("1",cookie,"-1");
-    }
 }
