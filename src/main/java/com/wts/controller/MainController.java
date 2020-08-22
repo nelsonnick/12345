@@ -31,7 +31,7 @@ public class MainController extends Controller {
         // write
         FileWriter fw = new FileWriter(file, true);
         BufferedWriter bw = new BufferedWriter(fw);
-        List<Record> replyList = Db.find("SELECT order_guid,fallback_department,fallback_person,fallback_time,suggestion,fallback_reason FROM fallback LIMIT 0,3");
+        List<Record> replyList = Db.find("SELECT order_guid,fallback_department,fallback_person,fallback_time,suggestion,fallback_reason FROM fallback");
         for (Record record : replyList) {
             String t = record.get("fallback_reason").toString().substring(0,1);
             String fallbackType;
@@ -48,10 +48,16 @@ public class MainController extends Controller {
             } else {
                 fallbackType = "其他部门";
             }
+            String fallbackTime;
+            if (record.get("fallback_time").toString().equals("")){
+                fallbackTime = wxUtil.getTimeStr("2000/1/1 00:00:00");
+            }else{
+                fallbackTime = wxUtil.getTimeStr(record.get("fallback_time"));
+            }
             String a = "{\"_id\":\"" + record.get("order_guid")
                     + "\",\"fallbackPerson\":\"" + record.get("fallback_person")
                     + "\",\"fallbackReason\":\"" + record.get("fallback_reason").toString().replace("\"","")
-                    + "\",\"fallbackTime\":{\"$date\":\"" + wxUtil.getTimeStr(record.get("fallback_time"))
+                    + "\",\"fallbackTime\":{\"$date\":\"" + fallbackTime
                     + "\"},\"suggestion\":\"" + record.get("suggestion").toString().replace("\"","")
                     + "\",\"fallbackDepartment\":\"" + record.get("fallback_department")
                     + "\",\"fallbackType\":\"" + fallbackType
