@@ -91,10 +91,16 @@ public class MainController extends Controller {
             } else {
                 replyType = "其他";
             }
+            String replyTime;
+            if (record.get("reply_time").toString().equals("")){
+                replyTime = wxUtil.getTimeStr("2000/1/1 00:00:00");
+            }else{
+                replyTime = wxUtil.getTimeStr(record.get("reply_time"));
+            }
             String a = "{\"_id\":\"" + record.get("order_guid")
                     + "\",\"replyContent\":\"" + record.get("reply_content").toString().replace("\"","")
                     + "\",\"replyPerson\":\"" + record.get("reply_person")
-                    + "\",\"replyTime\":{\"$date\":\"" + wxUtil.getTimeStr(record.get("reply_time"))
+                    + "\",\"replyTime\":{\"$date\":\"" + replyTime
                     + "\"},\"replySatisfy\":\"" + record.get("reply_satisfy")
                     + "\",\"replyType\":\"" + replyType
                     + "\"}\n";
