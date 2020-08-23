@@ -1,0 +1,19 @@
+<fieldset class="solid">
+	<input type="hidden" name="re.id" value="#(re.id??)" />
+	<div>
+		<label>工单编号</label>
+		<input type="text" name="re.order_code" value="#(re.order_code??)" disabled/>#(titleMsg)
+	</div>
+	<div>
+		<label>问题描述</label>
+		<textarea name="re.problem_description" cols="80" rows="10" disabled>#(re.problem_description??)</textarea>#(contentMsg)
+	</div>
+	<div>
+		<label>分类</label>
+		<input type="text" name="re.remark" value="#(re.remark??)" />#(titleMsg)
+	</div>
+	<div>
+		<label>&nbsp;</label>
+		<input value="提交" type="submit">
+	</div>
+</fieldset>

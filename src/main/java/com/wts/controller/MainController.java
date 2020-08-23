@@ -20,7 +20,7 @@ public class MainController extends Controller {
         renderText("服务正常");
     }
 
-    public void f() throws IOException {
+    public void fallbcak() throws IOException {
         String path = "d:\\fallback.txt";
         File file = new File(path);
         if(!file.exists()){
@@ -71,7 +71,7 @@ public class MainController extends Controller {
         renderText("已回退工单已生成");
     }
 
-    public void r() throws IOException {
+    public void reply() throws IOException {
         String path = "d:\\reply.txt";
         File file = new File(path);
         if(!file.exists()){
@@ -119,7 +119,7 @@ public class MainController extends Controller {
         renderText("已回复工单已生成");
     }
 
-    public void u() throws IOException {
+    public void unhandle() throws IOException {
         String path = "d:\\unhandle.txt";
         File file = new File(path);
         if(!file.exists()){

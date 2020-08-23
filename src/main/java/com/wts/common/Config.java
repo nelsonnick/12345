@@ -68,11 +68,12 @@ public class Config extends JFinalConfig {
 	public void configRoute(Routes me) {
 		me.add("/", MainController.class);
 		me.add("/a", downAll.class);
+		me.add("/re", ReController.class);
 	}
 
 	public void configEngine(Engine me) {
-//		me.addSharedFunction("/common/_layout.html");
-//		me.addSharedFunction("/common/_paginate.html");
+		me.addSharedFunction("/common/_layout.html");
+		me.addSharedFunction("/common/_paginate.html");
 	}
 
 	/**

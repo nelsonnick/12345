@@ -18,6 +18,7 @@ public class _MappingKit {
 	public static void mapping(ActiveRecordPlugin arp) {
 		arp.addMapping("fallback", "id", Fallback.class);
 		arp.addMapping("reply", "id", Reply.class);
+		arp.addMapping("re", "id", Re.class);
 		arp.addMapping("unhandle", "id", Unhandle.class);
 	}
 }
