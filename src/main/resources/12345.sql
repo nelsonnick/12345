@@ -125,3 +125,20 @@ CREATE TABLE `reply`
     `reply_phone2`           varchar(50) CHARACTER SET utf8   NULL COMMENT '回复电话',
     PRIMARY KEY (`id`)
 );
+DROP TABLE IF EXISTS `expire`;
+CREATE TABLE `expire`
+(
+    `id`                     int(11)                          NOT NULL AUTO_INCREMENT COMMENT '序号',
+    `order_guid`             varchar(100) CHARACTER SET utf8  NULL COMMENT '工单序号',
+    `order_code`             varchar(50) CHARACTER SET utf8   NULL COMMENT '工单编号',
+    `link_person`            varchar(50) CHARACTER SET utf8   NULL COMMENT '联系人',
+    `end_date`               varchar(50) CHARACTER SET utf8   NULL COMMENT '办理时限',
+    PRIMARY KEY (`id`)
+);
+DROP TABLE IF EXISTS `ex`;
+CREATE TABLE `ex`
+(
+    `id`                     int(11)                          NOT NULL AUTO_INCREMENT COMMENT '序号',
+    `order_guid`             varchar(100) CHARACTER SET utf8  NULL COMMENT '工单序号',
+    PRIMARY KEY (`id`)
+);

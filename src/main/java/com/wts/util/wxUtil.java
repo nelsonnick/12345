@@ -126,6 +126,15 @@ public class wxUtil {
         return str;
     }
 
+    public static String getUnStr(String guid, String HotLineWorkNumber, String linkPerson, String endDate) {
+        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"un\\\").add({data:[{_id:\\\"${_id}\\\",HotLineWorkNumber:\\\"${HotLineWorkNumber}\\\",linkPerson:\\\"${linkPerson}\\\",endDate:\\\"${endDate}\\\"}]})\"}";
+        String str = temp.replace("${_id}", guid)
+                .replace("${HotLineWorkNumber}", HotLineWorkNumber)
+                .replace("${linkPerson}", linkPerson)
+                .replace("${endDate}", endDate);
+        return str;
+    }
+
     public static String getSubscribeMessageStr(String OPENID, String TEMPLATE_ID, String guid, String HotLineWorkNumber, String linkPerson,
                                        String linkPhone, String sendTime, String endDate, String collectionName) {
         String temp = "{\"touser\":\"${OPENID}\",\"template_id\":\"${TEMPLATE_ID}\",\"page\":\"${collectionName}?_id=${guid}\",\"miniprogram_state\":\"developer\",\"lang\":\"zh_CN\",\"data\":{\"character_string01\":{\"value\":\"${HotLineWorkNumber}\"},\"thing01\":{\"value\":\"${linkPerson}\"},\"character_string02\":{\"value\":\"${linkPhone}\"},\"time01\":{\"value\":\"${sendTime}\"},\"date01\":{\"value\":\"${endDate}\"}}}";
@@ -234,6 +243,58 @@ public class wxUtil {
     }
 
     /*
+       添加Un
+       返回0表示正常
+       */
+    public static String addUn(String token, String guid, String HotLineWorkNumber, String linkPerson, String endDate) throws Exception {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("text/plain");
+        String unStr = getUnStr(guid, HotLineWorkNumber, linkPerson, endDate);
+        RequestBody body = RequestBody.create(mediaType, unStr);
+        Request request = new Request.Builder()
+                .url("https://api.weixin.qq.com/tcb/databaseadd?access_token=" + token)
+                .method("POST", body)
+                .addHeader("Content-Type", "text/plain")
+                .build();
+        Response response = client.newCall(request).execute();
+        String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
+        if (!errcode.equals("0")){
+            System.out.println(unStr);
+            System.out.println(errcode);
+            System.out.println(response.body().string());
+        }
+        return errcode;
+    }
+
+    /*
+       删除Un
+       返回0表示正常
+       */
+    public static String deleteUn(String token, String guid) throws Exception{
+        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"un\\\").doc(\\\"${_id}\\\").remove()\"}";
+        String str = temp.replace("${_id}", guid);
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("text/plain");
+        RequestBody body = RequestBody.create(mediaType, str);
+        Request request = new Request.Builder()
+                .url("https://api.weixin.qq.com/tcb/databasedelete?access_token=" + token)
+                .method("POST", body)
+                .addHeader("Content-Type", "text/plain")
+                .build();
+        Response response = client.newCall(request).execute();
+        String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
+        if (!errcode.equals("0")){
+            System.out.println(str);
+            System.out.println(errcode);
+            System.out.println(response.body().string());
+        }
+        return errcode;
+    }
+
+
+    /*
         发送订阅消息
         返回0表示正常
         王天硕OPENID：oxbuA4oyvysDDboo4RQovWDPmlWg
@@ -289,22 +350,26 @@ public class wxUtil {
     }
 
     public static void main(String[] args) throws Exception{
-        WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();
-        config.setCorpId(ParamesAPI.corpId);      // 设置微信企业号的appid
-        config.setCorpSecret(ParamesAPI.secret);  // 设置微信企业号的app corpSecret
-        config.setAgentId(ParamesAPI.agentId);     // 设置微信企业号应用ID
-        config.setToken(ParamesAPI.token);       // 设置微信企业号应用的token
-        config.setAesKey(ParamesAPI.encodingAESKey);      // 设置微信企业号应用的EncodingAESKey
-        WxCpServiceImpl wxCpService = new WxCpServiceImpl();
-        wxCpService.setWxCpConfigStorage(config);
-        File file = new File("D:\\TemplateDoc.docx");
-        WxMediaUploadResult res = wxCpService.getMediaService().upload("file",file);
-        WxCpMessage message = WxCpMessage
-                .FILE()
-                .toUser("WangTianShuo")
-                .agentId(ParamesAPI.agentId)
-                .mediaId(res.getMediaId())
-                .build();
-        wxCpService.messageSend(message);
+//        WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();
+//        config.setCorpId(ParamesAPI.corpId);      // 设置微信企业号的appid
+//        config.setCorpSecret(ParamesAPI.secret);  // 设置微信企业号的app corpSecret
+//        config.setAgentId(ParamesAPI.agentId);     // 设置微信企业号应用ID
+//        config.setToken(ParamesAPI.token);       // 设置微信企业号应用的token
+//        config.setAesKey(ParamesAPI.encodingAESKey);      // 设置微信企业号应用的EncodingAESKey
+//        WxCpServiceImpl wxCpService = new WxCpServiceImpl();
+//        wxCpService.setWxCpConfigStorage(config);
+//        File file = new File("D:\\TemplateDoc.docx");
+//        WxMediaUploadResult res = wxCpService.getMediaService().upload("file",file);
+//        WxCpMessage message = WxCpMessage
+//                .FILE()
+//                .toUser("WangTianShuo")
+//                .agentId(ParamesAPI.agentId)
+//                .mediaId(res.getMediaId())
+//                .build();
+//        wxCpService.messageSend(message);
+
+
+        String token = getToken();
+        addUn(token,"111","111","111","111");
     }
 }

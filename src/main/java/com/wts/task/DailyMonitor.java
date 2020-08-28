@@ -1,12 +1,8 @@
 package com.wts.task;
 
 import com.jfinal.kit.PropKit;
-import com.wts.entity.model.Fallback;
-import com.wts.entity.model.Reply;
-import com.wts.entity.model.Unhandle;
-import com.wts.service.FallbackService;
-import com.wts.service.ReplyService;
-import com.wts.service.UnhandleService;
+import com.wts.entity.model.*;
+import com.wts.service.*;
 import com.wts.util.ParamesAPI;
 import com.wts.util.oaUtil;
 import me.chanjar.weixin.common.bean.result.WxMediaUploadResult;
@@ -30,9 +26,8 @@ import static com.wts.util.others.IpKit.getLocalHostIP;
 import static com.wts.util.util12345.getDoc;
 import static com.wts.util.util12345.getPageUrl;
 import static com.wts.util.wxUtil.*;
-import static com.wts.util.wxUtil.goNeiWang;
 
-public class DownAll  implements Runnable{
+public class DailyMonitor implements Runnable{
     String path2 = "D:\\当前下载\\";
     List<Unhandle> unhandleList = new ArrayList<>();
     List<Reply> replyList = new ArrayList<>();
@@ -265,13 +260,18 @@ public class DownAll  implements Runnable{
                 unhandle.get("transfer_opinion"),
                 unhandle.get("transfer_process"),
                 unhandle.get("accept_channel"));
+        String err = addUn(token,
+                unhandle.get("order_guid"),
+                unhandle.get("order_code"),
+                unhandle.get("link_person"),
+                unhandle.get("end_date"));
         String OA_token = oaUtil.getToken();
         String run_id = oaUtil.getRun_id(OA_token);
         String OA_content = oaUtil.getContent(run_id,unhandle.get("order_code"), unhandle.get("link_person"), unhandle.get("end_date"), unhandle.get("urgency_degree"), unhandle.get("link_phone"),
                 unhandle.get("problem_description"), unhandle.get("transfer_opinion"), unhandle.get("transfer_process"), "XXX");
         oaUtil.inputOA(OA_token,OA_content);
         sendMessageToWeiXin("收到新工单：" + unhandle.get("order_code"),"WangTianShuo");
-        if (errcode.equals("0")) {
+        if (errcode.equals("0") && err.equals("0")) {
             System.out.println("待办理工单已推送：" + unhandle.get("order_code") + "-" + unhandle.get("link_person"));
         } else {
             System.out.println("待办理工单推送失败：" + unhandle.get("order_code") + "-" + unhandle.get("link_person"));
@@ -412,8 +412,6 @@ public class DownAll  implements Runnable{
             System.out.println("已回复工单：" + order_code + "-" + link_person + "-" + send_time);
             service.add(reply);
             replyList.add(reply);
-//            sendReply(reply);
-//            service.add(order_guid,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark,enclosure, reply_type, finish_time, reply_satisfy, reply_day, reply_person, reply_phone, reply_content, reply_department, reply_time, subordinate_department, if_nodo, nodo_reason, reply_enclosure, reply_person2, reply_phone2);
         }
     }
 
@@ -425,8 +423,10 @@ public class DownAll  implements Runnable{
                 reply.get("reply_person"),
                 reply.get("reply_content"),
                 reply.get("reply_satisfy"));
+        String err= deleteUn(token,
+                reply.get("order_guid"));
         sendMessageToWeiXin("工单：" + reply.get("order_code") + "-->已回复","WangTianShuo");
-        if (errcode.equals("0")) {
+        if (errcode.equals("0") && err.equals("0")) {
             System.out.println("已回复工单已推送：" + reply.get("order_code") + "-" + reply.get("link_person"));
         } else {
             System.out.println("已回复工单推送失败：" + reply.get("order_code") + "-" + reply.get("link_person"));
@@ -553,8 +553,6 @@ public class DownAll  implements Runnable{
             System.out.println("已回退工单：" + order_code + "-" + link_person + "-" + send_time);
             service.add(fallback);
             fallbackList.add(fallback);
-//            sendFallback(fallback);
-//            service.add(order_guid,order_state, order_code, link_person,link_phone,link_address,business_environment,new_supervision,accept_person,accept_person_code,accept_channel,handle_type,phone_type,write_time,urgency_degree, problem_classification,is_secret,is_reply,reply_remark,problem_description,send_person,send_time,end_date,transfer_opinion,transfer_process,remark,enclosure,fallback_reason,leader_opinions,suggestion,fallback_department,fallback_time,fallback_person,fallback_phone);
         }
     }
 
@@ -567,8 +565,10 @@ public class DownAll  implements Runnable{
                 fallback.get("fallback_reason"),
                 fallback.get("suggestion"),
                 fallback.get("fallback_department"));
+        String err= deleteUn(token,
+                fallback.get("order_guid"));
         sendMessageToWeiXin("工单：" + fallback.get("order_code") + "-->已回退","WangTianShuo");
-        if (errcode.equals("0")) {
+        if (errcode.equals("0") && err.equals("0")) {
             System.out.println("已回退工单已推送：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
         } else {
             System.out.println("已回退工单推送失败：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
@@ -612,5 +612,6 @@ public class DownAll  implements Runnable{
                 .build();
         wxCpService.messageSend(message);
     }
+
 
 }
