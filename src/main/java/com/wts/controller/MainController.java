@@ -31,7 +31,7 @@ public class MainController extends Controller {
         // write
         FileWriter fw = new FileWriter(file, true);
         BufferedWriter bw = new BufferedWriter(fw);
-        List<Record> replyList = Db.find("SELECT order_guid,fallback_department,fallback_person,fallback_time,suggestion,fallback_reason FROM fallback");
+        List<Record> replyList = Db.find("SELECT order_guid,fallback_department,fallback_person,fallback_time,suggestion,fallback_reason,order_code,link_person FROM fallback");
         for (Record record : replyList) {
             String t = record.get("fallback_reason").toString().substring(0,1);
             String fallbackType;
@@ -55,6 +55,8 @@ public class MainController extends Controller {
                 fallbackTime = wxUtil.getTimeStr(record.get("fallback_time"));
             }
             String a = "{\"_id\":\"" + record.get("order_guid")
+                    + "\",\"HotLineWorkNumber\":\"" + record.get("order_code")
+                    + "\",\"linkPerson\":\"" + record.get("link_person")
                     + "\",\"fallbackPerson\":\"" + record.get("fallback_person")
                     + "\",\"fallbackReason\":\"" + record.get("fallback_reason").toString().replace("\"","")
                     + "\",\"fallbackTime\":{\"$date\":\"" + fallbackTime
@@ -82,7 +84,7 @@ public class MainController extends Controller {
         // write    {a20ff39a-0d0a-4bfb-bb8b-682cceef64c6}
         FileWriter fw = new FileWriter(file, true);
         BufferedWriter bw = new BufferedWriter(fw);
-        List<Record> replyList = Db.find("SELECT order_guid,reply_content,reply_person,reply_time,reply_satisfy FROM reply");
+        List<Record> replyList = Db.find("SELECT order_guid,reply_content,reply_person,reply_time,reply_satisfy,order_code,link_person FROM reply");
         for (Record record : replyList) {
             String t = record.get("reply_content").toString().substring(0,1);
             String replyType;
@@ -104,6 +106,8 @@ public class MainController extends Controller {
                 replyTime = wxUtil.getTimeStr(record.get("reply_time"));
             }
             String a = "{\"_id\":\"" + record.get("order_guid")
+                    + "\",\"HotLineWorkNumber\":\"" + record.get("order_code")
+                    + "\",\"linkPerson\":\"" + record.get("link_person")
                     + "\",\"replyContent\":\"" + record.get("reply_content").toString().replace("\"","")
                     + "\",\"replyPerson\":\"" + record.get("reply_person")
                     + "\",\"replyTime\":{\"$date\":\"" + replyTime
@@ -111,7 +115,6 @@ public class MainController extends Controller {
                     + "\",\"replyType\":\"" + replyType
                     + "\"}\n";
             bw.write(a);
-
         }
         bw.flush();
         bw.close();

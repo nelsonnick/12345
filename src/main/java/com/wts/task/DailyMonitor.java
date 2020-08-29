@@ -422,7 +422,9 @@ public class DailyMonitor implements Runnable{
                 reply.get("reply_time"),
                 reply.get("reply_person"),
                 reply.get("reply_content"),
-                reply.get("reply_satisfy"));
+                reply.get("reply_satisfy"),
+                reply.get("order_code"),
+                reply.get("link_person"));
         String err= deleteUn(token,
                 reply.get("order_guid"));
         sendMessageToWeiXin("工单：" + reply.get("order_code") + "-->已回复","WangTianShuo");
@@ -564,7 +566,9 @@ public class DailyMonitor implements Runnable{
                 fallback.get("fallback_person"),
                 fallback.get("fallback_reason"),
                 fallback.get("suggestion"),
-                fallback.get("fallback_department"));
+                fallback.get("fallback_department"),
+                fallback.get("order_code"),
+                fallback.get("link_person"));
         String err= deleteUn(token,
                 fallback.get("order_guid"));
         sendMessageToWeiXin("工单：" + fallback.get("order_code") + "-->已回退","WangTianShuo");

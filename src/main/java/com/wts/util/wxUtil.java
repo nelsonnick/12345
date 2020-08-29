@@ -73,9 +73,9 @@ public class wxUtil {
         return str;
     }
 
-    public static String getReplyStr(String guid, String replyTime, String replyPerson, String replyContent, String replySatisfy) {
+    public static String getReplyStr(String guid, String replyTime, String replyPerson, String replyContent, String replySatisfy, String HotLineWorkNumber, String linkPerson) {
 //        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"reply\\\").add({data:[{_id:\\\"${_id}\\\",HotLineWorkNumber:\\\"${HotLineWorkNumber}\\\",linkPerson:\\\"${linkPerson}\\\",linkPhone:\\\"${linkPhone}\\\",countNum:\\\"${countNum}\\\",writeTime:\\\"${writeTime}\\\",sendTime:\\\"${sendTime}\\\",urgencyDegree:\\\"${urgencyDegree}\\\",isSecret:\\\"${isSecret}\\\",isReply:\\\"${isReply}\\\",endDate:\\\"${endDate}\\\",content:\\\"${content}\\\",remark:\\\"${remark}\\\",banliFlow:\\\"${banliFlow}\\\",xxlyId:\\\"${xxlyId}\\\",replyTime:\\\"${replyTime}\\\",replyPerson:\\\"${replyPerson}\\\",replyContent:\\\"${replyContent}\\\",replyType:\\\"${replyType}\\\"}]})\"}";
-        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"reply\\\").add({data:[{_id:\\\"${_id}\\\",replyTime:new Date(\\\"${replyTime}\\\"),replyPerson:\\\"${replyPerson}\\\",replyContent:\\\"${replyContent}\\\",replySatisfy:\\\"${replySatisfy}\\\",replyType:\\\"${replyType}\\\"}]})\"}";
+        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"reply\\\").add({data:[{_id:\\\"${_id}\\\",replyTime:new Date(\\\"${replyTime}\\\"),replyPerson:\\\"${replyPerson}\\\",replyContent:\\\"${replyContent}\\\",replySatisfy:\\\"${replySatisfy}\\\",replyType:\\\"${replyType}\\\"},HotLineWorkNumber:\\\"${HotLineWorkNumber}\\\"},linkPerson:\\\"${linkPerson}\\\"}]})\"}";
         String t = replyContent.substring(0,1);
         String replyType;
         if (t.equals("A")){
@@ -90,6 +90,8 @@ public class wxUtil {
             replyType = "其他";
         }
         String str = temp.replace("${_id}", guid)
+                .replace("${HotLineWorkNumber}", HotLineWorkNumber)
+                .replace("${linkPerson}", linkPerson)
                 .replace("${replyTime}", replyTime)
                 .replace("${replyPerson}", replyPerson)
                 .replace("${replyContent}", getSubStr(replyContent))
@@ -98,9 +100,9 @@ public class wxUtil {
         return str;
     }
 
-    public static String getFallbackStr(String guid, String fallbackTime, String fallbackPerson, String fallbackReason, String suggestion, String fallbackDepartment) {
+    public static String getFallbackStr(String guid, String fallbackTime, String fallbackPerson, String fallbackReason, String suggestion, String fallbackDepartment, String HotLineWorkNumber, String linkPerson) {
 //        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"fallback\\\").add({data:[{_id:\\\"${_id}\\\",HotLineWorkNumber:\\\"${HotLineWorkNumber}\\\",linkPerson:\\\"${linkPerson}\\\",linkPhone:\\\"${linkPhone}\\\",countNum:\\\"${countNum}\\\",writeTime:\\\"${writeTime}\\\",sendTime:\\\"${sendTime}\\\",urgencyDegree:\\\"${urgencyDegree}\\\",isSecret:\\\"${isSecret}\\\",isReply:\\\"${isReply}\\\",endDate:\\\"${endDate}\\\",content:\\\"${content}\\\",remark:\\\"${remark}\\\",banliFlow:\\\"${banliFlow}\\\",xxlyId:\\\"${xxlyId}\\\",fallbackTime:\\\"${fallbackTime}\\\",fallbackPerson:\\\"${fallbackPerson}\\\",fallbackReason:\\\"${fallbackReason}\\\",suggestion:\\\"${suggestion}\\\",fallbackDepartment:\\\"${fallbackDepartment}\\\"}]})\"}";
-        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"fallback\\\").add({data:[{_id:\\\"${_id}\\\",fallbackTime:new Date(\\\"${fallbackTime}\\\"),fallbackPerson:\\\"${fallbackPerson}\\\",fallbackReason:\\\"${fallbackReason}\\\",suggestion:\\\"${suggestion}\\\",fallbackDepartment:\\\"${fallbackDepartment}\\\",fallbackType:\\\"${fallbackType}\\\"}]})\"}";
+        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"fallback\\\").add({data:[{_id:\\\"${_id}\\\",fallbackTime:new Date(\\\"${fallbackTime}\\\"),fallbackPerson:\\\"${fallbackPerson}\\\",fallbackReason:\\\"${fallbackReason}\\\",suggestion:\\\"${suggestion}\\\",fallbackDepartment:\\\"${fallbackDepartment}\\\",fallbackType:\\\"${fallbackType}\\\",HotLineWorkNumber:\\\"${HotLineWorkNumber}\\\",linkPerson:\\\"${linkPerson}\\\"}]})\"}";
         String t = fallbackReason.substring(0,1);
         String fallbackType;
         if (t.equals("A")){
@@ -117,6 +119,8 @@ public class wxUtil {
             fallbackType = "其他部门";
         }
         String str = temp.replace("${_id}", guid)
+                .replace("${HotLineWorkNumber}", HotLineWorkNumber)
+                .replace("${linkPerson}", linkPerson)
                 .replace("${fallbackTime}", fallbackTime)
                 .replace("${fallbackPerson}", fallbackPerson)
                 .replace("${fallbackReason}", getSubStr(fallbackReason))
@@ -196,11 +200,11 @@ public class wxUtil {
        添加Reply
        返回0表示正常
        */
-    public static String addReply(String token, String guid, String replyTime, String replyPerson, String replyContent, String replySatisfy) throws Exception {
+    public static String addReply(String token, String guid, String replyTime, String replyPerson, String replyContent, String replySatisfy, String HotLineWorkNumber, String linkPerson) throws Exception {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("text/plain");
-        String replyStr = getReplyStr(guid, replyTime, replyPerson, replyContent, replySatisfy);
+        String replyStr = getReplyStr(guid, replyTime, replyPerson, replyContent, replySatisfy, HotLineWorkNumber, linkPerson);
         RequestBody body = RequestBody.create(mediaType, replyStr);
         Request request = new Request.Builder()
                 .url("https://api.weixin.qq.com/tcb/databaseadd?access_token=" + token)
@@ -221,11 +225,11 @@ public class wxUtil {
        添加Fallback
        返回0表示正常
        */
-    public static String addFallback(String token, String guid, String fallbackTime, String fallbackPerson, String fallbackReason, String suggestion, String fallbackDepartment) throws Exception {
+    public static String addFallback(String token, String guid, String fallbackTime, String fallbackPerson, String fallbackReason, String suggestion, String fallbackDepartment, String HotLineWorkNumber, String linkPerson) throws Exception {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("text/plain");
-        String fallbackStr = getFallbackStr(guid, fallbackTime, fallbackPerson, fallbackReason, suggestion, fallbackDepartment);
+        String fallbackStr = getFallbackStr(guid, fallbackTime, fallbackPerson, fallbackReason, suggestion, fallbackDepartment, HotLineWorkNumber, linkPerson);
         RequestBody body = RequestBody.create(mediaType, fallbackStr);
         Request request = new Request.Builder()
                 .url("https://api.weixin.qq.com/tcb/databaseadd?access_token=" + token)
