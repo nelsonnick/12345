@@ -106,7 +106,7 @@ public class DailyMonitor implements Runnable{
         try{
             tbody = doc.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
         }catch (Exception e){
-            System.out.println("未打印工单：" + url);
+            System.out.println("错误的未回复工单：" + url);
             System.out.println(doc);
         }
         Element td = tbody.getElementsByTag("tr").get(8).getElementsByTag("td").get(1);
@@ -307,7 +307,13 @@ public class DailyMonitor implements Runnable{
     public Reply getReply(String file_guid, String order_guid, String cookie){
         String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid="+file_guid+"&GUID=" +order_guid+ "&IsZDDB=&xxlyid=1";
         Document doc = getDoc(url,cookie);
-        Element tbody = doc.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
+        Element tbody = null;
+        try{
+            tbody = doc.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
+        }catch (Exception e){
+            System.out.println("错误的回复工单：" + url);
+            System.out.println(doc);
+        }
         Element td = tbody.getElementsByTag("tr").get(8).getElementsByTag("td").get(1);
         String enclosure = "";
         if (!td.text().trim().equals("")){
@@ -464,7 +470,13 @@ public class DailyMonitor implements Runnable{
     public Fallback getFallback(String file_guid, String order_guid, String cookie){
         String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid="+file_guid+"&GUID=" +order_guid+ "&IsZDDB=&xxlyid=1";
         Document doc = getDoc(url,cookie);
-        Element tbody = doc.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
+        Element tbody = null;
+        try{
+        tbody = doc.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
+        }catch (Exception e){
+            System.out.println("错误的回退工单：" + url);
+            System.out.println(doc);
+        }
         Element td = tbody.getElementsByTag("tr").get(8).getElementsByTag("td").get(1);
         String enclosure = "";
         if (!td.text().trim().equals("")){
