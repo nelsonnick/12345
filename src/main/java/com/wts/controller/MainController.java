@@ -4,7 +4,6 @@ import com.jfinal.core.Controller;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
-import com.wts.entity.model.Unhandle;
 import com.wts.util.wxUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -18,7 +17,6 @@ import java.util.List;
 
 import static com.wts.util.util12345.getDoc;
 import static com.wts.util.util12345.getPageUrl;
-import static com.wts.util.wxUtil.getUnStr;
 
 public class MainController extends Controller {
 
@@ -128,7 +126,7 @@ public class MainController extends Controller {
         renderText("已回复工单已生成");
     }
 
-    public void unhandle() throws IOException {
+    public void allwork() throws IOException {
         String path = "d:\\unhandle.txt";
         File file = new File(path);
         if(!file.exists()){
@@ -139,34 +137,35 @@ public class MainController extends Controller {
         // write
         FileWriter fw = new FileWriter(file, true);
         BufferedWriter bw = new BufferedWriter(fw);
-        List<Record> unhandleList = Db.find("SELECT order_guid,order_code,link_person,link_phone,write_time,send_time,urgency_degree,is_secret," +
-                "is_reply,end_date,problem_description,transfer_opinion,transfer_process,accept_channel FROM unhandle");
+        List<Record> allworkList = Db.find("SELECT order_guid,order_code,link_person,link_phone,write_time,send_time,urgency_degree,is_secret," +
+                "is_reply,end_date,problem_description,transfer_opinion,transfer_process,accept_channel FROM allwork");
 //        LIMIT 0,3
-        for (Record unhandle : unhandleList) {
-            String a = "{\"_id\":\"" + unhandle.get("order_guid")
-                    + "\",\"HotLineWorkNumber\":\"" + unhandle.get("order_code")
-                    + "\",\"linkPerson\":\"" + unhandle.get("link_person")
-                    + "\",\"linkPhone\":\"" + unhandle.get("link_phone")
-//                    + "\",\"writeTime\":{\"$date\":\"" + getTimeStr(unhandle.get("write_time"))
-                    + "\",\"sendTime\":{\"$date\":\"" + wxUtil.getTimeStr(unhandle.get("send_time"))
-                    + "\"},\"urgencyDegree\":\"" + unhandle.get("urgency_degree")
-                    + "\",\"isSecret\":\"" + unhandle.get("is_secret")
-                    + "\",\"isReply\":\"" + unhandle.get("is_reply")
-                    + "\",\"endDate\":\"" + unhandle.get("end_date")
-                    + "\",\"content\":\"" + wxUtil.getSubStr(unhandle.get("problem_description"))
-                    + "\",\"remark\":\"" + wxUtil.getSubStr(unhandle.get("transfer_opinion"))
-                    + "\",\"banliFlow\":\"" + wxUtil.getSubStr(unhandle.get("transfer_process"))
-                    + "\",\"xxlyId\":\"" + unhandle.get("accept_channel")
+        for (Record allwork : allworkList) {
+            String a = "{\"_id\":\"" + allwork.get("order_guid")
+                    + "\",\"HotLineWorkNumber\":\"" + allwork.get("order_code")
+                    + "\",\"linkPerson\":\"" + allwork.get("link_person")
+                    + "\",\"linkPhone\":\"" + allwork.get("link_phone")
+//                    + "\",\"writeTime\":{\"$date\":\"" + getTimeStr(allwork.get("write_time"))
+                    + "\",\"sendTime\":{\"$date\":\"" + wxUtil.getTimeStr(allwork.get("send_time"))
+                    + "\"},\"urgencyDegree\":\"" + allwork.get("urgency_degree")
+                    + "\",\"isSecret\":\"" + allwork.get("is_secret")
+                    + "\",\"isReply\":\"" + allwork.get("is_reply")
+                    + "\",\"endDate\":\"" + allwork.get("end_date")
+                    + "\",\"content\":\"" + wxUtil.getSubStr(allwork.get("problem_description"))
+                    + "\",\"remark\":\"" + wxUtil.getSubStr(allwork.get("transfer_opinion"))
+                    + "\",\"banliFlow\":\"" + wxUtil.getSubStr(allwork.get("transfer_process"))
+                    + "\",\"xxlyId\":\"" + allwork.get("accept_channel")
                     + "\"}\n";
             bw.write(a);
         }
         bw.flush();
         bw.close();
         fw.close();
-        renderText("未办理工单已生成！");
+        renderText("全部工单已生成！");
     }
-    // 仅生成第一页
-    public void expire() throws Exception{
+
+    // 数据来源：到期工单的第一页
+    public void unhandle() throws Exception{
         String path = "d:\\expire.txt";
         File file = new File(path);
         if(!file.exists()){
@@ -208,7 +207,7 @@ public class MainController extends Controller {
         bw.flush();
         bw.close();
         fw.close();
-        renderText("到期工单已生成！");
+        renderText("未办理工单已生成！");
     }
 }
 

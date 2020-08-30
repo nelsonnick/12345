@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS `unhandle`;
-CREATE TABLE `unhandle`
+DROP TABLE IF EXISTS `allwork`;
+CREATE TABLE `allwork`
 (
     `id`                     int(11)                          NOT NULL AUTO_INCREMENT COMMENT '序号',
     `order_guid`             varchar(100) CHARACTER SET utf8  NULL COMMENT '工单序号',

@@ -29,7 +29,7 @@ import static com.wts.util.wxUtil.*;
 
 public class DailyMonitor implements Runnable{
     String path2 = "D:\\当前下载\\";
-    List<Unhandle> unhandleList = new ArrayList<>();
+    List<Allwork> allworkList = new ArrayList<>();
     List<Reply> replyList = new ArrayList<>();
     List<Fallback> fallbackList = new ArrayList<>();
 
@@ -39,15 +39,15 @@ public class DailyMonitor implements Runnable{
         String neiwangIP = PropKit.use("config-dev.txt").get("neiwangIP");
         String cookie = PropKit.use("config-dev.txt").get("cookie");
         if (ip.equals(neiwangIP)) {
-            unhandle(cookie);
+            allwork(cookie);
             reply(cookie);
             fallback(cookie);
-            if (unhandleList.size()!=0 || replyList.size()!=0 || fallbackList.size()!=0) {
+            if (allworkList.size()!=0 || replyList.size()!=0 || fallbackList.size()!=0) {
                 try {
                     Boolean network = goWaiWang();
                     if (network) {
-                        for (Unhandle u : unhandleList) {
-                            sendUnhandle(u);
+                        for (Allwork u : allworkList) {
+                            sendAllwork(u);
                         }
                         for (Reply r : replyList) {
                             sendReply(r);
@@ -55,8 +55,8 @@ public class DailyMonitor implements Runnable{
                         for (Fallback f : fallbackList) {
                             sendFallback(f);
                         }
-                        for (int i = unhandleList.size() - 1; i >= 0; i--) {
-                            unhandleList.remove(i);
+                        for (int i = allworkList.size() - 1; i >= 0; i--) {
+                            allworkList.remove(i);
                         }
                         for (int i = replyList.size() - 1; i >= 0; i--) {
                             replyList.remove(i);
@@ -73,7 +73,7 @@ public class DailyMonitor implements Runnable{
         }
     }
 
-    public void unhandle(String cookie){
+    public void allwork(String cookie){
         String url = getPageUrl("0", "0");
         Document doc = getDoc(url,cookie);
         Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
@@ -90,8 +90,8 @@ public class DailyMonitor implements Runnable{
                 order_guid = value.substring(51, 89);
             }
             try {
-                Unhandle unhandle = getUnhandle(file_guid, order_guid, cookie);
-                saveUnhandle(unhandle);
+                Allwork allwork = getAllwork(file_guid, order_guid, cookie);
+                saveAllwork(allwork);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -99,7 +99,7 @@ public class DailyMonitor implements Runnable{
 
     }
 
-    public Unhandle getUnhandle(String file_guid, String order_guid, String cookie){
+    public Allwork getAllwork(String file_guid, String order_guid, String cookie){
         String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid="+file_guid+"&GUID=" +order_guid+ "&IsZDDB=&xxlyid=1";
         Document doc = getDoc(url,cookie);
         Element tbody = null;
@@ -140,8 +140,8 @@ public class DailyMonitor implements Runnable{
         String transfer_opinion = tbody.getElementById("remark").text();//转办意见
         String transfer_process = tbody.getElementById("banliFlow").text();//转办流程
         String remark = tbody.getElementById("beizhu").text();//备注
-        Unhandle unhandle = new Unhandle();
-        unhandle.set("file_guid",file_guid)
+        Allwork allwork = new Allwork();
+        allwork.set("file_guid",file_guid)
                 .set("order_guid",order_guid)
                 .set("order_state",order_state)
                 .set("order_code",order_code)
@@ -169,42 +169,42 @@ public class DailyMonitor implements Runnable{
                 .set("transfer_process",transfer_process)
                 .set("enclosure",enclosure)
                 .set("remark",remark);
-        return unhandle;
+        return allwork;
 
     }
 
-    public void saveUnhandle(Unhandle unhandle) throws Exception {
-        UnhandleService service = new UnhandleService();
-        if (service.findNumByGUID(unhandle.get("order_guid"))==0){
-            service.add(unhandle);
-            String file_guid = unhandle.get("file_guid");
-            String order_guid = unhandle.get("order_guid");
-            String order_state = unhandle.get("order_state");
-            String order_code = unhandle.get("order_code");
-            String link_person = unhandle.get("link_person");
-            String link_phone = unhandle.get("link_phone");
-            String link_address = unhandle.get("link_address");
-            String business_environment = unhandle.get("business_environment");
+    public void saveAllwork(Allwork allwork) throws Exception {
+        AllworkService service = new AllworkService();
+        if (service.findNumByGUID(allwork.get("order_guid"))==0){
+            service.add(allwork);
+            String file_guid = allwork.get("file_guid");
+            String order_guid = allwork.get("order_guid");
+            String order_state = allwork.get("order_state");
+            String order_code = allwork.get("order_code");
+            String link_person = allwork.get("link_person");
+            String link_phone = allwork.get("link_phone");
+            String link_address = allwork.get("link_address");
+            String business_environment = allwork.get("business_environment");
 //            String new_supervision = unhandle.get("new_supervision");
-            String accept_person = unhandle.get("accept_person");
-            String accept_person_code = unhandle.get("accept_person_code");
-            String accept_channel = unhandle.get("accept_channel");
-            String handle_type = unhandle.get("handle_type");
-            String phone_type = unhandle.get("phone_type");
-            String write_time = unhandle.get("write_time");
-            String urgency_degree = unhandle.get("urgency_degree");
-            String problem_classification = unhandle.get("problem_classification");
-            String is_secret = unhandle.get("is_secret");
-            String is_reply = unhandle.get("is_reply");
-            String reply_remark = unhandle.get("reply_remark");
-            String problem_description = unhandle.get("problem_description");
-            String send_person = unhandle.get("send_person");
-            String send_time = unhandle.get("send_time");
-            String end_date = unhandle.get("end_date");
-            String transfer_opinion = unhandle.get("transfer_opinion");
-            String transfer_process = unhandle.get("transfer_process");
-            String remark = unhandle.get("remark");
-            String enclosure = unhandle.get("enclosure");
+            String accept_person = allwork.get("accept_person");
+            String accept_person_code = allwork.get("accept_person_code");
+            String accept_channel = allwork.get("accept_channel");
+            String handle_type = allwork.get("handle_type");
+            String phone_type = allwork.get("phone_type");
+            String write_time = allwork.get("write_time");
+            String urgency_degree = allwork.get("urgency_degree");
+            String problem_classification = allwork.get("problem_classification");
+            String is_secret = allwork.get("is_secret");
+            String is_reply = allwork.get("is_reply");
+            String reply_remark = allwork.get("reply_remark");
+            String problem_description = allwork.get("problem_description");
+            String send_person = allwork.get("send_person");
+            String send_time = allwork.get("send_time");
+            String end_date = allwork.get("end_date");
+            String transfer_opinion = allwork.get("transfer_opinion");
+            String transfer_process = allwork.get("transfer_process");
+            String remark = allwork.get("remark");
+            String enclosure = allwork.get("enclosure");
             Map<String, String> map = new HashMap<String, String>();
             map.put("accept_person_code",accept_person_code);
             map.put("end_date",end_date);
@@ -224,7 +224,7 @@ public class DailyMonitor implements Runnable{
             map.put("transfer_process",transfer_process);
             map.put("enclosure",enclosure);
             map.put("order_guid",order_guid);
-            map.put("phone_time",service.findNumByPhone(unhandle.get("link_phone")));
+            map.put("phone_time",service.findNumByPhone(allwork.get("link_phone")));
             LocalDate date = LocalDate.now();
             DateTimeFormatter yyyy = DateTimeFormatter.ofPattern("yyyy");
             DateTimeFormatter MM = DateTimeFormatter.ofPattern("MM");
@@ -240,41 +240,41 @@ public class DailyMonitor implements Runnable{
 //            String printerName = "HP LaserJet MFP M227-M231 PCL-6 (V4)";//打印机名包含字串
             printWord(path + order_code + "-" + order_guid + ".docx",printerName);
 //            sendUnhandle(unhandle, service2);
-            unhandleList.add(unhandle);
+            allworkList.add(allwork);
         }
     }
 
-    public void sendUnhandle(Unhandle unhandle) throws Exception {
+    public void sendAllwork(Allwork allwork) throws Exception {
         String token = getToken();
-        String errcode = addUnhandle(token,
-                unhandle.get("order_guid"),
-                unhandle.get("order_code"),
-                unhandle.get("link_person"),
-                unhandle.get("link_phone"),
-                unhandle.get("send_time"),
-                unhandle.get("urgency_degree"),
-                unhandle.get("is_secret"),
-                unhandle.get("is_reply"),
-                unhandle.get("end_date"),
-                unhandle.get("problem_description"),
-                unhandle.get("transfer_opinion"),
-                unhandle.get("transfer_process"),
-                unhandle.get("accept_channel"));
-        String err = addUn(token,
-                unhandle.get("order_guid"),
-                unhandle.get("order_code"),
-                unhandle.get("link_person"),
-                unhandle.get("end_date"));
+        String errcode = addAllwork(token,
+                allwork.get("order_guid"),
+                allwork.get("order_code"),
+                allwork.get("link_person"),
+                allwork.get("link_phone"),
+                allwork.get("send_time"),
+                allwork.get("urgency_degree"),
+                allwork.get("is_secret"),
+                allwork.get("is_reply"),
+                allwork.get("end_date"),
+                allwork.get("problem_description"),
+                allwork.get("transfer_opinion"),
+                allwork.get("transfer_process"),
+                allwork.get("accept_channel"));
+        String err = addUnhandle(token,
+                allwork.get("order_guid"),
+                allwork.get("order_code"),
+                allwork.get("link_person"),
+                allwork.get("end_date"));
         String OA_token = oaUtil.getToken();
         String run_id = oaUtil.getRun_id(OA_token);
-        String OA_content = oaUtil.getContent(run_id,unhandle.get("order_code"), unhandle.get("link_person"), unhandle.get("end_date"), unhandle.get("urgency_degree"), unhandle.get("link_phone"),
-                unhandle.get("problem_description"), unhandle.get("transfer_opinion"), unhandle.get("transfer_process"), "XXX");
+        String OA_content = oaUtil.getContent(run_id, allwork.get("order_code"), allwork.get("link_person"), allwork.get("end_date"), allwork.get("urgency_degree"), allwork.get("link_phone"),
+                allwork.get("problem_description"), allwork.get("transfer_opinion"), allwork.get("transfer_process"), "XXX");
         oaUtil.inputOA(OA_token,OA_content);
-        sendMessageToWeiXin("收到新工单：" + unhandle.get("order_code"),"WangTianShuo");
+        sendMessageToWeiXin("收到新工单：" + allwork.get("order_code"),"WangTianShuo");
         if (errcode.equals("0") && err.equals("0")) {
-            System.out.println("待办理工单已推送：" + unhandle.get("order_code") + "-" + unhandle.get("link_person"));
+            System.out.println("待办理工单已推送：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
         } else {
-            System.out.println("待办理工单推送失败：" + unhandle.get("order_code") + "-" + unhandle.get("link_person"));
+            System.out.println("待办理工单推送失败：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
         }
 
     }
@@ -425,7 +425,7 @@ public class DailyMonitor implements Runnable{
                 reply.get("reply_satisfy"),
                 reply.get("order_code"),
                 reply.get("link_person"));
-        String err= deleteUn(token,
+        String err= deleteUnhandle(token,
                 reply.get("order_guid"));
         sendMessageToWeiXin("工单：" + reply.get("order_code") + "-->已回复","WangTianShuo");
         if (errcode.equals("0") && err.equals("0")) {
@@ -569,7 +569,7 @@ public class DailyMonitor implements Runnable{
                 fallback.get("fallback_department"),
                 fallback.get("order_code"),
                 fallback.get("link_person"));
-        String err= deleteUn(token,
+        String err= deleteUnhandle(token,
                 fallback.get("order_guid"));
         sendMessageToWeiXin("工单：" + fallback.get("order_code") + "-->已回退","WangTianShuo");
         if (errcode.equals("0") && err.equals("0")) {

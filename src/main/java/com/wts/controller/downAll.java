@@ -5,7 +5,7 @@ import com.jfinal.core.Controller;
 import com.jfinal.kit.PropKit;
 import com.wts.entity.model.Fallback;
 import com.wts.entity.model.Reply;
-import com.wts.entity.model.Unhandle;
+import com.wts.entity.model.Allwork;
 import com.wts.service.*;
 import com.wts.util.util12345;
 import org.jsoup.nodes.Document;
@@ -21,7 +21,7 @@ import static com.wts.util.util12345.getDoc;
 public class downAll extends Controller {
 
     @Inject
-    UnhandleService unhandleService;
+    AllworkService allworkService;
     @Inject
     ReplyService replyService;
     @Inject
@@ -101,9 +101,9 @@ public class downAll extends Controller {
         String transfer_process = tbody.getElementById("banliFlow").text();//转办流程
         String remark = tbody.getElementById("beizhu").text();//备注
 
-        if(!unhandleService.has(order_guid)) {
-            Unhandle unhandle = new Unhandle();
-            unhandle.set("file_guid", file_guid)
+        if(!allworkService.has(order_guid)) {
+            Allwork allwork = new Allwork();
+            allwork.set("file_guid", file_guid)
                     .set("order_guid", order_guid)
                     .set("order_state", order_state)
                     .set("order_code", order_code)
@@ -131,7 +131,7 @@ public class downAll extends Controller {
                     .set("transfer_process", transfer_process)
                     .set("enclosure", enclosure)
                     .set("remark", remark);
-            unhandleService.add(unhandle);
+            allworkService.add(allwork);
             System.out.println(order_guid + "---已完成！");
         }else{
             System.out.println(order_guid + "---已存在！");

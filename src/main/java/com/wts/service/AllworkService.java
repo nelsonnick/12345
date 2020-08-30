@@ -2,24 +2,24 @@ package com.wts.service;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
-import com.wts.entity.model.Unhandle;
+import com.wts.entity.model.Allwork;
 
 import java.util.Date;
 import java.util.List;
 
-public class UnhandleService {
+public class AllworkService {
 
-	private Unhandle dao = new Unhandle().dao();
+	private Allwork dao = new Allwork().dao();
 
-	public Page<Unhandle> paginate(int pageNumber, int pageSize) {
-		return dao.paginate(pageNumber, pageSize, "select *", "from undo order by id asc");
+	public Page<Allwork> paginate(int pageNumber, int pageSize) {
+		return dao.paginate(pageNumber, pageSize, "select *", "from allwork order by id asc");
 	}
 
-	public List<Unhandle> findAll(){
+	public List<Allwork> findAll(){
 		return dao.findAll();
 	}
 
-	public Unhandle findById(int id) {
+	public Allwork findById(int id) {
 		return dao.findById(id);
 	}
 
@@ -28,35 +28,35 @@ public class UnhandleService {
 	}
 
 	public Integer findNumByGUID(String order_guid) {
-		return Db.queryInt("SELECT COUNT(*) FROM unhandle WHERE unhandle.order_guid LIKE '%" + order_guid + "%' ");
+		return Db.queryInt("SELECT COUNT(*) FROM allwork WHERE allwork.order_guid LIKE '%" + order_guid + "%' ");
 	}
 	public String findNumByPhone(String link_phone){
 		if(link_phone.equals("******")){
 			return "";
 		}else{
-			return Db.queryInt("SELECT COUNT(*) FROM unhandle WHERE unhandle.link_phone = '" + link_phone + "' ") + "";
+			return Db.queryInt("SELECT COUNT(*) FROM allwork WHERE allwork.link_phone = '" + link_phone + "' ") + "";
 		}
 	}
 	public String getPersonCode(){
-		Integer total = Db.queryInt("SELECT COUNT(*) FROM unhandle");
+		Integer total = Db.queryInt("SELECT COUNT(*) FROM allwork");
 		return  total%4 + "";
 	}
 
-	public Unhandle findByGUID(String order_guid) {
-		return dao.findFirst("SELECT * FROM unhandle WHERE unhandle.order_guid LIKE '%" + order_guid + "%' ");
+	public Allwork findByGUID(String order_guid) {
+		return dao.findFirst("SELECT * FROM allwork WHERE allwork.order_guid LIKE '%" + order_guid + "%' ");
 	}
 
 	public Boolean has(String order_guid) {
-		return dao.findFirst("SELECT * FROM unhandle WHERE unhandle.order_guid LIKE '%" + order_guid + "%' ")!=null;
+		return dao.findFirst("SELECT * FROM allwork WHERE allwork.order_guid LIKE '%" + order_guid + "%' ")!=null;
 	}
 
 
-	public void add(Unhandle unhandle){
-		if (unhandle.get("problem_description").toString().length()>3000){
-			String un = unhandle.get("problem_description").toString().substring(0,2999);
-			unhandle.set("problem_description",un);
+	public void add(Allwork allwork){
+		if (allwork.get("problem_description").toString().length()>3000){
+			String un = allwork.get("problem_description").toString().substring(0,2999);
+			allwork.set("problem_description",un);
 		}
-		unhandle.save();
+		allwork.save();
 	}
 	public void add(String file_guid, String order_guid,String order_state, String order_code, String link_person,String link_phone,
 					String link_address,String business_environment,String new_supervision,String accept_person,
@@ -64,12 +64,12 @@ public class UnhandleService {
 					String write_time,String urgency_degree, String problem_classification,String is_secret,
 					String is_reply,String reply_remark,String problem_description,String send_person,
 					String send_time,String end_date,String transfer_opinion,String transfer_process,String remark,String enclosure) {
-		Unhandle unhandle = new Unhandle();
+		Allwork allwork = new Allwork();
 		String pd = "";
 		if (problem_description.length()>3000){
 			pd = problem_description.substring(0,2999);
 		}
-		unhandle.set("file_guid",file_guid)
+		allwork.set("file_guid",file_guid)
 				.set("order_guid",order_guid)
 				.set("order_state",order_state)
 				.set("order_code",order_code)

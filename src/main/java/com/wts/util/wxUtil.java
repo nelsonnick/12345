@@ -54,9 +54,9 @@ public class wxUtil {
         }
     }
 
-    public static String getUnhandleStr(String guid, String HotLineWorkNumber, String linkPerson, String linkPhone, String sendTime,
+    public static String getAllworkStr(String guid, String HotLineWorkNumber, String linkPerson, String linkPhone, String sendTime,
                                         String urgencyDegree, String isSecret, String isReply, String endDate, String content, String remark, String banliFlow, String xxlyId) {
-        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"unhandle\\\").add({data:[{_id:\\\"${_id}\\\",HotLineWorkNumber:\\\"${HotLineWorkNumber}\\\",linkPerson:\\\"${linkPerson}\\\",linkPhone:\\\"${linkPhone}\\\",sendTime:new Date(\\\"${sendTime}\\\"),urgencyDegree:\\\"${urgencyDegree}\\\",isSecret:\\\"${isSecret}\\\",isReply:\\\"${isReply}\\\",endDate:\\\"${endDate}\\\",content:\\\"${content}\\\",remark:\\\"${remark}\\\",banliFlow:\\\"${banliFlow}\\\",xxlyId:\\\"${xxlyId}\\\"}]})\"}";
+        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"allwork\\\").add({data:[{_id:\\\"${_id}\\\",HotLineWorkNumber:\\\"${HotLineWorkNumber}\\\",linkPerson:\\\"${linkPerson}\\\",linkPhone:\\\"${linkPhone}\\\",sendTime:new Date(\\\"${sendTime}\\\"),urgencyDegree:\\\"${urgencyDegree}\\\",isSecret:\\\"${isSecret}\\\",isReply:\\\"${isReply}\\\",endDate:\\\"${endDate}\\\",content:\\\"${content}\\\",remark:\\\"${remark}\\\",banliFlow:\\\"${banliFlow}\\\",xxlyId:\\\"${xxlyId}\\\"}]})\"}";
         String str = temp.replace("${_id}", guid)
                 .replace("${HotLineWorkNumber}", HotLineWorkNumber)
                 .replace("${linkPerson}", linkPerson)
@@ -130,8 +130,8 @@ public class wxUtil {
         return str;
     }
 
-    public static String getUnStr(String guid, String HotLineWorkNumber, String linkPerson, String endDate) {
-        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"un\\\").add({data:[{_id:\\\"${_id}\\\",HotLineWorkNumber:\\\"${HotLineWorkNumber}\\\",linkPerson:\\\"${linkPerson}\\\",endDate:\\\"${endDate}\\\"}]})\"}";
+    public static String getUnhandleStr(String guid, String HotLineWorkNumber, String linkPerson, String endDate) {
+        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"unhandle\\\").add({data:[{_id:\\\"${_id}\\\",HotLineWorkNumber:\\\"${HotLineWorkNumber}\\\",linkPerson:\\\"${linkPerson}\\\",endDate:\\\"${endDate}\\\"}]})\"}";
         String str = temp.replace("${_id}", guid)
                 .replace("${HotLineWorkNumber}", HotLineWorkNumber)
                 .replace("${linkPerson}", linkPerson)
@@ -170,15 +170,15 @@ public class wxUtil {
     }
 
     /*
-       添加Unhandle
+       添加Allwork
        返回0表示正常
        */
-    public static String addUnhandle(String token, String guid, String HotLineWorkNumber, String linkPerson, String linkPhone, String sendTime,
+    public static String addAllwork(String token, String guid, String HotLineWorkNumber, String linkPerson, String linkPhone, String sendTime,
                                      String urgencyDegree, String isSecret, String isReply, String endDate, String content, String remark, String banliFlow, String xxlyId) throws Exception {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("text/plain");
-        String unhandleStr = getUnhandleStr(guid, HotLineWorkNumber, linkPerson, linkPhone, sendTime,
+        String unhandleStr = getAllworkStr(guid, HotLineWorkNumber, linkPerson, linkPhone, sendTime,
                 urgencyDegree, isSecret, isReply, endDate, content, remark, banliFlow, xxlyId);
         RequestBody body = RequestBody.create(mediaType, unhandleStr);
         Request request = new Request.Builder()
@@ -250,11 +250,11 @@ public class wxUtil {
        添加Un
        返回0表示正常
        */
-    public static String addUn(String token, String guid, String HotLineWorkNumber, String linkPerson, String endDate) throws Exception {
+    public static String addUnhandle(String token, String guid, String HotLineWorkNumber, String linkPerson, String endDate) throws Exception {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("text/plain");
-        String unStr = getUnStr(guid, HotLineWorkNumber, linkPerson, endDate);
+        String unStr = getUnhandleStr(guid, HotLineWorkNumber, linkPerson, endDate);
         RequestBody body = RequestBody.create(mediaType, unStr);
         Request request = new Request.Builder()
                 .url("https://api.weixin.qq.com/tcb/databaseadd?access_token=" + token)
@@ -275,8 +275,8 @@ public class wxUtil {
        删除Un
        返回0表示正常
        */
-    public static String deleteUn(String token, String guid) throws Exception{
-        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"un\\\").doc(\\\"${_id}\\\").remove()\"}";
+    public static String deleteUnhandle(String token, String guid) throws Exception{
+        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"unhandle\\\").doc(\\\"${_id}\\\").remove()\"}";
         String str = temp.replace("${_id}", guid);
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
@@ -374,6 +374,6 @@ public class wxUtil {
 
 
         String token = getToken();
-        addUn(token,"111","111","111","111");
+        addUnhandle(token,"111","111","111","111");
     }
 }
