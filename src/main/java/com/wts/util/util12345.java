@@ -5,6 +5,7 @@ import okhttp3.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 
@@ -166,6 +167,14 @@ public class util12345 {
             e.printStackTrace();
         }
         return doc;
+    }
+
+    public static Boolean hasDirectory(){
+        File f = new File("D:\\12345");
+        if (f.isDirectory()) {
+            return true;
+        }
+        return false;
     }
 
     public static void main(String[] args) {

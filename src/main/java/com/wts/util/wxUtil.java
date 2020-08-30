@@ -47,6 +47,9 @@ public class wxUtil {
 
 
     public static String getSubStr(String str) {
+        if (str==null){
+            return "";
+        }
         if (str.length() < 500) {
             return str.replace("\n", "").replace("\r", "").replace("\t", "").replace("\"", "").replace("\\", "");
         } else {
@@ -350,6 +353,27 @@ public class wxUtil {
         return errcode;
     }
 
+    public static void sendMessageToWeiXin(String msgContent, String UserID) {
+        try {
+            WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();
+            config.setCorpId(ParamesAPI.corpId);      // 设置微信企业号的appid
+            config.setCorpSecret(ParamesAPI.secret);  // 设置微信企业号的app corpSecret
+            config.setAgentId(ParamesAPI.agentId);     // 设置微信企业号应用ID
+            config.setToken(ParamesAPI.token);       // 设置微信企业号应用的token
+            config.setAesKey(ParamesAPI.encodingAESKey);      // 设置微信企业号应用的EncodingAESKey
+            WxCpServiceImpl wxCpService = new WxCpServiceImpl();
+            wxCpService.setWxCpConfigStorage(config);
+            WxCpMessage message = WxCpMessage
+                    .TEXT()
+                    .agentId(ParamesAPI.agentId)
+                    .toUser(UserID)
+                    .content(msgContent)
+                    .build();
+            wxCpService.messageSend(message);
+        } catch (Exception e) {
+            System.out.println("推送企业微信失败：" + msgContent);
+        }
+    }
 
     public static Boolean goWaiWang() throws Exception {
         Runtime.getRuntime().exec("netsh interface set interface \"LAN\" disabled");

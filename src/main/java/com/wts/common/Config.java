@@ -6,6 +6,7 @@ import com.jfinal.config.Interceptors;
 import com.jfinal.config.JFinalConfig;
 import com.jfinal.config.Plugins;
 import com.jfinal.config.Routes;
+import com.jfinal.json.MixedJsonFactory;
 import com.jfinal.kit.Prop;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
@@ -16,6 +17,7 @@ import com.jfinal.template.Engine;
 import com.wts.controller.*;
 import com.wts.entity.model._MappingKit;
 import com.wts.task.DailyMonitor;
+import com.wts.task.ReadSend;
 
 
 /**
@@ -61,6 +63,8 @@ public class Config extends JFinalConfig {
 
 		// 配置对超类中的属性进行注入
 		me.setInjectSuperClass(true);
+
+//		me.setJsonFactory(new MixedJsonFactory());
 	}
 
 	/**
@@ -92,7 +96,8 @@ public class Config extends JFinalConfig {
 		me.add(arp);
 		// 配置任务调度插件
 		Cron4jPlugin cp = new Cron4jPlugin();
-		cp.addTask("*/2 * * * *", new DailyMonitor());//每2分钟执行一次日常监控任务
+//		cp.addTask("*/2 * * * *", new DailyMonitor());//每2分钟执行一次日常监控任务
+//		cp.addTask("*/1 * * * *", new ReadSend());//每2分钟执行一次读取发送任务
 		me.add(cp);
 	}
 

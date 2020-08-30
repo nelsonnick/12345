@@ -13,7 +13,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.File;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -28,7 +28,8 @@ import static com.wts.util.util12345.getPageUrl;
 import static com.wts.util.wxUtil.*;
 
 public class DailyMonitor implements Runnable {
-    String path2 = "D:\\当前下载\\";
+    private static final String downPath = "D:\\12345\\";
+    private static final String path = "D:\\当前下载\\";
     List<Allwork> allworkList = new ArrayList<>();
     List<Reply> replyList = new ArrayList<>();
     List<Fallback> fallbackList = new ArrayList<>();
@@ -48,14 +49,20 @@ public class DailyMonitor implements Runnable {
                     if (network) {
                         String weixinToken = getToken();
                         if (!weixinToken.equals("")) {
-                            for (Allwork u : allworkList) {
-                                sendAllwork(u, weixinToken);
+                            for (Allwork allwork : allworkList) {
+                                sendAllwork(allwork, weixinToken);
+//                                createAllworkText(allwork);
+//                                createUnhandleAddText(allwork);
                             }
-                            for (Reply r : replyList) {
-                                sendReply(r, weixinToken);
+                            for (Reply reply : replyList) {
+                                sendReply(reply, weixinToken);
+//                                createReplyText(reply);
+//                                createUnhandleDeleteText(reply.getOrderGuid());
                             }
-                            for (Fallback f : fallbackList) {
-                                sendFallback(f, weixinToken);
+                            for (Fallback fallback : fallbackList) {
+                                sendFallback(fallback, weixinToken);
+//                                createFallbackText(fallback);
+//                                createUnhandleDeleteText(fallback.getOrderGuid());
                             }
                         }
                         for (int i = allworkList.size() - 1; i >= 0; i--) {
@@ -233,7 +240,7 @@ public class DailyMonitor implements Runnable {
 
             String personCode = service.getPersonCode();
             CreatWordByModel("D:\\TemplateDoc" + personCode + ".docx", map, path + order_code + "-" + order_guid + ".docx");
-            CreatWordByModel("D:\\TemplateDoc.docx", map, path2 + order_code + "-" + order_guid + ".docx");
+            CreatWordByModel("D:\\TemplateDoc.docx", map, DailyMonitor.path + order_code + "-" + order_guid + ".docx");
             String printerName = "HP LaserJet 1020";//打印机名包含字串
 //            String printerName = "HP LaserJet MFP M227-M231 PCL-6 (V4)";//打印机名包含字串
             printWord(path + order_code + "-" + order_guid + ".docx", printerName);
@@ -272,7 +279,39 @@ public class DailyMonitor implements Runnable {
         } else {
             System.out.println("待办理工单推送失败：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
         }
+    }
 
+    public void createAllworkText(Allwork allwork){
+        Allwork al = new Allwork();
+        al.set("order_guid",allwork.get("order_guid"))
+                .set("order_code",allwork.get("order_code"))
+                .set("link_person",allwork.get("link_person"))
+                .set("link_phone",allwork.get("link_phone"))
+                .set("send_time",allwork.get("send_time"))
+                .set("urgency_degree",allwork.get("urgency_degree"))
+                .set("is_secret",allwork.get("is_secret"))
+                .set("is_reply",allwork.get("is_reply"))
+                .set("end_date",allwork.get("end_date"))
+                .set("problem_description",getSubStr(allwork.get("problem_description")))
+                .set("transfer_opinion",getSubStr(allwork.get("transfer_opinion")))
+                .set("transfer_process",getSubStr(allwork.get("transfer_process")))
+                .set("accept_channel",allwork.get("accept_channel"));
+        String path = downPath + "allwork.txt";
+        File file = new File(path);
+        if(!file.exists()){
+            file.getParentFile().mkdirs();
+        }
+        try {
+            file.createNewFile();
+            FileWriter fw = new FileWriter(file, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(al.toJson() + "\n");
+            bw.flush();
+            bw.close();
+            fw.close();
+        }catch (Exception e){
+            System.out.println("创建文件失败：" + path);
+        }
     }
 
     public void reply(String cookie) {
@@ -433,6 +472,33 @@ public class DailyMonitor implements Runnable {
 
     }
 
+    public void createReplyText(Reply reply){
+        Reply re = new Reply();
+        re.set("order_guid",reply.get("order_guid"))
+                .set("order_code",reply.get("order_code"))
+                .set("link_person",reply.get("link_person"))
+                .set("reply_time",reply.get("reply_time"))
+                .set("reply_person",reply.get("reply_person"))
+                .set("reply_content",getSubStr(reply.get("reply_content")))
+                .set("reply_satisfy",reply.get("reply_satisfy"));
+        String path = downPath + "reply.txt";
+        File file = new File(path);
+        if(!file.exists()){
+            file.getParentFile().mkdirs();
+        }
+        try {
+            file.createNewFile();
+            FileWriter fw = new FileWriter(file, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(re.toJson() + "\n");
+            bw.flush();
+            bw.close();
+            fw.close();
+        }catch (Exception e){
+            System.out.println("创建文件失败：" + path);
+        }
+    }
+
     public void fallback(String cookie) {
         String url = getPageUrl("202", "1");
         Document doc = getDoc(url, cookie);
@@ -577,6 +643,79 @@ public class DailyMonitor implements Runnable {
         }
     }
 
+    public void createFallbackText(Fallback fallback){
+        Fallback fall = new Fallback();
+        fall.set("order_guid",fallback.get("order_guid"))
+                .set("order_code",fallback.get("order_code"))
+                .set("link_person",fallback.get("link_person"))
+                .set("fallback_time",fallback.get("fallback_time"))
+                .set("fallback_person",fallback.get("fallback_person"))
+                .set("fallback_reason",getSubStr(fallback.get("fallback_reason")))
+                .set("suggestion",getSubStr(fallback.get("suggestion")))
+                .set("fallback_department",fallback.get("fallback_department"));
+        String path = downPath + "fallback.txt";
+        File file = new File(path);
+        if(!file.exists()){
+            file.getParentFile().mkdirs();
+        }
+        try {
+            file.createNewFile();
+            FileWriter fw = new FileWriter(file, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(fall.toJson() + "\n");
+            bw.flush();
+            bw.close();
+            fw.close();
+        }catch (Exception e){
+            System.out.println("创建文件失败：" + path);
+        }
+    }
+
+    public void createUnhandleAddText(Allwork allwork){
+        Allwork al = new Allwork();
+        al.set("order_guid",allwork.get("order_guid"))
+                .set("order_code",allwork.get("order_code"))
+                .set("link_person",allwork.get("link_person"))
+                .set("end_date",allwork.get("end_date"));
+        String path = downPath + "unhandleAdd.txt";
+        File file = new File(path);
+        if(!file.exists()){
+            file.getParentFile().mkdirs();
+        }
+        try {
+            file.createNewFile();
+            FileWriter fw = new FileWriter(file, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(al.toJson() + "\n");
+            bw.flush();
+            bw.close();
+            fw.close();
+        }catch (Exception e){
+            System.out.println("创建文件失败：" + path);
+        }
+    }
+
+    public void createUnhandleDeleteText(String order_guid){
+        Allwork al = new Allwork();
+        al.set("order_guid",order_guid);
+        String path = downPath + "unhandleDelete.txt";
+        File file = new File(path);
+        if(!file.exists()){
+            file.getParentFile().mkdirs();
+        }
+        try {
+            file.createNewFile();
+            FileWriter fw = new FileWriter(file, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(al.toJson() + "\n");
+            bw.flush();
+            bw.close();
+            fw.close();
+        }catch (Exception e){
+            System.out.println("创建文件失败：" + path);
+        }
+    }
+
     public void sendFileToWeiXin(String filaPath, String UserID) {
         try {
             WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();
@@ -623,5 +762,10 @@ public class DailyMonitor implements Runnable {
         }
     }
 
-
+    public static void main(String[] args) {
+//        Allwork al = new Allwork();
+//        al.setEndDate("33");
+//        createAllworkText(al);
+//        readAllworkText("a");
+    }
 }
