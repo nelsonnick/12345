@@ -16,8 +16,8 @@ import static com.wts.util.others.IpKit.getLocalHostIP;
 
 public class wxUtil {
 
-    public static String getTimeStr(String str){
-        return str.replace(" ","T")
+    public static String getTimeStr(String str) {
+        return str.replace(" ", "T")
                 .replace("/1/", "-01-")
                 .replace("/2/", "-02-")
                 .replace("/3/", "-03-")
@@ -46,22 +46,22 @@ public class wxUtil {
     }
 
 
-    public static String getSubStr(String str){
-        if(str.length()<500){
-            return str.replace("\n","").replace("\r","").replace("\t","").replace("\"","").replace("\\","");
-        }else{
-            return str.substring(0, 499).replace("\n","").replace("\r","").replace("\t","").replace("\"","").replace("\\","");
+    public static String getSubStr(String str) {
+        if (str.length() < 500) {
+            return str.replace("\n", "").replace("\r", "").replace("\t", "").replace("\"", "").replace("\\", "");
+        } else {
+            return str.substring(0, 499).replace("\n", "").replace("\r", "").replace("\t", "").replace("\"", "").replace("\\", "");
         }
     }
 
     public static String getAllworkStr(String guid, String HotLineWorkNumber, String linkPerson, String linkPhone, String sendTime,
-                                        String urgencyDegree, String isSecret, String isReply, String endDate, String content, String remark, String banliFlow, String xxlyId) {
+                                       String urgencyDegree, String isSecret, String isReply, String endDate, String content, String remark, String banliFlow, String xxlyId) {
         String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"allwork\\\").add({data:[{_id:\\\"${_id}\\\",HotLineWorkNumber:\\\"${HotLineWorkNumber}\\\",linkPerson:\\\"${linkPerson}\\\",linkPhone:\\\"${linkPhone}\\\",sendTime:new Date(\\\"${sendTime}\\\"),urgencyDegree:\\\"${urgencyDegree}\\\",isSecret:\\\"${isSecret}\\\",isReply:\\\"${isReply}\\\",endDate:\\\"${endDate}\\\",content:\\\"${content}\\\",remark:\\\"${remark}\\\",banliFlow:\\\"${banliFlow}\\\",xxlyId:\\\"${xxlyId}\\\"}]})\"}";
         String str = temp.replace("${_id}", guid)
                 .replace("${HotLineWorkNumber}", HotLineWorkNumber)
                 .replace("${linkPerson}", linkPerson)
                 .replace("${linkPhone}", linkPhone)
-                .replace("${sendTime}", sendTime.replace("/","-"))
+                .replace("${sendTime}", sendTime.replace("/", "-"))
                 .replace("${urgencyDegree}", urgencyDegree)
                 .replace("${isSecret}", isSecret)
                 .replace("${isReply}", isReply)
@@ -76,15 +76,15 @@ public class wxUtil {
     public static String getReplyStr(String guid, String replyTime, String replyPerson, String replyContent, String replySatisfy, String HotLineWorkNumber, String linkPerson) {
 //        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"reply\\\").add({data:[{_id:\\\"${_id}\\\",HotLineWorkNumber:\\\"${HotLineWorkNumber}\\\",linkPerson:\\\"${linkPerson}\\\",linkPhone:\\\"${linkPhone}\\\",countNum:\\\"${countNum}\\\",writeTime:\\\"${writeTime}\\\",sendTime:\\\"${sendTime}\\\",urgencyDegree:\\\"${urgencyDegree}\\\",isSecret:\\\"${isSecret}\\\",isReply:\\\"${isReply}\\\",endDate:\\\"${endDate}\\\",content:\\\"${content}\\\",remark:\\\"${remark}\\\",banliFlow:\\\"${banliFlow}\\\",xxlyId:\\\"${xxlyId}\\\",replyTime:\\\"${replyTime}\\\",replyPerson:\\\"${replyPerson}\\\",replyContent:\\\"${replyContent}\\\",replyType:\\\"${replyType}\\\"}]})\"}";
         String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"reply\\\").add({data:[{_id:\\\"${_id}\\\",replyTime:new Date(\\\"${replyTime}\\\"),replyPerson:\\\"${replyPerson}\\\",replyContent:\\\"${replyContent}\\\",replySatisfy:\\\"${replySatisfy}\\\",replyType:\\\"${replyType}\\\"},HotLineWorkNumber:\\\"${HotLineWorkNumber}\\\"},linkPerson:\\\"${linkPerson}\\\"}]})\"}";
-        String t = replyContent.substring(0,1);
+        String t = replyContent.substring(0, 1);
         String replyType;
-        if (t.equals("A")){
+        if (t.equals("A")) {
             replyType = "劳动关系";
-        } else if (t.equals("B")){
+        } else if (t.equals("B")) {
             replyType = "社会保险";
-        } else if (t.equals("C")){
+        } else if (t.equals("C")) {
             replyType = "就业创业";
-        } else if (t.equals("D")){
+        } else if (t.equals("D")) {
             replyType = "人事人才";
         } else {
             replyType = "其他";
@@ -103,17 +103,17 @@ public class wxUtil {
     public static String getFallbackStr(String guid, String fallbackTime, String fallbackPerson, String fallbackReason, String suggestion, String fallbackDepartment, String HotLineWorkNumber, String linkPerson) {
 //        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"fallback\\\").add({data:[{_id:\\\"${_id}\\\",HotLineWorkNumber:\\\"${HotLineWorkNumber}\\\",linkPerson:\\\"${linkPerson}\\\",linkPhone:\\\"${linkPhone}\\\",countNum:\\\"${countNum}\\\",writeTime:\\\"${writeTime}\\\",sendTime:\\\"${sendTime}\\\",urgencyDegree:\\\"${urgencyDegree}\\\",isSecret:\\\"${isSecret}\\\",isReply:\\\"${isReply}\\\",endDate:\\\"${endDate}\\\",content:\\\"${content}\\\",remark:\\\"${remark}\\\",banliFlow:\\\"${banliFlow}\\\",xxlyId:\\\"${xxlyId}\\\",fallbackTime:\\\"${fallbackTime}\\\",fallbackPerson:\\\"${fallbackPerson}\\\",fallbackReason:\\\"${fallbackReason}\\\",suggestion:\\\"${suggestion}\\\",fallbackDepartment:\\\"${fallbackDepartment}\\\"}]})\"}";
         String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"fallback\\\").add({data:[{_id:\\\"${_id}\\\",fallbackTime:new Date(\\\"${fallbackTime}\\\"),fallbackPerson:\\\"${fallbackPerson}\\\",fallbackReason:\\\"${fallbackReason}\\\",suggestion:\\\"${suggestion}\\\",fallbackDepartment:\\\"${fallbackDepartment}\\\",fallbackType:\\\"${fallbackType}\\\",HotLineWorkNumber:\\\"${HotLineWorkNumber}\\\",linkPerson:\\\"${linkPerson}\\\"}]})\"}";
-        String t = fallbackReason.substring(0,1);
+        String t = fallbackReason.substring(0, 1);
         String fallbackType;
-        if (t.equals("A")){
+        if (t.equals("A")) {
             fallbackType = "其他劳动";
-        } else if (t.equals("B")){
+        } else if (t.equals("B")) {
             fallbackType = "区住建局";
-        } else if (t.equals("C")){
+        } else if (t.equals("C")) {
             fallbackType = "区社保办";
-        } else if (t.equals("D")){
+        } else if (t.equals("D")) {
             fallbackType = "市人社局";
-        } else if (t.equals("E")){
+        } else if (t.equals("E")) {
             fallbackType = "各街道办";
         } else {
             fallbackType = "其他部门";
@@ -140,7 +140,7 @@ public class wxUtil {
     }
 
     public static String getSubscribeMessageStr(String OPENID, String TEMPLATE_ID, String guid, String HotLineWorkNumber, String linkPerson,
-                                       String linkPhone, String sendTime, String endDate, String collectionName) {
+                                                String linkPhone, String sendTime, String endDate, String collectionName) {
         String temp = "{\"touser\":\"${OPENID}\",\"template_id\":\"${TEMPLATE_ID}\",\"page\":\"${collectionName}?_id=${guid}\",\"miniprogram_state\":\"developer\",\"lang\":\"zh_CN\",\"data\":{\"character_string01\":{\"value\":\"${HotLineWorkNumber}\"},\"thing01\":{\"value\":\"${linkPerson}\"},\"character_string02\":{\"value\":\"${linkPhone}\"},\"time01\":{\"value\":\"${sendTime}\"},\"date01\":{\"value\":\"${endDate}\"}}}";
         String str = temp.replace("${OPENID}", OPENID)
                 .replace("${TEMPLATE_ID}", TEMPLATE_ID)
@@ -157,16 +157,20 @@ public class wxUtil {
     /*
         获取token
         */
-    public static String getToken() throws Exception {
+    public static String getToken() {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         Request request = new Request.Builder()
                 .url("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxb9a7b1d61af09a1e&secret=a5d001d64a7e2c658d5c5abc0a4af556")
                 .method("GET", null)
                 .build();
-        Response response = client.newCall(request).execute();
-        String token = JSONObject.parseObject(response.body().string()).getString("access_token");
-        return token;
+        try {
+            Response response = client.newCall(request).execute();
+            String token = JSONObject.parseObject(response.body().string()).getString("access_token");
+            return token;
+        } catch (Exception e) {
+            return "";
+        }
     }
 
     /*
@@ -174,7 +178,7 @@ public class wxUtil {
        返回0表示正常
        */
     public static String addAllwork(String token, String guid, String HotLineWorkNumber, String linkPerson, String linkPhone, String sendTime,
-                                     String urgencyDegree, String isSecret, String isReply, String endDate, String content, String remark, String banliFlow, String xxlyId) throws Exception {
+                                    String urgencyDegree, String isSecret, String isReply, String endDate, String content, String remark, String banliFlow, String xxlyId) {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("text/plain");
@@ -186,21 +190,26 @@ public class wxUtil {
                 .method("POST", body)
                 .addHeader("Content-Type", "text/plain")
                 .build();
-        Response response = client.newCall(request).execute();
-        String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
-        if (!errcode.equals("0")){
-            System.out.println(unhandleStr);
-            System.out.println(errcode);
-            System.out.println(response.body().string());
+        try {
+            Response response = client.newCall(request).execute();
+            String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
+            if (!errcode.equals("0")) {
+                System.out.println(unhandleStr);
+                System.out.println(errcode);
+                System.out.println(response.body().string());
+            }
+            return errcode;
+        } catch (Exception e) {
+            System.out.println("添加Allwork失败：" + unhandleStr);
+            return "";
         }
-        return errcode;
     }
 
     /*
        添加Reply
        返回0表示正常
        */
-    public static String addReply(String token, String guid, String replyTime, String replyPerson, String replyContent, String replySatisfy, String HotLineWorkNumber, String linkPerson) throws Exception {
+    public static String addReply(String token, String guid, String replyTime, String replyPerson, String replyContent, String replySatisfy, String HotLineWorkNumber, String linkPerson) {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("text/plain");
@@ -211,21 +220,26 @@ public class wxUtil {
                 .method("POST", body)
                 .addHeader("Content-Type", "text/plain")
                 .build();
-        Response response = client.newCall(request).execute();
-        String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
-        if (!errcode.equals("0")){
-            System.out.println(replyStr);
-            System.out.println(errcode);
-            System.out.println(response.body().string());
+        try {
+            Response response = client.newCall(request).execute();
+            String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
+            if (!errcode.equals("0")) {
+                System.out.println(replyStr);
+                System.out.println(errcode);
+                System.out.println(response.body().string());
+            }
+            return errcode;
+        } catch (Exception e) {
+            System.out.println("添加Reply失败：" + replyStr);
+            return "";
         }
-        return errcode;
     }
 
     /*
        添加Fallback
        返回0表示正常
        */
-    public static String addFallback(String token, String guid, String fallbackTime, String fallbackPerson, String fallbackReason, String suggestion, String fallbackDepartment, String HotLineWorkNumber, String linkPerson) throws Exception {
+    public static String addFallback(String token, String guid, String fallbackTime, String fallbackPerson, String fallbackReason, String suggestion, String fallbackDepartment, String HotLineWorkNumber, String linkPerson) {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("text/plain");
@@ -236,46 +250,56 @@ public class wxUtil {
                 .method("POST", body)
                 .addHeader("Content-Type", "text/plain")
                 .build();
-        Response response = client.newCall(request).execute();
-        String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
-        if (!errcode.equals("0")){
-            System.out.println(fallbackStr);
-            System.out.println(errcode);
-            System.out.println(response.body().string());
+        try {
+            Response response = client.newCall(request).execute();
+            String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
+            if (!errcode.equals("0")) {
+                System.out.println(fallbackStr);
+                System.out.println(errcode);
+                System.out.println(response.body().string());
+            }
+            return errcode;
+        } catch (Exception e) {
+            System.out.println("添加Fallback失败：" + fallbackStr);
+            return "";
         }
-        return errcode;
     }
 
     /*
-       添加Un
+       添加Unhandle
        返回0表示正常
        */
-    public static String addUnhandle(String token, String guid, String HotLineWorkNumber, String linkPerson, String endDate) throws Exception {
+    public static String addUnhandle(String token, String guid, String HotLineWorkNumber, String linkPerson, String endDate) {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("text/plain");
-        String unStr = getUnhandleStr(guid, HotLineWorkNumber, linkPerson, endDate);
-        RequestBody body = RequestBody.create(mediaType, unStr);
+        String UnhandleStr = getUnhandleStr(guid, HotLineWorkNumber, linkPerson, endDate);
+        RequestBody body = RequestBody.create(mediaType, UnhandleStr);
         Request request = new Request.Builder()
                 .url("https://api.weixin.qq.com/tcb/databaseadd?access_token=" + token)
                 .method("POST", body)
                 .addHeader("Content-Type", "text/plain")
                 .build();
-        Response response = client.newCall(request).execute();
-        String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
-        if (!errcode.equals("0")){
-            System.out.println(unStr);
-            System.out.println(errcode);
-            System.out.println(response.body().string());
+        try {
+            Response response = client.newCall(request).execute();
+            String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
+            if (!errcode.equals("0")) {
+                System.out.println(UnhandleStr);
+                System.out.println(errcode);
+                System.out.println(response.body().string());
+            }
+            return errcode;
+        } catch (Exception e) {
+            System.out.println("添加Unhandle失败：" + UnhandleStr);
+            return "";
         }
-        return errcode;
     }
 
     /*
-       删除Un
+       删除Unhandle
        返回0表示正常
        */
-    public static String deleteUnhandle(String token, String guid) throws Exception{
+    public static String deleteUnhandle(String token, String guid) {
         String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"unhandle\\\").doc(\\\"${_id}\\\").remove()\"}";
         String str = temp.replace("${_id}", guid);
         OkHttpClient client = new OkHttpClient().newBuilder()
@@ -287,14 +311,19 @@ public class wxUtil {
                 .method("POST", body)
                 .addHeader("Content-Type", "text/plain")
                 .build();
-        Response response = client.newCall(request).execute();
-        String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
-        if (!errcode.equals("0")){
-            System.out.println(str);
-            System.out.println(errcode);
-            System.out.println(response.body().string());
+        try {
+            Response response = client.newCall(request).execute();
+            String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
+            if (!errcode.equals("0")) {
+                System.out.println(str);
+                System.out.println(errcode);
+                System.out.println(response.body().string());
+            }
+            return errcode;
+        } catch (Exception e) {
+            System.out.println("删除Unhandle失败：" + str);
+            return "";
         }
-        return errcode;
     }
 
 
@@ -328,10 +357,10 @@ public class wxUtil {
         Thread.sleep(10000);
         String ip = getLocalHostIP();
         String waiwangIP = PropKit.use("config-dev.txt").get("waiwangIP");
-        if (ip.equals(waiwangIP)){
+        if (ip.equals(waiwangIP)) {
             System.out.println("切换外网状态成功");
             return true;
-        }else{
+        } else {
             System.out.println("切换外网状态失败");
             return false;
         }
@@ -344,16 +373,16 @@ public class wxUtil {
         Thread.sleep(10000);
         String ip = getLocalHostIP();
         String neiwangIP = PropKit.use("config-dev.txt").get("neiwangIP");
-        if (ip.equals(neiwangIP)){
+        if (ip.equals(neiwangIP)) {
             System.out.println("切换内网状态成功");
             return true;
-        }else{
+        } else {
             System.out.println("切换内网状态失败");
             return false;
         }
     }
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
 //        WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();
 //        config.setCorpId(ParamesAPI.corpId);      // 设置微信企业号的appid
 //        config.setCorpSecret(ParamesAPI.secret);  // 设置微信企业号的app corpSecret
@@ -374,6 +403,6 @@ public class wxUtil {
 
 
         String token = getToken();
-        addUnhandle(token,"111","111","111","111");
+        addUnhandle(token, "111", "111", "111", "111");
     }
 }

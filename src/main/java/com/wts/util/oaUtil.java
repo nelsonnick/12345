@@ -18,7 +18,7 @@ public class oaUtil {
     /*
     获取token
     */
-    public static String getToken() throws IOException {
+    public static String getToken(){
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("application/json;charset=UTF-8,text/plain");
@@ -39,14 +39,19 @@ public class oaUtil {
                 .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.25 Safari/537.36 Core/1.70.3756.400 QQBrowser/10.5.4039.400")
                 .addHeader("Content-Type", "text/plain")
                 .build();
-        Response response = client.newCall(request).execute();
-        String token = JSONObject.parseObject(JSONObject.parseObject(response.body().string()).getString("data")).getString("token");
-        return token;
+        try {
+            Response response = client.newCall(request).execute();
+            String token = JSONObject.parseObject(JSONObject.parseObject(response.body().string()).getString("data")).getString("token");
+            return token;
+        }catch (Exception e){
+            System.out.println("获取OA的token失败！");
+            return "";
+        }
     }
     /*
     获取run_id：通过新建流程来获取
     */
-    public static String getRun_id(String token) throws IOException {
+    public static String getRun_id(String token){
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("application/json;charset=UTF-8");
@@ -67,9 +72,14 @@ public class oaUtil {
                 .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.25 Safari/537.36 Core/1.70.3756.400 QQBrowser/10.5.4039.400")
                 .addHeader("Content-Length", "16081")
                 .build();
-        Response response = client.newCall(request).execute();
-        String run_id = JSONObject.parseObject(JSONObject.parseObject(response.body().string()).getString("data")).getString("run_id");
-        return run_id;
+        try {
+            Response response = client.newCall(request).execute();
+            String run_id = JSONObject.parseObject(JSONObject.parseObject(response.body().string()).getString("data")).getString("run_id");
+            return run_id;
+        }catch (Exception e){
+            System.out.println("获取OA的run_id失败！");
+            return "";
+        }
     }
     /*
     写数据：通过修改流程写入数据
