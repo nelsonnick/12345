@@ -1,9 +1,14 @@
 package com.wts.controller;
 
 import com.jfinal.core.Controller;
+import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.wts.entity.model.Unhandle;
 import com.wts.util.wxUtil;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,6 +18,7 @@ import java.util.List;
 
 import static com.wts.util.util12345.getDoc;
 import static com.wts.util.util12345.getPageUrl;
+import static com.wts.util.wxUtil.getUnStr;
 
 public class MainController extends Controller {
 
@@ -159,7 +165,51 @@ public class MainController extends Controller {
         fw.close();
         renderText("未办理工单已生成！");
     }
-
+    // 仅生成第一页
+    public void expire() throws Exception{
+        String path = "d:\\expire.txt";
+        File file = new File(path);
+        if(!file.exists()){
+            file.getParentFile().mkdirs();
+        }
+        file.createNewFile();
+        // write
+        FileWriter fw = new FileWriter(file, true);
+        BufferedWriter bw = new BufferedWriter(fw);
+        String cookie = PropKit.use("config-dev.txt").get("cookie");
+        String url = getPageUrl("11", "X");
+        Document doc = getDoc(url,cookie);
+        Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
+        for (int i = 0; i < trs.size() - 1; i++) {
+            Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
+            String value = in.attr("value");
+            String file_guid = "";
+            String order_guid = "";
+            if (value.substring(9,10).equals("{")){
+                file_guid = value.substring(9, 47);
+                order_guid = value.substring(53, 91);
+            }else{
+                file_guid = value.substring(8, 46);
+                order_guid = value.substring(51, 89);
+            }
+            String url2 = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid="+file_guid+"&GUID=" +order_guid+ "&IsZDDB=&xxlyid=1";
+            Document doc2 = getDoc(url2,cookie);
+            Element tbody = doc2.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
+            String order_code = tbody.getElementById("HotLineWorkNumber").text();//工单编号
+            String link_person = tbody.getElementById("linkPerson").text();//联系人
+            String end_date = tbody.getElementById("endDate").text();//办理时限
+            String a = "{\"_id\":\"" + order_guid
+                    + "\",\"HotLineWorkNumber\":\"" + order_code
+                    + "\",\"linkPerson\":\"" + link_person
+                    + "\",\"endDate\":\"" + end_date
+                    + "\"}\n";
+            bw.write(a);
+        }
+        bw.flush();
+        bw.close();
+        fw.close();
+        renderText("到期工单已生成！");
+    }
 }
 
 

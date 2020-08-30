@@ -1,5 +1,6 @@
 package com.wts.util;
 
+import com.jfinal.kit.PropKit;
 import okhttp3.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -78,6 +79,9 @@ public class util12345 {
         }else if(MessageTypeFlag.equals("0")) {//未处理
             sqlwhereHidden = " and  issend=0 and messageType=0 and (gdzt!=3 or gdzt is null)  and ownerguid='c443f956-8101-48ec-bf0a-80c97039a90e'";
             u = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/listTaskHotLine.aspx?MessageType=0&issend=0";
+        }else if(MessageTypeFlag.equals("11")) {//到期
+            sqlwhereHidden = "  and (issend=0 or issend=2 ) and messagetype!=1 and messagetype!=3 and messagetype!=5 and enddate is not null and (enddate='2020/8/27' or enddate-1='2020/8/27')  and (gdzt!=3 or gdzt is null) and ownerguid='c443f956-8101-48ec-bf0a-80c97039a90e' ";
+            u = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/listTaskHotLine.aspx?MessageType=11";
         }else{
 
         }
@@ -162,6 +166,19 @@ public class util12345 {
             e.printStackTrace();
         }
         return doc;
+    }
+
+    public static void main(String[] args) {
+        String cookie = PropKit.use("config-dev.txt").get("cookie");
+//        Document doc = getDoc(getPageUrl("11","X"),cookie);
+//        String totalPage = doc.getElementById("lkocok_grid_footer").getElementsByTag("td").get(0).text().split("/")[1];
+//        System.out.println(doc);
+
+        Document doc2 = getPageInfo("1",cookie,"11");
+        System.out.println(doc2);
+//        String totalPage2 = doc2.getElementById("lkocok_grid_footer").getElementsByTag("td").get(0).text().split("/")[1];
+//        System.out.println(totalPage2);
+
     }
 
 }
