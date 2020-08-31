@@ -129,7 +129,8 @@ public class oaUtil {
                 .replace("${联系电话}", link_phone)
                 .replace("${问题分类}", "")
                 .replace("${问题描述}", problem_description)
-                .replace("${问题核实情况}", transfer_opinion + transfer_process)
+                .replace("${问题核实情况}", "")
+//                .replace("${问题核实情况}", transfer_opinion + transfer_process)
                 .replace("${处理意见}", "建议转" + suggestion + "进行答复。")
                 .replace("${办件类型}", "承办件")
                 .replace("${处理意见时间}", ft.format(dNow));
