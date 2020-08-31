@@ -463,11 +463,11 @@ public class DailyMonitor implements Runnable {
                 reply.get("link_person"));
         String err = deleteUnhandle(weixinToken,
                 reply.get("order_guid"));
-        sendMessageToWeiXin("工单：" + reply.get("order_code") + "-->已回复", "WangTianShuo");
+        sendMessageToWeiXin("回复工单：" + reply.get("order_code") + "-->" +reply.get("reply_person"), "WangTianShuo");
         if (errcode.equals("0") && err.equals("0")) {
-            System.out.println("已回复工单已推送：" + reply.get("order_code") + "-" + reply.get("link_person"));
+            System.out.println("回复工单已推送：" + reply.get("order_code") + "-" + reply.get("link_person"));
         } else {
-            System.out.println("已回复工单推送失败：" + reply.get("order_code") + "-" + reply.get("link_person"));
+            System.out.println("回复工单推送失败：" + reply.get("order_code") + "-" + reply.get("link_person"));
         }
 
     }
@@ -635,11 +635,11 @@ public class DailyMonitor implements Runnable {
                 fallback.get("link_person"));
         String err = deleteUnhandle(weixinToken,
                 fallback.get("order_guid"));
-        sendMessageToWeiXin("工单：" + fallback.get("order_code") + "-->已回退", "WangTianShuo");
+        sendMessageToWeiXin("回退工单：" + fallback.get("order_code") + "-->" + fallback.get("fallback_person"), "WangTianShuo");
         if (errcode.equals("0") && err.equals("0")) {
-            System.out.println("已回退工单已推送：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
+            System.out.println("回退工单已推送：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
         } else {
-            System.out.println("已回退工单推送失败：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
+            System.out.println("回退工单推送失败：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
         }
     }
 
