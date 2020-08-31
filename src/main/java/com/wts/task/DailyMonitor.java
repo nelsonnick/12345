@@ -112,6 +112,10 @@ public class DailyMonitor implements Runnable {
         String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid=" + file_guid + "&GUID=" + order_guid + "&IsZDDB=&xxlyid=1";
         try {
             Document doc = getDoc(url, cookie);
+            if (doc==null){
+                System.out.println("无法获取allwork：" + url);
+                return null;
+            }
             Element tbody = doc.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
             Element td = tbody.getElementsByTag("tr").get(8).getElementsByTag("td").get(1);
             String enclosure = "";
@@ -344,6 +348,10 @@ public class DailyMonitor implements Runnable {
         String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid=" + file_guid + "&GUID=" + order_guid + "&IsZDDB=&xxlyid=1";
         try {
             Document doc = getDoc(url, cookie);
+            if (doc==null){
+                System.out.println("无法获取reply：" + url);
+                return null;
+            }
             Element tbody = doc.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
             Element td = tbody.getElementsByTag("tr").get(8).getElementsByTag("td").get(1);
             String enclosure = "";
@@ -530,6 +538,10 @@ public class DailyMonitor implements Runnable {
         String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid=" + file_guid + "&GUID=" + order_guid + "&IsZDDB=&xxlyid=1";
         try {
             Document doc = getDoc(url, cookie);
+            if (doc==null){
+                System.out.println("无法获取fallback：" + url);
+                return null;
+            }
             Element tbody = doc.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
             Element td = tbody.getElementsByTag("tr").get(8).getElementsByTag("td").get(1);
             String enclosure = "";

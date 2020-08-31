@@ -59,7 +59,7 @@ public class util12345 {
             Response response = client.newCall(request).execute();
             doc = Jsoup.parse(response.body().string());
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("无法获取doc：" + url);
         }
         return doc;
     }
