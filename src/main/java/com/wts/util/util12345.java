@@ -171,23 +171,13 @@ public class util12345 {
 
     public static Boolean hasDirectory(){
         File f = new File("D:\\12345");
-        if (f.isDirectory()) {
-            return true;
-        }
-        return false;
+        return f.isDirectory();
     }
 
     public static void main(String[] args) {
         String cookie = PropKit.use("config-dev.txt").get("cookie");
-//        Document doc = getDoc(getPageUrl("11","X"),cookie);
-//        String totalPage = doc.getElementById("lkocok_grid_footer").getElementsByTag("td").get(0).text().split("/")[1];
-//        System.out.println(doc);
-
         Document doc2 = getPageInfo("2",cookie,"0");
         System.out.println(doc2);
-//        String totalPage2 = doc2.getElementById("lkocok_grid_footer").getElementsByTag("td").get(0).text().split("/")[1];
-//        System.out.println(totalPage2);
-
     }
 
 }

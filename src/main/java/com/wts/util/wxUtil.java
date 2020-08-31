@@ -48,37 +48,6 @@ public class wxUtil {
         return sdf.format(utcDate).replace(" ", "T")+ ".000Z";
     }
 
-//    public static String getTimeStr(String str) {
-////        return str;
-//        return str.replace(" ", "T")
-//                .replace("/1/", "-01-")
-//                .replace("/2/", "-02-")
-//                .replace("/3/", "-03-")
-//                .replace("/4/", "-04-")
-//                .replace("/5/", "-05-")
-//                .replace("/6/", "-06-")
-//                .replace("/7/", "-07-")
-//                .replace("/8/", "-08-")
-//                .replace("/9/", "-09-")
-//                .replace("/10/", "-10-")
-//                .replace("/11/", "-11-")
-//                .replace("/12/", "-12-")
-//                .replace("-1T", "-01T")
-//                .replace("-2T", "-02T")
-//                .replace("-3T", "-03T")
-//                .replace("-4T", "-04T")
-//                .replace("-5T", "-05T")
-//                .replace("-6T", "-06T")
-//                .replace("-7T", "-07T")
-//                .replace("-8T", "-08T")
-//                .replace("-9T", "-09T")
-//                .replace("-10T", "-10T")
-//                .replace("-11T", "-11T")
-//                .replace("-12T", "-12T")
-//                + ".080Z";
-//    }
-
-
     public static String getSubStr(String str) {
         if (str==null){
             return "";
