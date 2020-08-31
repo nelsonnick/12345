@@ -107,10 +107,10 @@ WordUtil {
      * 创建新文件
      */
     public static void CreatWordByModel(String tmpFile, Map<String, String> contentMap, String exportFile) {
-        InputStream in = null;
+        InputStream in;
         try {
             in = new FileInputStream(new File(tmpFile));
-            XWPFDocument document = null;
+            XWPFDocument document;
             document = new XWPFDocument(in);
             replaceInTable(document, contentMap);
             //导出到文件
@@ -144,7 +144,7 @@ WordUtil {
             System.out.println(filePath + "：打印成功！");
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println(filePath + "：打印失败");
+            System.out.println(filePath + "：打印失败!");
         } finally {
             try {
                 if (doc != null) {

@@ -49,30 +49,39 @@ public class DailyMonitor implements Runnable {
                     if (network) {
                         String weixinToken = getToken();
                         if (!weixinToken.equals("")) {
-                            for (Allwork allwork : allworkList) {
-                                sendAllwork(allwork, weixinToken);
+                            if (allworkList.size() != 0) {
+                                for (Allwork allwork : allworkList) {
+                                    sendAllwork(allwork, weixinToken);
 //                                createAllworkText(allwork);
 //                                createUnhandleAddText(allwork);
+                                }
+                                allworkList.clear();
+//                                for (int i = allworkList.size() - 1; i >= 0; i--) {
+//                                    allworkList.remove(i);
+//                                }
                             }
-                            for (Reply reply : replyList) {
-                                sendReply(reply, weixinToken);
+                            if (replyList.size() != 0) {
+                                for (Reply reply : replyList) {
+                                    sendReply(reply, weixinToken);
 //                                createReplyText(reply);
 //                                createUnhandleDeleteText(reply.getOrderGuid());
+                                }
+                                replyList.clear();
+//                                for (int i = replyList.size() - 1; i >= 0; i--) {
+//                                    replyList.remove(i);
+//                                }
                             }
-                            for (Fallback fallback : fallbackList) {
-                                sendFallback(fallback, weixinToken);
+                            if (fallbackList.size() != 0) {
+                                for (Fallback fallback : fallbackList) {
+                                    sendFallback(fallback, weixinToken);
 //                                createFallbackText(fallback);
 //                                createUnhandleDeleteText(fallback.getOrderGuid());
+                                }
+                                fallbackList.clear();
+//                                for (int i = fallbackList.size() - 1; i >= 0; i--) {
+//                                    fallbackList.remove(i);
+//                                }
                             }
-                        }
-                        for (int i = allworkList.size() - 1; i >= 0; i--) {
-                            allworkList.remove(i);
-                        }
-                        for (int i = replyList.size() - 1; i >= 0; i--) {
-                            replyList.remove(i);
-                        }
-                        for (int i = fallbackList.size() - 1; i >= 0; i--) {
-                            fallbackList.remove(i);
                         }
                     }
                     goNeiWang();
@@ -86,13 +95,12 @@ public class DailyMonitor implements Runnable {
     public void allwork(String cookie) {
         String url = getPageUrl("0", "0");
         Document doc = getDoc(url, cookie);
-        if (doc!=null) {
+        if (doc != null) {
             Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
             for (int i = 0; i < trs.size() - 1; i++) {
                 Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
                 String value = in.attr("value");
-                String file_guid = "";
-                String order_guid = "";
+                String file_guid, order_guid;
                 if (value.substring(9, 10).equals("{")) {
                     file_guid = value.substring(9, 47);
                     order_guid = value.substring(53, 91);
@@ -112,7 +120,7 @@ public class DailyMonitor implements Runnable {
         String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid=" + file_guid + "&GUID=" + order_guid + "&IsZDDB=&xxlyid=1";
         try {
             Document doc = getDoc(url, cookie);
-            if (doc==null){
+            if (doc == null) {
                 System.out.println("无法获取allwork：" + url);
                 return null;
             }
@@ -286,24 +294,24 @@ public class DailyMonitor implements Runnable {
         }
     }
 
-    public void createAllworkText(Allwork allwork){
+    public void createAllworkText(Allwork allwork) {
         Allwork al = new Allwork();
-        al.set("order_guid",allwork.get("order_guid"))
-                .set("order_code",allwork.get("order_code"))
-                .set("link_person",allwork.get("link_person"))
-                .set("link_phone",allwork.get("link_phone"))
-                .set("send_time",allwork.get("send_time"))
-                .set("urgency_degree",allwork.get("urgency_degree"))
-                .set("is_secret",allwork.get("is_secret"))
-                .set("is_reply",allwork.get("is_reply"))
-                .set("end_date",allwork.get("end_date"))
-                .set("problem_description",getSubStr(allwork.get("problem_description")))
-                .set("transfer_opinion",getSubStr(allwork.get("transfer_opinion")))
-                .set("transfer_process",getSubStr(allwork.get("transfer_process")))
-                .set("accept_channel",allwork.get("accept_channel"));
+        al.set("order_guid", allwork.get("order_guid"))
+                .set("order_code", allwork.get("order_code"))
+                .set("link_person", allwork.get("link_person"))
+                .set("link_phone", allwork.get("link_phone"))
+                .set("send_time", allwork.get("send_time"))
+                .set("urgency_degree", allwork.get("urgency_degree"))
+                .set("is_secret", allwork.get("is_secret"))
+                .set("is_reply", allwork.get("is_reply"))
+                .set("end_date", allwork.get("end_date"))
+                .set("problem_description", getSubStr(allwork.get("problem_description")))
+                .set("transfer_opinion", getSubStr(allwork.get("transfer_opinion")))
+                .set("transfer_process", getSubStr(allwork.get("transfer_process")))
+                .set("accept_channel", allwork.get("accept_channel"));
         String path = downPath + "allwork.txt";
         File file = new File(path);
-        if(!file.exists()){
+        if (!file.exists()) {
             file.getParentFile().mkdirs();
         }
         try {
@@ -314,7 +322,7 @@ public class DailyMonitor implements Runnable {
             bw.flush();
             bw.close();
             fw.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("创建文件失败：" + path);
         }
     }
@@ -322,13 +330,12 @@ public class DailyMonitor implements Runnable {
     public void reply(String cookie) {
         String url = getPageUrl("201", "1");
         Document doc = getDoc(url, cookie);
-        if (doc!=null) {
+        if (doc != null) {
             Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
             for (int i = 0; i < trs.size() - 1; i++) {
                 Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
                 String value = in.attr("value");
-                String file_guid = "";
-                String order_guid = "";
+                String file_guid, order_guid;
                 if (value.substring(9, 10).equals("{")) {
                     file_guid = value.substring(9, 47);
                     order_guid = value.substring(53, 91);
@@ -342,13 +349,13 @@ public class DailyMonitor implements Runnable {
                 }
             }
         }
-        }
+    }
 
     public Reply getReply(String file_guid, String order_guid, String cookie) {
         String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid=" + file_guid + "&GUID=" + order_guid + "&IsZDDB=&xxlyid=1";
         try {
             Document doc = getDoc(url, cookie);
-            if (doc==null){
+            if (doc == null) {
                 System.out.println("无法获取reply：" + url);
                 return null;
             }
@@ -474,7 +481,7 @@ public class DailyMonitor implements Runnable {
                 reply.get("link_person"));
         String err = deleteUnhandle(weixinToken,
                 reply.get("order_guid"));
-        sendMessageToWeiXin("回复工单：" + reply.get("order_code") + "-->" +reply.get("reply_person"), "WangTianShuo");
+        sendMessageToWeiXin("回复工单：" + reply.get("order_code") + "-->" + reply.get("reply_person"), "WangTianShuo");
         if (errcode.equals("0") && err.equals("0")) {
             System.out.println("回复工单已推送：" + reply.get("order_code") + "-" + reply.get("link_person"));
         } else {
@@ -483,18 +490,18 @@ public class DailyMonitor implements Runnable {
 
     }
 
-    public void createReplyText(Reply reply){
+    public void createReplyText(Reply reply) {
         Reply re = new Reply();
-        re.set("order_guid",reply.get("order_guid"))
-                .set("order_code",reply.get("order_code"))
-                .set("link_person",reply.get("link_person"))
-                .set("reply_time",reply.get("reply_time"))
-                .set("reply_person",reply.get("reply_person"))
-                .set("reply_content",getSubStr(reply.get("reply_content")))
-                .set("reply_satisfy",reply.get("reply_satisfy"));
+        re.set("order_guid", reply.get("order_guid"))
+                .set("order_code", reply.get("order_code"))
+                .set("link_person", reply.get("link_person"))
+                .set("reply_time", reply.get("reply_time"))
+                .set("reply_person", reply.get("reply_person"))
+                .set("reply_content", getSubStr(reply.get("reply_content")))
+                .set("reply_satisfy", reply.get("reply_satisfy"));
         String path = downPath + "reply.txt";
         File file = new File(path);
-        if(!file.exists()){
+        if (!file.exists()) {
             file.getParentFile().mkdirs();
         }
         try {
@@ -505,7 +512,7 @@ public class DailyMonitor implements Runnable {
             bw.flush();
             bw.close();
             fw.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("创建文件失败：" + path);
         }
     }
@@ -513,7 +520,7 @@ public class DailyMonitor implements Runnable {
     public void fallback(String cookie) {
         String url = getPageUrl("202", "1");
         Document doc = getDoc(url, cookie);
-        if (doc!=null) {
+        if (doc != null) {
             Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
             for (int i = 0; i < trs.size() - 1; i++) {
                 Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
@@ -532,13 +539,14 @@ public class DailyMonitor implements Runnable {
                     saveFallback(fallback);
                 }
             }
-        }}
+        }
+    }
 
     public Fallback getFallback(String file_guid, String order_guid, String cookie) {
         String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid=" + file_guid + "&GUID=" + order_guid + "&IsZDDB=&xxlyid=1";
         try {
             Document doc = getDoc(url, cookie);
-            if (doc==null){
+            if (doc == null) {
                 System.out.println("无法获取fallback：" + url);
                 return null;
             }
@@ -659,19 +667,19 @@ public class DailyMonitor implements Runnable {
         }
     }
 
-    public void createFallbackText(Fallback fallback){
+    public void createFallbackText(Fallback fallback) {
         Fallback fall = new Fallback();
-        fall.set("order_guid",fallback.get("order_guid"))
-                .set("order_code",fallback.get("order_code"))
-                .set("link_person",fallback.get("link_person"))
-                .set("fallback_time",fallback.get("fallback_time"))
-                .set("fallback_person",fallback.get("fallback_person"))
-                .set("fallback_reason",getSubStr(fallback.get("fallback_reason")))
-                .set("suggestion",getSubStr(fallback.get("suggestion")))
-                .set("fallback_department",fallback.get("fallback_department"));
+        fall.set("order_guid", fallback.get("order_guid"))
+                .set("order_code", fallback.get("order_code"))
+                .set("link_person", fallback.get("link_person"))
+                .set("fallback_time", fallback.get("fallback_time"))
+                .set("fallback_person", fallback.get("fallback_person"))
+                .set("fallback_reason", getSubStr(fallback.get("fallback_reason")))
+                .set("suggestion", getSubStr(fallback.get("suggestion")))
+                .set("fallback_department", fallback.get("fallback_department"));
         String path = downPath + "fallback.txt";
         File file = new File(path);
-        if(!file.exists()){
+        if (!file.exists()) {
             file.getParentFile().mkdirs();
         }
         try {
@@ -682,20 +690,20 @@ public class DailyMonitor implements Runnable {
             bw.flush();
             bw.close();
             fw.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("创建文件失败：" + path);
         }
     }
 
-    public void createUnhandleAddText(Allwork allwork){
+    public void createUnhandleAddText(Allwork allwork) {
         Allwork al = new Allwork();
-        al.set("order_guid",allwork.get("order_guid"))
-                .set("order_code",allwork.get("order_code"))
-                .set("link_person",allwork.get("link_person"))
-                .set("end_date",allwork.get("end_date"));
+        al.set("order_guid", allwork.get("order_guid"))
+                .set("order_code", allwork.get("order_code"))
+                .set("link_person", allwork.get("link_person"))
+                .set("end_date", allwork.get("end_date"));
         String path = downPath + "unhandleAdd.txt";
         File file = new File(path);
-        if(!file.exists()){
+        if (!file.exists()) {
             file.getParentFile().mkdirs();
         }
         try {
@@ -706,17 +714,17 @@ public class DailyMonitor implements Runnable {
             bw.flush();
             bw.close();
             fw.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("创建文件失败：" + path);
         }
     }
 
-    public void createUnhandleDeleteText(String order_guid){
+    public void createUnhandleDeleteText(String order_guid) {
         Allwork al = new Allwork();
-        al.set("order_guid",order_guid);
+        al.set("order_guid", order_guid);
         String path = downPath + "unhandleDelete.txt";
         File file = new File(path);
-        if(!file.exists()){
+        if (!file.exists()) {
             file.getParentFile().mkdirs();
         }
         try {
@@ -727,7 +735,7 @@ public class DailyMonitor implements Runnable {
             bw.flush();
             bw.close();
             fw.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("创建文件失败：" + path);
         }
     }
@@ -777,12 +785,4 @@ public class DailyMonitor implements Runnable {
             System.out.println("推送企业微信失败：" + msgContent);
         }
     }
-
-    public static void main(String[] args) {
-//        Allwork al = new Allwork();
-//        al.setEndDate("33");
-//        createAllworkText(al);
-//        readAllworkText("a");
-    }
-
 }

@@ -2,19 +2,15 @@ package com.wts.util;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.kit.PropKit;
-import me.chanjar.weixin.common.bean.result.WxMediaUploadResult;
 import me.chanjar.weixin.cp.api.impl.WxCpServiceImpl;
 import me.chanjar.weixin.cp.bean.WxCpMessage;
 import me.chanjar.weixin.cp.config.impl.WxCpDefaultConfigImpl;
 import okhttp3.*;
 
-
-import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
 import static com.wts.util.others.IpKit.getLocalHostIP;
 
@@ -43,17 +39,12 @@ public class wxUtil {
             e.printStackTrace();
         }
         long localTimeInMillis = localDate.getTime();
-        /** long时间转换成Calendar */
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();//long时间转换成Calendar
         calendar.setTimeInMillis(localTimeInMillis);
-        /** 取得时间偏移量 */
-        int zoneOffset = calendar.get(java.util.Calendar.ZONE_OFFSET);
-        /** 取得夏令时差 */
-        int dstOffset = calendar.get(java.util.Calendar.DST_OFFSET);
-        /** 从本地时间里扣除这些差量，即可以取得UTC时间*/
-        calendar.add(java.util.Calendar.MILLISECOND, -(zoneOffset + dstOffset));
-        /** 取得的时间就是UTC标准时间 */
-        Date utcDate = new Date(calendar.getTimeInMillis());
+        int zoneOffset = calendar.get(java.util.Calendar.ZONE_OFFSET);//取得时间偏移量
+        int dstOffset = calendar.get(java.util.Calendar.DST_OFFSET);//取得夏令时差
+        calendar.add(java.util.Calendar.MILLISECOND, -(zoneOffset + dstOffset));//从本地时间里扣除这些差量，即可以取得UTC时间
+        Date utcDate = new Date(calendar.getTimeInMillis());//取得的时间就是UTC标准时间
         return sdf.format(utcDate).replace(" ", "T")+ ".000Z";
     }
 
@@ -102,7 +93,7 @@ public class wxUtil {
     public static String getAllworkStr(String guid, String HotLineWorkNumber, String linkPerson, String linkPhone, String sendTime,
                                        String urgencyDegree, String isSecret, String isReply, String endDate, String content, String remark, String banliFlow, String xxlyId) {
         String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"allwork\\\").add({data:[{_id:\\\"${_id}\\\",HotLineWorkNumber:\\\"${HotLineWorkNumber}\\\",linkPerson:\\\"${linkPerson}\\\",linkPhone:\\\"${linkPhone}\\\",sendTime:new Date(\\\"${sendTime}\\\"),urgencyDegree:\\\"${urgencyDegree}\\\",isSecret:\\\"${isSecret}\\\",isReply:\\\"${isReply}\\\",endDate:\\\"${endDate}\\\",content:\\\"${content}\\\",remark:\\\"${remark}\\\",banliFlow:\\\"${banliFlow}\\\",xxlyId:\\\"${xxlyId}\\\"}]})\"}";
-        String str = temp.replace("${_id}", guid)
+        return temp.replace("${_id}", guid)
                 .replace("${HotLineWorkNumber}", HotLineWorkNumber)
                 .replace("${linkPerson}", linkPerson)
                 .replace("${linkPhone}", linkPhone)
@@ -115,7 +106,6 @@ public class wxUtil {
                 .replace("${remark}", getSubStr(remark))
                 .replace("${banliFlow}", getSubStr(banliFlow))
                 .replace("${xxlyId}", xxlyId);
-        return str;
     }
 
     public static String getReplyStr(String guid, String replyTime, String replyPerson, String replyContent, String replySatisfy, String HotLineWorkNumber, String linkPerson) {
@@ -134,7 +124,7 @@ public class wxUtil {
         } else {
             replyType = "其他";
         }
-        String str = temp.replace("${_id}", guid)
+        return temp.replace("${_id}", guid)
                 .replace("${HotLineWorkNumber}", HotLineWorkNumber)
                 .replace("${linkPerson}", linkPerson)
                 .replace("${replyTime}", replyTime)
@@ -142,7 +132,6 @@ public class wxUtil {
                 .replace("${replyContent}", getSubStr(replyContent))
                 .replace("${replySatisfy}", replySatisfy)
                 .replace("${replyType}", replyType);
-        return str;
     }
 
     public static String getFallbackStr(String guid, String fallbackTime, String fallbackPerson, String fallbackReason, String suggestion, String fallbackDepartment, String HotLineWorkNumber, String linkPerson) {
@@ -163,7 +152,7 @@ public class wxUtil {
         } else {
             fallbackType = "其他部门";
         }
-        String str = temp.replace("${_id}", guid)
+        return temp.replace("${_id}", guid)
                 .replace("${HotLineWorkNumber}", HotLineWorkNumber)
                 .replace("${linkPerson}", linkPerson)
                 .replace("${fallbackTime}", fallbackTime)
@@ -172,22 +161,20 @@ public class wxUtil {
                 .replace("${suggestion}", getSubStr(suggestion))
                 .replace("${fallbackDepartment}", fallbackDepartment)
                 .replace("${fallbackType}", fallbackType);
-        return str;
     }
 
     public static String getUnhandleStr(String guid, String HotLineWorkNumber, String linkPerson, String endDate) {
         String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"unhandle\\\").add({data:[{_id:\\\"${_id}\\\",HotLineWorkNumber:\\\"${HotLineWorkNumber}\\\",linkPerson:\\\"${linkPerson}\\\",endDate:\\\"${endDate}\\\"}]})\"}";
-        String str = temp.replace("${_id}", guid)
+        return temp.replace("${_id}", guid)
                 .replace("${HotLineWorkNumber}", HotLineWorkNumber)
                 .replace("${linkPerson}", linkPerson)
                 .replace("${endDate}", endDate);
-        return str;
     }
 
     public static String getSubscribeMessageStr(String OPENID, String TEMPLATE_ID, String guid, String HotLineWorkNumber, String linkPerson,
                                                 String linkPhone, String sendTime, String endDate, String collectionName) {
         String temp = "{\"touser\":\"${OPENID}\",\"template_id\":\"${TEMPLATE_ID}\",\"page\":\"${collectionName}?_id=${guid}\",\"miniprogram_state\":\"developer\",\"lang\":\"zh_CN\",\"data\":{\"character_string01\":{\"value\":\"${HotLineWorkNumber}\"},\"thing01\":{\"value\":\"${linkPerson}\"},\"character_string02\":{\"value\":\"${linkPhone}\"},\"time01\":{\"value\":\"${sendTime}\"},\"date01\":{\"value\":\"${endDate}\"}}}";
-        String str = temp.replace("${OPENID}", OPENID)
+        return temp.replace("${OPENID}", OPENID)
                 .replace("${TEMPLATE_ID}", TEMPLATE_ID)
                 .replace("${guid}", guid)
                 .replace("${HotLineWorkNumber}", HotLineWorkNumber)
@@ -196,7 +183,6 @@ public class wxUtil {
                 .replace("${sendTime}", sendTime)
                 .replace("${endDate}", endDate)
                 .replace("${collectionName}", collectionName);
-        return str;
     }
 
     /*
@@ -211,8 +197,7 @@ public class wxUtil {
                 .build();
         try {
             Response response = client.newCall(request).execute();
-            String token = JSONObject.parseObject(response.body().string()).getString("access_token");
-            return token;
+            return JSONObject.parseObject(response.body().string()).getString("access_token");
         } catch (Exception e) {
             return "";
         }
@@ -391,8 +376,7 @@ public class wxUtil {
                 .addHeader("Content-Type", "text/plain")
                 .build();
         Response response = client.newCall(request).execute();
-        String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
-        return errcode;
+        return JSONObject.parseObject(response.body().string()).getString("errcode");
     }
 
     public static void sendMessageToWeiXin(String msgContent, String UserID) {
@@ -446,50 +430,5 @@ public class wxUtil {
             System.out.println("切换内网状态失败");
             return false;
         }
-    }
-
-    public static void main(String[] args) throws Exception {
-        System.out.println(getTimeStr("2020/8/10 20:07:42"));
-//        WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();
-//        config.setCorpId(ParamesAPI.corpId);      // 设置微信企业号的appid
-//        config.setCorpSecret(ParamesAPI.secret);  // 设置微信企业号的app corpSecret
-//        config.setAgentId(ParamesAPI.agentId);     // 设置微信企业号应用ID
-//        config.setToken(ParamesAPI.token);       // 设置微信企业号应用的token
-//        config.setAesKey(ParamesAPI.encodingAESKey);      // 设置微信企业号应用的EncodingAESKey
-//        WxCpServiceImpl wxCpService = new WxCpServiceImpl();
-//        wxCpService.setWxCpConfigStorage(config);
-//        File file = new File("D:\\TemplateDoc.docx");
-//        WxMediaUploadResult res = wxCpService.getMediaService().upload("file",file);
-//        WxCpMessage message = WxCpMessage
-//                .FILE()
-//                .toUser("WangTianShuo")
-//                .agentId(ParamesAPI.agentId)
-//                .mediaId(res.getMediaId())
-//                .build();
-//        wxCpService.messageSend(message);
-
-
-//        String token = getToken();
-//        OkHttpClient client = new OkHttpClient().newBuilder()
-//                .build();
-//        MediaType mediaType = MediaType.parse("text/plain");
-//        String replyStr = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"r\\\").add({data:[{_id:\\\"{fbe58641-17a0-4e70-bf59-c6f7a46e20323}\\\",replyTime:new Date(\\\"2020/8/10 20:07:42\\\"),replyPerson:\\\"焦圣雨\\\",replyContent:\\\"A槐荫人社举报投诉中心工作人员已联系来电人，经了解，来电人反映的是包工头之间的个人经济纠纷。根据《中华人民共和国劳动法》（主席令第24号）第二条规定：在中华人民共和国境内的企业、个体经济组织（以下统称用人单位）和与之形成劳动关系的劳动者，适用本法。国家机关、事业组织、社会团体和与之建立劳动合同关系的劳动者，依照本法执行。《中华人民共和国劳动合同法》（主席令第73号）第二条规定：中华人民共和国境内的企业、个体经济组织、民办非企业单位等组织（以下称用人单位）与劳动者建立劳动关系，订立、履行、变更、解除或者终止劳动合同，适用本法。国家机关、事业单位、社会团体和与其建立劳动关系的劳动者，订立、履行、变更、解除或者终止劳动合同，依照本法执行。 来电人与包工头之间无法形成劳动关系，属于劳务关系，适用于《中华人民共和国民法通则》和《中华人民共和国合同法》，不在劳动保障行政部门查处范围之内。我单位耐心向来电人解释相关政策，并建议来电人通过司法手段争取个人权益。【来电人对法律法规不认可，建议此件不计入考核】【来电人称未回复，不属实录音已上传，建议此件不计入考核】\\\",replySatisfy:\\\"不满意\\\",replyType:\\\"劳动关系\\\",HotLineWorkNumber:\\\"200826143530775191\\\",linkPerson:\\\"宋先生\\\"}]})\"}";
-//        RequestBody body = RequestBody.create(mediaType, replyStr);
-//        Request request = new Request.Builder()
-//                .url("https://api.weixin.qq.com/tcb/databaseadd?access_token=" + token)
-//                .method("POST", body)
-//                .addHeader("Content-Type", "text/plain")
-//                .build();
-//        try {
-//            Response response = client.newCall(request).execute();
-//            String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
-//            if (!errcode.equals("0")) {
-//                System.out.println(replyStr);
-//                System.out.println(errcode);
-//                System.out.println(response.body().string());
-//            }
-//        } catch (Exception e) {
-//            System.out.println("添加Reply失败：" + replyStr);
-//        }
     }
 }

@@ -64,10 +64,9 @@ public class ReadSend implements Runnable {
     public void readAllworkText(String weixinToken){
         File file = new File(downPath + "allwork.txt");
         BufferedReader reader = null; //
-        InputStream in = null;
         try {
             reader = new BufferedReader(new FileReader(file));
-            String tempString = null;
+            String tempString;
             int line = 1;
             while((tempString = reader.readLine())!=null) {
                 JSONObject jsonObject = JSON.parseObject(tempString);
@@ -96,8 +95,8 @@ public class ReadSend implements Runnable {
             if(reader != null) {
                 try {
                     reader.close();
-                }catch (IOException el) {
-
+                }catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -128,10 +127,9 @@ public class ReadSend implements Runnable {
     public void readReplyText(String weixinToken){
         File file = new File(downPath + "reply.txt");
         BufferedReader reader = null; //
-        InputStream in = null;
         try {
             reader = new BufferedReader(new FileReader(file));
-            String tempString = null;
+            String tempString;
             int line = 1;
             while((tempString = reader.readLine())!=null) {
                 JSONObject jsonObject = JSON.parseObject(tempString);
@@ -185,10 +183,9 @@ public class ReadSend implements Runnable {
     public void readFallbackText(String weixinToken){
         File file = new File(downPath + "fallback.txt");
         BufferedReader reader = null; //
-        InputStream in = null;
         try {
             reader = new BufferedReader(new FileReader(file));
-            String tempString = null;
+            String tempString;
             int line = 1;
             while((tempString = reader.readLine())!=null) {
                 JSONObject jsonObject = JSON.parseObject(tempString);
@@ -211,8 +208,8 @@ public class ReadSend implements Runnable {
             if(reader != null) {
                 try {
                     reader.close();
-                }catch (IOException el) {
-
+                }catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -222,11 +219,10 @@ public class ReadSend implements Runnable {
 
     public void readUnhandleAddText(String weixinToken){
         File file = new File(downPath + "unhandleAdd.txt");
-        BufferedReader reader = null; //
-        InputStream in = null;
+        BufferedReader reader = null;
         try {
             reader = new BufferedReader(new FileReader(file));
-            String tempString = null;
+            String tempString;
             int line = 1;
             while((tempString = reader.readLine())!=null) {
                 JSONObject jsonObject = JSON.parseObject(tempString);
@@ -249,8 +245,8 @@ public class ReadSend implements Runnable {
             if(reader != null) {
                 try {
                     reader.close();
-                }catch (IOException el) {
-
+                }catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -260,11 +256,10 @@ public class ReadSend implements Runnable {
 
     public void readUnhandleDeleteText(String weixinToken){
         File file = new File(downPath + "unhandleDelete.txt");
-        BufferedReader reader = null; //
-        InputStream in = null;
+        BufferedReader reader = null;
         try {
             reader = new BufferedReader(new FileReader(file));
-            String tempString = null;
+            String tempString;
             int line = 1;
             while((tempString = reader.readLine())!=null) {
                 JSONObject jsonObject = JSON.parseObject(tempString);
@@ -284,13 +279,12 @@ public class ReadSend implements Runnable {
             if(reader != null) {
                 try {
                     reader.close();
-                }catch (IOException el) {
-
+                }catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }
         file.delete();
-
     }
 
 }

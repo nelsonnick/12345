@@ -8,7 +8,6 @@ import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
@@ -41,8 +40,7 @@ public class oaUtil {
                 .build();
         try {
             Response response = client.newCall(request).execute();
-            String token = JSONObject.parseObject(JSONObject.parseObject(response.body().string()).getString("data")).getString("token");
-            return token;
+            return  JSONObject.parseObject(JSONObject.parseObject(response.body().string()).getString("data")).getString("token");
         }catch (Exception e){
             System.out.println("获取OA的token失败！");
             return "";
@@ -204,7 +202,7 @@ public class oaUtil {
     /*
     批量操作
     */
-    public static void getFileContent(String strPath) throws Exception {
+    public static void getFileContent(String strPath) {
         String token = getToken();
         File[] files = new File(strPath).listFiles();
         if (files != null) {

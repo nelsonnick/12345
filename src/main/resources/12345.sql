@@ -135,10 +135,12 @@ CREATE TABLE `expire`
     `end_date`               varchar(50) CHARACTER SET utf8   NULL COMMENT '办理时限',
     PRIMARY KEY (`id`)
 );
-DROP TABLE IF EXISTS `ex`;
-CREATE TABLE `ex`
+DROP TABLE IF EXISTS `re`;
+CREATE TABLE `re`
 (
     `id`                     int(11)                          NOT NULL AUTO_INCREMENT COMMENT '序号',
-    `order_guid`             varchar(100) CHARACTER SET utf8  NULL COMMENT '工单序号',
+    `order_code`             varchar(50) CHARACTER SET utf8   NULL COMMENT '工单编号',
+    `problem_description`    varchar(3220) CHARACTER SET utf8 NULL COMMENT '问题描述',
+    `remark`                 varchar(255) CHARACTER SET utf8  NULL COMMENT '备注',
     PRIMARY KEY (`id`)
 );
