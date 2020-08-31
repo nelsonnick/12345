@@ -10,14 +10,55 @@ import okhttp3.*;
 
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 import static com.wts.util.others.IpKit.getLocalHostIP;
 
 
 public class wxUtil {
 
-    public static String getTimeStr(String str) {
-        return str;
+    public static String getTimeStr(String localTime) {
+        String str = localTime
+                .replace("/1/", "-01-")
+                .replace("/2/", "-02-")
+                .replace("/3/", "-03-")
+                .replace("/4/", "-04-")
+                .replace("/5/", "-05-")
+                .replace("/6/", "-06-")
+                .replace("/7/", "-07-")
+                .replace("/8/", "-08-")
+                .replace("/9/", "-09-")
+                .replace("/10/", "-10-")
+                .replace("/11/", "-11-")
+                .replace("/12/", "-12-");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date localDate = null;
+        try {
+            localDate = sdf.parse(str);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        long localTimeInMillis = localDate.getTime();
+        /** long时间转换成Calendar */
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(localTimeInMillis);
+        /** 取得时间偏移量 */
+        int zoneOffset = calendar.get(java.util.Calendar.ZONE_OFFSET);
+        /** 取得夏令时差 */
+        int dstOffset = calendar.get(java.util.Calendar.DST_OFFSET);
+        /** 从本地时间里扣除这些差量，即可以取得UTC时间*/
+        calendar.add(java.util.Calendar.MILLISECOND, -(zoneOffset + dstOffset));
+        /** 取得的时间就是UTC标准时间 */
+        Date utcDate = new Date(calendar.getTimeInMillis());
+        return sdf.format(utcDate).replace(" ", "T")+ ".000Z";
+    }
+
+//    public static String getTimeStr(String str) {
+////        return str;
 //        return str.replace(" ", "T")
 //                .replace("/1/", "-01-")
 //                .replace("/2/", "-02-")
@@ -43,8 +84,8 @@ public class wxUtil {
 //                .replace("-10T", "-10T")
 //                .replace("-11T", "-11T")
 //                .replace("-12T", "-12T")
-//                + ".888Z";
-    }
+//                + ".080Z";
+//    }
 
 
     public static String getSubStr(String str) {
@@ -408,6 +449,7 @@ public class wxUtil {
     }
 
     public static void main(String[] args) throws Exception {
+        System.out.println(getTimeStr("2020/8/10 20:07:42"));
 //        WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();
 //        config.setCorpId(ParamesAPI.corpId);      // 设置微信企业号的appid
 //        config.setCorpSecret(ParamesAPI.secret);  // 设置微信企业号的app corpSecret
@@ -427,27 +469,27 @@ public class wxUtil {
 //        wxCpService.messageSend(message);
 
 
-        String token = getToken();
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-        MediaType mediaType = MediaType.parse("text/plain");
-        String replyStr = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"reply\\\").add({data:[{_id:\\\"{fbe58641-17a0-4e70-bf59-c6f7a46e2032}\\\",replyTime:new Date(\\\"2020/8/31 8:45:28\\\"),replyPerson:\\\"焦圣雨\\\",replyContent:\\\"A槐荫人社举报投诉中心工作人员已联系来电人，经了解，来电人反映的是包工头之间的个人经济纠纷。根据《中华人民共和国劳动法》（主席令第24号）第二条规定：在中华人民共和国境内的企业、个体经济组织（以下统称用人单位）和与之形成劳动关系的劳动者，适用本法。国家机关、事业组织、社会团体和与之建立劳动合同关系的劳动者，依照本法执行。《中华人民共和国劳动合同法》（主席令第73号）第二条规定：中华人民共和国境内的企业、个体经济组织、民办非企业单位等组织（以下称用人单位）与劳动者建立劳动关系，订立、履行、变更、解除或者终止劳动合同，适用本法。国家机关、事业单位、社会团体和与其建立劳动关系的劳动者，订立、履行、变更、解除或者终止劳动合同，依照本法执行。 来电人与包工头之间无法形成劳动关系，属于劳务关系，适用于《中华人民共和国民法通则》和《中华人民共和国合同法》，不在劳动保障行政部门查处范围之内。我单位耐心向来电人解释相关政策，并建议来电人通过司法手段争取个人权益。【来电人对法律法规不认可，建议此件不计入考核】【来电人称未回复，不属实录音已上传，建议此件不计入考核】\\\",replySatisfy:\\\"不满意\\\",replyType:\\\"劳动关系\\\",HotLineWorkNumber:\\\"200826143530775191\\\",linkPerson:\\\"宋先生\\\"}]})\"}";
-        RequestBody body = RequestBody.create(mediaType, replyStr);
-        Request request = new Request.Builder()
-                .url("https://api.weixin.qq.com/tcb/databaseadd?access_token=" + token)
-                .method("POST", body)
-                .addHeader("Content-Type", "text/plain")
-                .build();
-        try {
-            Response response = client.newCall(request).execute();
-            String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
-            if (!errcode.equals("0")) {
-                System.out.println(replyStr);
-                System.out.println(errcode);
-                System.out.println(response.body().string());
-            }
-        } catch (Exception e) {
-            System.out.println("添加Reply失败：" + replyStr);
-        }
+//        String token = getToken();
+//        OkHttpClient client = new OkHttpClient().newBuilder()
+//                .build();
+//        MediaType mediaType = MediaType.parse("text/plain");
+//        String replyStr = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"r\\\").add({data:[{_id:\\\"{fbe58641-17a0-4e70-bf59-c6f7a46e20323}\\\",replyTime:new Date(\\\"2020/8/10 20:07:42\\\"),replyPerson:\\\"焦圣雨\\\",replyContent:\\\"A槐荫人社举报投诉中心工作人员已联系来电人，经了解，来电人反映的是包工头之间的个人经济纠纷。根据《中华人民共和国劳动法》（主席令第24号）第二条规定：在中华人民共和国境内的企业、个体经济组织（以下统称用人单位）和与之形成劳动关系的劳动者，适用本法。国家机关、事业组织、社会团体和与之建立劳动合同关系的劳动者，依照本法执行。《中华人民共和国劳动合同法》（主席令第73号）第二条规定：中华人民共和国境内的企业、个体经济组织、民办非企业单位等组织（以下称用人单位）与劳动者建立劳动关系，订立、履行、变更、解除或者终止劳动合同，适用本法。国家机关、事业单位、社会团体和与其建立劳动关系的劳动者，订立、履行、变更、解除或者终止劳动合同，依照本法执行。 来电人与包工头之间无法形成劳动关系，属于劳务关系，适用于《中华人民共和国民法通则》和《中华人民共和国合同法》，不在劳动保障行政部门查处范围之内。我单位耐心向来电人解释相关政策，并建议来电人通过司法手段争取个人权益。【来电人对法律法规不认可，建议此件不计入考核】【来电人称未回复，不属实录音已上传，建议此件不计入考核】\\\",replySatisfy:\\\"不满意\\\",replyType:\\\"劳动关系\\\",HotLineWorkNumber:\\\"200826143530775191\\\",linkPerson:\\\"宋先生\\\"}]})\"}";
+//        RequestBody body = RequestBody.create(mediaType, replyStr);
+//        Request request = new Request.Builder()
+//                .url("https://api.weixin.qq.com/tcb/databaseadd?access_token=" + token)
+//                .method("POST", body)
+//                .addHeader("Content-Type", "text/plain")
+//                .build();
+//        try {
+//            Response response = client.newCall(request).execute();
+//            String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
+//            if (!errcode.equals("0")) {
+//                System.out.println(replyStr);
+//                System.out.println(errcode);
+//                System.out.println(response.body().string());
+//            }
+//        } catch (Exception e) {
+//            System.out.println("添加Reply失败：" + replyStr);
+//        }
     }
 }
