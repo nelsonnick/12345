@@ -52,6 +52,10 @@ public class oaUtil {
     获取run_id：通过新建流程来获取
     */
     public static String getRun_id(String token){
+        if (token.equals("")){
+            System.out.println("token为空，无法获取OA的run_id！");
+            return "";
+        }
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("application/json;charset=UTF-8");
@@ -85,31 +89,34 @@ public class oaUtil {
     写数据：通过修改流程写入数据
     */
     public static void inputOA(String token, String content){
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-        MediaType mediaType = MediaType.parse("application/json;charset=UTF-8");
-        RequestBody body = RequestBody.create(mediaType, content);
-        try{
-            Request request = new Request.Builder()
-                    .url("http://120.221.150.148:8010/eoffice10/server/public/api/flow/run/save-flow-run-info")
-                    .method("POST", body)
-                    .addHeader("Accept", "application/json, text/plain, */*")
-                    .addHeader("Accept-Encoding", "gzip, deflate")
-                    .addHeader("Accept-Language", "zh-CN,zh;q=0.9")
-                    .addHeader("Authorization", "Bearer " + token)
-                    .addHeader("Connection", "keep-alive")
-                    .addHeader("Content-Type", "application/json;charset=UTF-8")
-//                .addHeader("Cookie", "io=iWbkGUXbzfy4s0_XAD_K")
-                    .addHeader("Host", "120.221.150.148:8010")
-                    .addHeader("Content-Length", content.getBytes("UTF-8").length + "")
+        if (content.equals("")){
+            System.out.println("Content为空，无法向OA推送信息");
+        }else{
+            OkHttpClient client = new OkHttpClient().newBuilder()
                     .build();
-            Response response = client.newCall(request).execute();
-            String run_id = JSONObject.parseObject(JSONObject.parseObject(response.body().string()).getString("data")).getString("run_id");
-            System.out.println("已提交OA系统！");
-        }catch (Exception e){
-            System.out.println("提交OA系统失败！");
+            MediaType mediaType = MediaType.parse("application/json;charset=UTF-8");
+            RequestBody body = RequestBody.create(mediaType, content);
+            try{
+                Request request = new Request.Builder()
+                        .url("http://120.221.150.148:8010/eoffice10/server/public/api/flow/run/save-flow-run-info")
+                        .method("POST", body)
+                        .addHeader("Accept", "application/json, text/plain, */*")
+                        .addHeader("Accept-Encoding", "gzip, deflate")
+                        .addHeader("Accept-Language", "zh-CN,zh;q=0.9")
+                        .addHeader("Authorization", "Bearer " + token)
+                        .addHeader("Connection", "keep-alive")
+                        .addHeader("Content-Type", "application/json;charset=UTF-8")
+//                .addHeader("Cookie", "io=iWbkGUXbzfy4s0_XAD_K")
+                        .addHeader("Host", "120.221.150.148:8010")
+                        .addHeader("Content-Length", content.getBytes("UTF-8").length + "")
+                        .build();
+                Response response = client.newCall(request).execute();
+                String run_id = JSONObject.parseObject(JSONObject.parseObject(response.body().string()).getString("data")).getString("run_id");
+                System.out.println("已提交OA系统！");
+            }catch (Exception e){
+                System.out.println("提交OA系统失败！");
+            }
         }
-
     }
 
     /*
@@ -117,6 +124,10 @@ public class oaUtil {
      */
     public static String getContent(String run_id, String order_code, String link_person, String end_date, String urgency_degree, String link_phone,
                                     String problem_description, String transfer_opinion, String transfer_process, String suggestion) {
+        if (run_id.equals("")){
+            System.out.println("run_id为空，无法生成Content信息！");
+            return "";
+        }
         Date dNow = new Date();
         SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String temp = "{\"run_id\":\"${run_id}\",\"run_name\":\"12345转办件${工单编号}\",\"run_name_html\":\"<div contenteditable=\\\"false\\\" class=\\\"title-item\\\">12345转办件</div><div class=\\\"title-item control\\\" data-type=\\\"formData\\\" ng-click=\\\"vm.choiceControl('DATA_2')\\\" data-id=\\\"DATA_2\\\" title=\\\"值来源于-工单编号\\\" ng-bind=\\\"vm.praseData('DATA_2')\\\">${工单编号}</div><div contenteditable=\\\"false\\\" class=\\\"title-item\\\"></div>\",\"instancy_type\":\"${紧急编号}\",\"form_data\":{\"DATA_31\":\"${办件类型}\",\"DATA_2\":\"${工单编号}\",\"DATA_7\":\"${办结时限}\",\"DATA_3\":\"${来电类别}\",\"DATA_8\":\"${紧急程度}\",\"DATA_5\":\"${联系人}\",\"DATA_10\":\"${联系电话}\",\"DATA_13\":\"${问题分类}\",\"DATA_16\":\"${问题描述}\",\"DATA_27\":\"经核实实际情况与12345描述一致\",\"DATA_30\":\"${问题核实情况}\",\"DATA_15\":\"${处理意见}\",\"DATA_17\":\"${处理意见时间}\",\"DATA_18\":\"\",\"DATA_19\":\"\",\"DATA_20\":\"\",\"DATA_21\":\"\",\"DATA_24\":\"\",\"DATA_25\":\"\"},\"flow_process\":66,\"process_id\":1}";

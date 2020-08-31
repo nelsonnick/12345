@@ -78,7 +78,7 @@ public class util12345 {
             sqlwhereHidden = "   and  issend=1 and (messageType=0 or messagetype=2) and gdzt=5  and ownerguid='c443f956-8101-48ec-bf0a-80c97039a90e'";
             u = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/listTaskHotLine.aspx?MessageType=201&issend=1";
         }else if(MessageTypeFlag.equals("0")) {//未处理
-            sqlwhereHidden = " and  issend=0 and messageType=0 and (gdzt!=3 or gdzt is null)  and ownerguid='c443f956-8101-48ec-bf0a-80c97039a90e'";
+            sqlwhereHidden = "   and  issend=0 and messageType=0 and (gdzt!=3 or gdzt is null)  and ownerguid='c443f956-8101-48ec-bf0a-80c97039a90e'";
             u = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/listTaskHotLine.aspx?MessageType=0&issend=0";
         }else if(MessageTypeFlag.equals("11")) {//到期
             sqlwhereHidden = "  and (issend=0 or issend=2 ) and messagetype!=1 and messagetype!=3 and messagetype!=5 and enddate is not null and (enddate='2020/8/27' or enddate-1='2020/8/27')  and (gdzt!=3 or gdzt is null) and ownerguid='c443f956-8101-48ec-bf0a-80c97039a90e' ";
@@ -183,7 +183,7 @@ public class util12345 {
 //        String totalPage = doc.getElementById("lkocok_grid_footer").getElementsByTag("td").get(0).text().split("/")[1];
 //        System.out.println(doc);
 
-        Document doc2 = getPageInfo("1",cookie,"11");
+        Document doc2 = getPageInfo("2",cookie,"0");
         System.out.println(doc2);
 //        String totalPage2 = doc2.getElementById("lkocok_grid_footer").getElementsByTag("td").get(0).text().split("/")[1];
 //        System.out.println(totalPage2);

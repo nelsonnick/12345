@@ -4,6 +4,7 @@ import com.jfinal.core.Controller;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.wts.util.util12345;
 import com.wts.util.wxUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -24,7 +25,7 @@ public class MainController extends Controller {
         renderText("服务正常");
     }
 
-    public void fallbcak() throws IOException {
+    public void fallback() throws IOException {
         String path = "d:\\fallback.txt";
         File file = new File(path);
         if(!file.exists()){
@@ -127,7 +128,7 @@ public class MainController extends Controller {
     }
 
     public void allwork() throws IOException {
-        String path = "d:\\unhandle.txt";
+        String path = "d:\\allwork.txt";
         File file = new File(path);
         if(!file.exists()){
             file.getParentFile().mkdirs();
@@ -165,7 +166,7 @@ public class MainController extends Controller {
     }
 
     // 数据来源：到期工单的第一页
-    public void unhandle() throws Exception{
+    public void expire() throws Exception{
         String path = "d:\\expire.txt";
         File file = new File(path);
         if(!file.exists()){
@@ -207,8 +208,59 @@ public class MainController extends Controller {
         bw.flush();
         bw.close();
         fw.close();
+        renderText("到期工单已生成！");
+    }
+
+    public void unhandle() throws Exception{
+//        String path = "d:\\unhandle.txt";
+//        File file = new File(path);
+//        if(!file.exists()){
+//            file.getParentFile().mkdirs();
+//        }
+//        file.createNewFile();
+//        // write
+//        FileWriter fw = new FileWriter(file, true);
+//        BufferedWriter bw = new BufferedWriter(fw);
+        String cookie = PropKit.use("config-dev.txt").get("cookie");
+        for (int j=1;j<4;j++){
+            Document doc = util12345.getPageInfo(j + "", cookie, "0");
+            System.out.println(doc);
+            Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
+            for (int i = 0; i < trs.size() - 1; i++) {
+                Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
+                String value = in.attr("value");
+                String file_guid = "";
+                String order_guid = "";
+                if (value.substring(9,10).equals("{")){
+                    file_guid = value.substring(9, 47);
+                    order_guid = value.substring(53, 91);
+                }else{
+                    file_guid = value.substring(8, 46);
+                    order_guid = value.substring(51, 89);
+                }
+                String url2 = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid="+file_guid+"&GUID=" +order_guid+ "&IsZDDB=&xxlyid=1";
+                Document doc2 = getDoc(url2,cookie);
+                Element tbody = doc2.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
+                String order_code = tbody.getElementById("HotLineWorkNumber").text();//工单编号
+                String link_person = tbody.getElementById("linkPerson").text();//联系人
+                String end_date = tbody.getElementById("endDate").text();//办理时限
+                String a = "{\"_id\":\"" + order_guid
+                        + "\",\"HotLineWorkNumber\":\"" + order_code
+                        + "\",\"linkPerson\":\"" + link_person
+                        + "\",\"endDate\":\"" + end_date
+                        + "\"}\n";
+                System.out.println(a);
+//                bw.write(a);
+            }
+            System.out.println("第" + j + "页已完成");
+        }
+//        bw.flush();
+//        bw.close();
+//        fw.close();
         renderText("未办理工单已生成！");
     }
+
+
 }
 
 
