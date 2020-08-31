@@ -78,7 +78,7 @@ public class wxUtil {
 
     public static String getReplyStr(String guid, String replyTime, String replyPerson, String replyContent, String replySatisfy, String HotLineWorkNumber, String linkPerson) {
 //        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"reply\\\").add({data:[{_id:\\\"${_id}\\\",HotLineWorkNumber:\\\"${HotLineWorkNumber}\\\",linkPerson:\\\"${linkPerson}\\\",linkPhone:\\\"${linkPhone}\\\",countNum:\\\"${countNum}\\\",writeTime:\\\"${writeTime}\\\",sendTime:\\\"${sendTime}\\\",urgencyDegree:\\\"${urgencyDegree}\\\",isSecret:\\\"${isSecret}\\\",isReply:\\\"${isReply}\\\",endDate:\\\"${endDate}\\\",content:\\\"${content}\\\",remark:\\\"${remark}\\\",banliFlow:\\\"${banliFlow}\\\",xxlyId:\\\"${xxlyId}\\\",replyTime:\\\"${replyTime}\\\",replyPerson:\\\"${replyPerson}\\\",replyContent:\\\"${replyContent}\\\",replyType:\\\"${replyType}\\\"}]})\"}";
-        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"reply\\\").add({data:[{_id:\\\"${_id}\\\",replyTime:new Date(\\\"${replyTime}\\\"),replyPerson:\\\"${replyPerson}\\\",replyContent:\\\"${replyContent}\\\",replySatisfy:\\\"${replySatisfy}\\\",replyType:\\\"${replyType}\\\"},HotLineWorkNumber:\\\"${HotLineWorkNumber}\\\"},linkPerson:\\\"${linkPerson}\\\"}]})\"}";
+        String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"reply\\\").add({data:[{_id:\\\"${_id}\\\",replyTime:new Date(\\\"${replyTime}\\\"),replyPerson:\\\"${replyPerson}\\\",replyContent:\\\"${replyContent}\\\",replySatisfy:\\\"${replySatisfy}\\\",replyType:\\\"${replyType}\\\",HotLineWorkNumber:\\\"${HotLineWorkNumber}\\\",linkPerson:\\\"${linkPerson}\\\"}]})\"}";
         String t = replyContent.substring(0, 1);
         String replyType;
         if (t.equals("A")) {
@@ -427,6 +427,26 @@ public class wxUtil {
 
 
         String token = getToken();
-        addUnhandle(token, "111", "111", "111", "111");
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("text/plain");
+        String replyStr = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"reply\\\").add({data:[{_id:\\\"{fbe58641-17a0-4e70-bf59-c6f7a46e2032}\\\",replyTime:new Date(\\\"2020/8/31 8:45:28\\\"),replyPerson:\\\"焦圣雨\\\",replyContent:\\\"A槐荫人社举报投诉中心工作人员已联系来电人，经了解，来电人反映的是包工头之间的个人经济纠纷。根据《中华人民共和国劳动法》（主席令第24号）第二条规定：在中华人民共和国境内的企业、个体经济组织（以下统称用人单位）和与之形成劳动关系的劳动者，适用本法。国家机关、事业组织、社会团体和与之建立劳动合同关系的劳动者，依照本法执行。《中华人民共和国劳动合同法》（主席令第73号）第二条规定：中华人民共和国境内的企业、个体经济组织、民办非企业单位等组织（以下称用人单位）与劳动者建立劳动关系，订立、履行、变更、解除或者终止劳动合同，适用本法。国家机关、事业单位、社会团体和与其建立劳动关系的劳动者，订立、履行、变更、解除或者终止劳动合同，依照本法执行。 来电人与包工头之间无法形成劳动关系，属于劳务关系，适用于《中华人民共和国民法通则》和《中华人民共和国合同法》，不在劳动保障行政部门查处范围之内。我单位耐心向来电人解释相关政策，并建议来电人通过司法手段争取个人权益。【来电人对法律法规不认可，建议此件不计入考核】【来电人称未回复，不属实录音已上传，建议此件不计入考核】\\\",replySatisfy:\\\"不满意\\\",replyType:\\\"劳动关系\\\",HotLineWorkNumber:\\\"200826143530775191\\\",linkPerson:\\\"宋先生\\\"}]})\"}";
+        RequestBody body = RequestBody.create(mediaType, replyStr);
+        Request request = new Request.Builder()
+                .url("https://api.weixin.qq.com/tcb/databaseadd?access_token=" + token)
+                .method("POST", body)
+                .addHeader("Content-Type", "text/plain")
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
+            if (!errcode.equals("0")) {
+                System.out.println(replyStr);
+                System.out.println(errcode);
+                System.out.println(response.body().string());
+            }
+        } catch (Exception e) {
+            System.out.println("添加Reply失败：" + replyStr);
+        }
     }
 }
