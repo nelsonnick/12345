@@ -86,25 +86,26 @@ public class DailyMonitor implements Runnable {
     public void allwork(String cookie) {
         String url = getPageUrl("0", "0");
         Document doc = getDoc(url, cookie);
-        Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
-        for (int i = 0; i < trs.size() - 1; i++) {
-            Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
-            String value = in.attr("value");
-            String file_guid = "";
-            String order_guid = "";
-            if (value.substring(9, 10).equals("{")) {
-                file_guid = value.substring(9, 47);
-                order_guid = value.substring(53, 91);
-            } else {
-                file_guid = value.substring(8, 46);
-                order_guid = value.substring(51, 89);
-            }
-            Allwork allwork = getAllwork(file_guid, order_guid, cookie);
-            if (allwork != null) {
-                saveAllwork(allwork);
+        if (doc!=null) {
+            Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
+            for (int i = 0; i < trs.size() - 1; i++) {
+                Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
+                String value = in.attr("value");
+                String file_guid = "";
+                String order_guid = "";
+                if (value.substring(9, 10).equals("{")) {
+                    file_guid = value.substring(9, 47);
+                    order_guid = value.substring(53, 91);
+                } else {
+                    file_guid = value.substring(8, 46);
+                    order_guid = value.substring(51, 89);
+                }
+                Allwork allwork = getAllwork(file_guid, order_guid, cookie);
+                if (allwork != null) {
+                    saveAllwork(allwork);
+                }
             }
         }
-
     }
 
     public Allwork getAllwork(String file_guid, String order_guid, String cookie) {
@@ -317,25 +318,27 @@ public class DailyMonitor implements Runnable {
     public void reply(String cookie) {
         String url = getPageUrl("201", "1");
         Document doc = getDoc(url, cookie);
-        Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
-        for (int i = 0; i < trs.size() - 1; i++) {
-            Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
-            String value = in.attr("value");
-            String file_guid = "";
-            String order_guid = "";
-            if (value.substring(9, 10).equals("{")) {
-                file_guid = value.substring(9, 47);
-                order_guid = value.substring(53, 91);
-            } else {
-                file_guid = value.substring(8, 46);
-                order_guid = value.substring(51, 89);
-            }
-            Reply reply = getReply(file_guid, order_guid, cookie);
-            if (reply != null) {
-                saveReply(reply);
+        if (doc!=null) {
+            Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
+            for (int i = 0; i < trs.size() - 1; i++) {
+                Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
+                String value = in.attr("value");
+                String file_guid = "";
+                String order_guid = "";
+                if (value.substring(9, 10).equals("{")) {
+                    file_guid = value.substring(9, 47);
+                    order_guid = value.substring(53, 91);
+                } else {
+                    file_guid = value.substring(8, 46);
+                    order_guid = value.substring(51, 89);
+                }
+                Reply reply = getReply(file_guid, order_guid, cookie);
+                if (reply != null) {
+                    saveReply(reply);
+                }
             }
         }
-    }
+        }
 
     public Reply getReply(String file_guid, String order_guid, String cookie) {
         String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid=" + file_guid + "&GUID=" + order_guid + "&IsZDDB=&xxlyid=1";
@@ -502,25 +505,26 @@ public class DailyMonitor implements Runnable {
     public void fallback(String cookie) {
         String url = getPageUrl("202", "1");
         Document doc = getDoc(url, cookie);
-        Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
-        for (int i = 0; i < trs.size() - 1; i++) {
-            Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
-            String value = in.attr("value");
-            String file_guid = "";
-            String order_guid = "";
-            if (value.substring(9, 10).equals("{")) {
-                file_guid = value.substring(9, 47);
-                order_guid = value.substring(53, 91);
-            } else {
-                file_guid = value.substring(8, 46);
-                order_guid = value.substring(51, 89);
+        if (doc!=null) {
+            Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
+            for (int i = 0; i < trs.size() - 1; i++) {
+                Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
+                String value = in.attr("value");
+                String file_guid = "";
+                String order_guid = "";
+                if (value.substring(9, 10).equals("{")) {
+                    file_guid = value.substring(9, 47);
+                    order_guid = value.substring(53, 91);
+                } else {
+                    file_guid = value.substring(8, 46);
+                    order_guid = value.substring(51, 89);
+                }
+                Fallback fallback = getFallback(file_guid, order_guid, cookie);
+                if (fallback != null) {
+                    saveFallback(fallback);
+                }
             }
-            Fallback fallback = getFallback(file_guid, order_guid, cookie);
-            if (fallback != null) {
-                saveFallback(fallback);
-            }
-        }
-    }
+        }}
 
     public Fallback getFallback(String file_guid, String order_guid, String cookie) {
         String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid=" + file_guid + "&GUID=" + order_guid + "&IsZDDB=&xxlyid=1";
