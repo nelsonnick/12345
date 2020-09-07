@@ -1,11 +1,14 @@
 package com.wts.util;
 
 import com.jfinal.kit.PropKit;
+import com.wts.task.DailyMonitor;
 import okhttp3.*;
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.File;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 
@@ -24,6 +27,8 @@ public class util12345 {
      * messageType:200   issend:1——已处理退回办理单
      * messageType:-1    issend:X——全部工单
      */
+    private static Logger logger = Logger.getLogger(util12345.class);
+
     public static String getPageUrl(String messageType, String issend) {
         String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/listTaskHotLine.aspx?MessageType=" + messageType;
         if (issend.equals("X")) {
@@ -38,7 +43,7 @@ public class util12345 {
         return "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/listTaskHotLine.aspx?pageNo=" + pageNo + "&sort=desc&sortColumn=sendTime";
     }
 
-    public static Document getDoc(String url, String cookie) {
+    public static Document getPageList(String url, String cookie) {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .connectTimeout(20, TimeUnit.SECONDS)
                 .readTimeout(40, TimeUnit.SECONDS)
@@ -59,7 +64,9 @@ public class util12345 {
             Response response = client.newCall(request).execute();
             doc = Jsoup.parse(response.body().string());
         } catch (Exception e) {
-            System.out.println("无法获取doc：" + url);
+            logger.error("time:" + new Date() + ";无法获取页面列表：" + url);
+            logger.error(e);
+            System.out.println("无法获取页面列表：" + url);
         }
         return doc;
     }
@@ -135,13 +142,14 @@ public class util12345 {
             doc = Jsoup.parse(response.body().string());
 //            System.out.println(doc);
         } catch (Exception e) {
+            logger.error("time:" + new Date() + ";无法获取页面列表：" + MessageTypeFlag);
             e.printStackTrace();
         }
         return doc;
     }
 
     //  分页用的
-    public static Document getDoc(String url, String cookie, String referer) {
+    public static Document getPageList(String url, String cookie, String referer) {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .connectTimeout(20, TimeUnit.SECONDS)
                 .readTimeout(40, TimeUnit.SECONDS)
