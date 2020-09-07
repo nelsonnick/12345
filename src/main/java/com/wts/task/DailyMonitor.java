@@ -31,7 +31,7 @@ public class DailyMonitor implements Runnable {
     List<Allwork> allworkList = new ArrayList<>();
     List<Reply> replyList = new ArrayList<>();
     List<Fallback> fallbackList = new ArrayList<>();
-    private static Logger logger = Logger.getLogger(DailyMonitor.class);
+    private static final Logger logger = Logger.getLogger(DailyMonitor.class);
 
     @Override
     public void run() {
@@ -86,14 +86,14 @@ public class DailyMonitor implements Runnable {
 
     public void allwork(String cookie) {
         String url = getPageUrl("0", "0");
-        Document doc = util12345.getPageList(url, cookie);
+        Document doc = util12345.getDoc(url, cookie);
         if (doc!=null) {
             Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
             for (int i = 0; i < trs.size() - 1; i++) {
                 Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
                 String value = in.attr("value");
                 String file_guid, order_guid;
-                if (value.substring(9, 10).equals("{")) {
+                if (String.valueOf(value.charAt(9)).equals("{")) {
                     file_guid = value.substring(9, 47);
                     order_guid = value.substring(53, 91);
                 } else {
@@ -111,10 +111,10 @@ public class DailyMonitor implements Runnable {
     public Allwork getAllwork(String file_guid, String order_guid, String cookie) {
         String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid=" + file_guid + "&GUID=" + order_guid + "&IsZDDB=&xxlyid=1";
         try {
-            Document doc = util12345.getPageList(url, cookie);
+            Document doc = util12345.getDoc(url, cookie);
             if (doc==null){
-                logger.error("无法获取allwork列表：" + url);
-                System.out.println("无法获取allwork列表：" + url);
+                logger.error("time:" + new Date() + ";doc为空，无法获取allwork工单:"+ url);
+                System.out.println("doc为空，无法获取allwork工单：" + url);
                 return null;
             }
             Element tbody = doc.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
@@ -145,7 +145,7 @@ public class DailyMonitor implements Runnable {
             String send_person = tbody.getElementById("sendPerson").text();//发送人
             String send_time = tbody.getElementById("sendTime").text();//发送时间
             String end_date = tbody.getElementById("endDate").text();//办理时限
-            String txlx = tbody.getElementById("txlx").text();//督办类型---暂无
+//            String txlx = tbody.getElementById("txlx").text();//督办类型---暂无
             String transfer_opinion = tbody.getElementById("remark").text();//转办意见
             String transfer_process = tbody.getElementById("banliFlow").text();//转办流程
             String remark = tbody.getElementById("beizhu").text();//备注
@@ -182,7 +182,8 @@ public class DailyMonitor implements Runnable {
         } catch (Exception e) {
             logger.error("time:" + new Date() + ";无法获取allwork工单:"+ url);
             logger.error(e);
-            System.out.println("错误的未回复工单：" + url);
+            System.out.println("错误的allwork工单：" + url);
+            e.printStackTrace();
             return null;
         }
     }
@@ -191,33 +192,32 @@ public class DailyMonitor implements Runnable {
         AllworkService service = new AllworkService();
         if (service.findNumByGUID(allwork.get("order_guid")) == 0) {
             service.add(allwork);
-            String file_guid = allwork.get("file_guid");
+//            String file_guid = allwork.get("file_guid");
             String order_guid = allwork.get("order_guid");
-            String order_state = allwork.get("order_state");
+//            String order_state = allwork.get("order_state");
             String order_code = allwork.get("order_code");
             String link_person = allwork.get("link_person");
             String link_phone = allwork.get("link_phone");
             String link_address = allwork.get("link_address");
-            String business_environment = allwork.get("business_environment");
-//            String new_supervision = unhandle.get("new_supervision");
-            String accept_person = allwork.get("accept_person");
+//            String business_environment = allwork.get("business_environment");
+//            String accept_person = allwork.get("accept_person");
             String accept_person_code = allwork.get("accept_person_code");
             String accept_channel = allwork.get("accept_channel");
-            String handle_type = allwork.get("handle_type");
+//            String handle_type = allwork.get("handle_type");
             String phone_type = allwork.get("phone_type");
-            String write_time = allwork.get("write_time");
+//            String write_time = allwork.get("write_time");
             String urgency_degree = allwork.get("urgency_degree");
             String problem_classification = allwork.get("problem_classification");
             String is_secret = allwork.get("is_secret");
             String is_reply = allwork.get("is_reply");
             String reply_remark = allwork.get("reply_remark");
             String problem_description = allwork.get("problem_description");
-            String send_person = allwork.get("send_person");
+//            String send_person = allwork.get("send_person");
             String send_time = allwork.get("send_time");
             String end_date = allwork.get("end_date");
             String transfer_opinion = allwork.get("transfer_opinion");
             String transfer_process = allwork.get("transfer_process");
-            String remark = allwork.get("remark");
+//            String remark = allwork.get("remark");
             String enclosure = allwork.get("enclosure");
             Map<String, String> map = new HashMap<>();
             map.put("accept_person_code", accept_person_code);
@@ -246,11 +246,11 @@ public class DailyMonitor implements Runnable {
             String path = "D:\\工单备份\\" + date.format(yyyy) + "\\" + date.format(MM) + "\\" + date.format(dd) + "\\";
             logger.info("allwork工单：" + order_code + "-" + link_person + "-" + send_time);
             System.out.println("allwork工单：" + order_code + "-" + link_person + "-" + send_time);
-
             String personCode = service.getPersonCode();
             CreatWordByModel("D:\\TemplateDoc" + personCode + ".docx", map, path + order_code + "-" + order_guid + ".docx");
             CreatWordByModel("D:\\TemplateDoc.docx", map, DailyMonitor.path + order_code + "-" + order_guid + ".docx");
-            String printerName = "HP LaserJet 1020";//打印机名包含字串
+            String printerName = PropKit.use("config-dev.txt").get("printer");
+//            String printerName = "HP LaserJet 1020";//打印机名包含字串
 //            String printerName = "HP LaserJet MFP M227-M231 PCL-6 (V4)";//打印机名包含字串
             printWord(path + order_code + "-" + order_guid + ".docx", printerName);
             allworkList.add(allwork);
@@ -282,13 +282,22 @@ public class DailyMonitor implements Runnable {
         String OA_content = oaUtil.getContent(run_id, allwork.get("order_code"), allwork.get("link_person"), allwork.get("end_date"), allwork.get("urgency_degree"), allwork.get("link_phone"),
                 allwork.get("problem_description"), allwork.get("transfer_opinion"), allwork.get("transfer_process"), "XXX");
         oaUtil.inputOA(OA_token, OA_content);
-        sendMessageToWeiXin("收到新工单：" + allwork.get("order_code"), "WangTianShuo");
-        if (errcode.equals("0") && err.equals("0")) {
+        AllworkService service = new AllworkService();
+        String phoneTime = service.findNumByPhone(allwork.get("link_phone"));
+        sendMessageToWeiXin("收到新工单（" + phoneTime + "次）：" + allwork.get("order_code"), "WangTianShuo");
+        if (errcode.equals("0")) {
             logger.info("time:" + new Date() + ";allwork工单已推送：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
             System.out.println("allwork工单已推送：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
         } else {
             logger.error("time:" + new Date() + ";allwork工单推送失败：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
             System.out.println("allwork工单推送失败：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
+        }
+        if (err.equals("0")) {
+            logger.info("time:" + new Date() + ";unhandle工单已推送：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
+            System.out.println("unhandle工单已推送：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
+        } else {
+            logger.error("time:" + new Date() + ";unhandle工单推送失败：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
+            System.out.println("unhandle工单推送失败：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
         }
     }
 
@@ -327,14 +336,14 @@ public class DailyMonitor implements Runnable {
 
     public void reply(String cookie) {
         String url = getPageUrl("201", "1");
-        Document doc = util12345.getPageList(url, cookie);
+        Document doc = util12345.getDoc(url, cookie);
         if (doc!=null) {
             Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
             for (int i = 0; i < trs.size() - 1; i++) {
                 Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
                 String value = in.attr("value");
                 String file_guid, order_guid;
-                if (value.substring(9, 10).equals("{")) {
+                if (String.valueOf(value.charAt(9)).equals("{")) {
                     file_guid = value.substring(9, 47);
                     order_guid = value.substring(53, 91);
                 } else {
@@ -352,10 +361,10 @@ public class DailyMonitor implements Runnable {
     public Reply getReply(String file_guid, String order_guid, String cookie) {
         String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid=" + file_guid + "&GUID=" + order_guid + "&IsZDDB=&xxlyid=1";
         try {
-            Document doc = util12345.getPageList(url, cookie);
+            Document doc = util12345.getDoc(url, cookie);
             if (doc==null){
-                logger.error("无法获取reply列表：" + url);
-                System.out.println("无法获取reply列表：" + url);
+                logger.error("time:" + new Date() + ";doc为空，无法获取reply工单:"+ url);
+                System.out.println("doc为空，无法获取reply工单：" + url);
                 return null;
             }
             Element tbody = doc.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
@@ -370,7 +379,6 @@ public class DailyMonitor implements Runnable {
             String link_phone = tbody.getElementById("linkPhone").text();//联系电话
             String link_address = tbody.getElementById("address").text();//联系地址
             String business_environment = tbody.getElementById("yshj").text();//营商环境
-//        String new_supervision = tbody.getElementById("isNewDuCha").text();//新版督察
             String accept_person = tbody.getElementById("acceptPerson").text();//受理人员
             String accept_person_code = tbody.getElementById("hwyId").text();//受理员编号
             String accept_channel = tbody.getElementById("xxlyId").text();//受理渠道
@@ -386,7 +394,7 @@ public class DailyMonitor implements Runnable {
             String send_person = tbody.getElementById("sendPerson").text();//发送人
             String send_time = tbody.getElementById("sendTime").text();//发送时间
             String end_date = tbody.getElementById("endDate").text();//办理时限
-            String txlx = tbody.getElementById("txlx").text();//督办类型---暂无
+//            String txlx = tbody.getElementById("txlx").text();//督办类型---暂无
             String transfer_opinion = tbody.getElementById("remark").text();//转办意见
             String transfer_process = tbody.getElementById("banliFlow").text();//转办流程
             String remark = tbody.getElementById("beizhu").text();//备注
@@ -414,7 +422,6 @@ public class DailyMonitor implements Runnable {
                     .set("link_phone", link_phone)
                     .set("link_address", link_address)
                     .set("business_environment", business_environment)
-//                .set("new_supervision",new_supervision)
                     .set("accept_person", accept_person)
                     .set("accept_person_code", accept_person_code)
                     .set("accept_channel", accept_channel)
@@ -454,6 +461,7 @@ public class DailyMonitor implements Runnable {
             logger.error("time:" + new Date() + ";无法获取reply工单:"+ url);
             logger.error(e);
             System.out.println("错误的回复工单：" + url);
+            e.printStackTrace();
             return null;
         }
     }
@@ -461,7 +469,7 @@ public class DailyMonitor implements Runnable {
     public void saveReply(Reply reply) {
         ReplyService service = new ReplyService();
         if (service.findNumByGUID(reply.get("order_guid")) == 0) {
-            String order_guid = reply.get("order_guid");
+//            String order_guid = reply.get("order_guid");
             String order_code = reply.get("order_code");
             String link_person = reply.get("link_person");
             String send_time = reply.get("send_time");
@@ -522,14 +530,14 @@ public class DailyMonitor implements Runnable {
 
     public void fallback(String cookie) {
         String url = getPageUrl("202", "1");
-        Document doc = util12345.getPageList(url, cookie);
+        Document doc = util12345.getDoc(url, cookie);
         if (doc!=null) {
             Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
             for (int i = 0; i < trs.size() - 1; i++) {
                 Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
                 String value = in.attr("value");
                 String file_guid, order_guid;
-                if (value.substring(9, 10).equals("{")) {
+                if (String.valueOf(value.charAt(9)).equals("{")) {
                     file_guid = value.substring(9, 47);
                     order_guid = value.substring(53, 91);
                 } else {
@@ -546,10 +554,10 @@ public class DailyMonitor implements Runnable {
     public Fallback getFallback(String file_guid, String order_guid, String cookie) {
         String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid=" + file_guid + "&GUID=" + order_guid + "&IsZDDB=&xxlyid=1";
         try {
-            Document doc = util12345.getPageList(url, cookie);
+            Document doc = util12345.getDoc(url, cookie);
             if (doc==null){
-                logger.error("无法获取fallback列表：" + url);
-                System.out.println("无法获取fallback列表：" + url);
+                logger.error("time:" + new Date() + ";doc为空，无法获取fallback工单:"+ url);
+                System.out.println("doc为空，无法获取fallback工单：" + url);
                 return null;
             }
             Element tbody = doc.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
@@ -589,7 +597,7 @@ public class DailyMonitor implements Runnable {
             String send_person = tbody.getElementById("sendPerson").text();//发送人
             String send_time = tbody.getElementById("sendTime").text();//发送时间
             String end_date = tbody.getElementById("endDate").text();//办理时限
-            String txlx = tbody.getElementById("txlx").text();//督办类型---暂无
+//            String txlx = tbody.getElementById("txlx").text();//督办类型---暂无
             String transfer_opinion = tbody.getElementById("remark").text();//转办意见
             String transfer_process = tbody.getElementById("banliFlow").text();//转办流程
             String remark = tbody.getElementById("beizhu").text();//备注
@@ -633,7 +641,8 @@ public class DailyMonitor implements Runnable {
         } catch (Exception e) {
             logger.error("time:" + new Date() + ";无法获取fallback工单:"+ url);
             logger.error(e);
-            System.out.println("错误的回退工单：" + url);
+            System.out.println("错误的fallback工单：" + url);
+            e.printStackTrace();
             return null;
         }
     }
@@ -641,7 +650,7 @@ public class DailyMonitor implements Runnable {
     public void saveFallback(Fallback fallback) {
         FallbackService service = new FallbackService();
         if (service.findNumByGUID(fallback.get("order_guid")) == 0) {
-            String order_guid = fallback.get("order_guid");
+//            String order_guid = fallback.get("order_guid");
             String order_code = fallback.get("order_code");
             String link_person = fallback.get("link_person");
             String send_time = fallback.get("send_time");

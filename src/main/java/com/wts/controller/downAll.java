@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.wts.util.WordUtil.getUrgencyDegree;
-import static com.wts.util.util12345.getPageList;
+import static com.wts.util.util12345.getDoc;
 
 public class downAll extends Controller {
 
@@ -38,7 +38,7 @@ public class downAll extends Controller {
 
     public void getPageInfo(Integer pageNum, String cookie) {
         try {
-            Document doc = util12345.getPageInfo(pageNum + "", cookie, "-1");
+            Document doc = util12345.getPageList(pageNum + "", cookie, "-1");
             Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
             for (int i = 0; i < trs.size() - 1; i++) {
                 Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
@@ -71,7 +71,7 @@ public class downAll extends Controller {
             url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid=" + file_guid + "&GUID=" + order_guid + "&IsZDDB=&xxlyid=1";
         }
         try {
-            Document doc = util12345.getPageList(url, cookie);
+            Document doc = util12345.getDoc(url, cookie);
             System.out.println(url);
             Element tbody = doc.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
             Element td = tbody.getElementsByTag("tr").get(8).getElementsByTag("td").get(1);
@@ -295,7 +295,7 @@ public class downAll extends Controller {
         String cookie = PropKit.use("config-dev.txt").get("cookie");
         String order_guid = "{85639357-db7e-4371-85da-3e41f72f43b0}";
         String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?GUID=" + order_guid + "&issend=1&IsZDDB=";
-        Document doc = util12345.getPageList(url, cookie);
+        Document doc = util12345.getDoc(url, cookie);
         Element tbody = doc.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
         Element td = tbody.getElementsByTag("tr").get(8).getElementsByTag("td").get(1);
         String enclosure = "";

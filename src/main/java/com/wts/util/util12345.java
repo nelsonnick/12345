@@ -1,7 +1,6 @@
 package com.wts.util;
 
 import com.jfinal.kit.PropKit;
-import com.wts.task.DailyMonitor;
 import okhttp3.*;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
@@ -42,8 +41,8 @@ public class util12345 {
     public static String getPageUrl(String pageNo) {
         return "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/listTaskHotLine.aspx?pageNo=" + pageNo + "&sort=desc&sortColumn=sendTime";
     }
-
-    public static Document getPageList(String url, String cookie) {
+    // 获取工单详细信息或者各类列表的第一页
+    public static Document getDoc(String url, String cookie) {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .connectTimeout(20, TimeUnit.SECONDS)
                 .readTimeout(40, TimeUnit.SECONDS)
@@ -64,15 +63,15 @@ public class util12345 {
             Response response = client.newCall(request).execute();
             doc = Jsoup.parse(response.body().string());
         } catch (Exception e) {
-            logger.error("time:" + new Date() + ";无法获取页面列表：" + url);
+            logger.error("time:" + new Date() + ";无法获取链接：" + url);
             logger.error(e);
-            System.out.println("无法获取页面列表：" + url);
+            System.out.println("无法获取链接：" + url);
         }
         return doc;
     }
 
     // 获取更多的页面的信息
-    public static Document getPageInfo(String PageNum, String cookie, String MessageTypeFlag) {
+    public static Document getPageList(String PageNum, String cookie, String MessageTypeFlag) {
         String sqlwhereHidden = "";
         String u = "";
         if (MessageTypeFlag.equals("-1")){//全部
@@ -148,34 +147,6 @@ public class util12345 {
         return doc;
     }
 
-    //  分页用的
-    public static Document getPageList(String url, String cookie, String referer) {
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .connectTimeout(20, TimeUnit.SECONDS)
-                .readTimeout(40, TimeUnit.SECONDS)
-                .build();
-        Request request = new Request.Builder()
-                .url(url)
-                .method("GET", null)
-                .addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
-                .addHeader("Accept-Language", "zh-CN,zh;q=0.9")
-//					.addHeader("Accept-Encoding", "gzip, deflate")
-                .addHeader("Cookie", cookie)
-                .addHeader("Connection", "Keep-Alive")
-                .addHeader("Host", "15.1.0.24")
-                .addHeader("Referer", referer)
-                .addHeader("Upgrade-Insecure-Requests", "1")
-                .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko Core/1.70.3756.400 QQBrowser/10.5.4039.400")
-                .build();
-        Document doc = null;
-        try {
-            Response response = client.newCall(request).execute();
-            doc = Jsoup.parse(response.body().string());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return doc;
-    }
 
     public static Boolean hasDirectory(){
         File f = new File("D:\\12345");
@@ -184,7 +155,7 @@ public class util12345 {
 
     public static void main(String[] args) {
         String cookie = PropKit.use("config-dev.txt").get("cookie");
-        Document doc2 = getPageInfo("2",cookie,"0");
+        Document doc2 = getPageList("2",cookie,"0");
         System.out.println(doc2);
     }
 

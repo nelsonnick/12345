@@ -27,14 +27,14 @@ public class AllworkTask implements Runnable {
     }
     public void allwork(String cookie) {
         String url = getPageUrl("0", "0");
-        Document doc = util12345.getPageList(url, cookie);
+        Document doc = util12345.getDoc(url, cookie);
         if (doc!=null) {
             Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
             for (int i = 0; i < trs.size() - 1; i++) {
                 Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
                 String value = in.attr("value");
                 String file_guid, order_guid;
-                if (value.substring(9, 10).equals("{")) {
+                if (String.valueOf(value.charAt(9)).equals("{")) {
                     file_guid = value.substring(9, 47);
                     order_guid = value.substring(53, 91);
                 } else {
@@ -51,7 +51,7 @@ public class AllworkTask implements Runnable {
     public Allwork getAllwork(String file_guid, String order_guid, String cookie) {
         String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid=" + file_guid + "&GUID=" + order_guid + "&IsZDDB=&xxlyid=1";
         try {
-            Document doc = util12345.getPageList(url, cookie);
+            Document doc = util12345.getDoc(url, cookie);
             if (doc==null){
                 logger.error("无法获取allwork列表：" + url);
                 System.out.println("无法获取allwork列表：" + url);

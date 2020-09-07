@@ -16,7 +16,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-import static com.wts.util.util12345.getPageList;
+import static com.wts.util.util12345.getDoc;
 import static com.wts.util.util12345.getPageUrl;
 
 public class MainController extends Controller {
@@ -178,7 +178,7 @@ public class MainController extends Controller {
         BufferedWriter bw = new BufferedWriter(fw);
         String cookie = PropKit.use("config-dev.txt").get("cookie");
         String url = getPageUrl("11", "X");
-        Document doc = util12345.getPageList(url,cookie);
+        Document doc = util12345.getDoc(url,cookie);
         Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
         for (int i = 0; i < trs.size() - 1; i++) {
             Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
@@ -193,7 +193,7 @@ public class MainController extends Controller {
                 order_guid = value.substring(51, 89);
             }
             String url2 = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid="+file_guid+"&GUID=" +order_guid+ "&IsZDDB=&xxlyid=1";
-            Document doc2 = util12345.getPageList(url2,cookie);
+            Document doc2 = util12345.getDoc(url2,cookie);
             Element tbody = doc2.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
             String order_code = tbody.getElementById("HotLineWorkNumber").text();//工单编号
             String link_person = tbody.getElementById("linkPerson").text();//联系人
@@ -223,7 +223,7 @@ public class MainController extends Controller {
 //        BufferedWriter bw = new BufferedWriter(fw);
         String cookie = PropKit.use("config-dev.txt").get("cookie");
         for (int j=1;j<4;j++){
-            Document doc = util12345.getPageInfo(j + "", cookie, "0");
+            Document doc = util12345.getPageList(j + "", cookie, "0");
             System.out.println(doc);
             Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
             for (int i = 0; i < trs.size() - 1; i++) {
@@ -239,7 +239,7 @@ public class MainController extends Controller {
                     order_guid = value.substring(51, 89);
                 }
                 String url2 = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid="+file_guid+"&GUID=" +order_guid+ "&IsZDDB=&xxlyid=1";
-                Document doc2 = util12345.getPageList(url2,cookie);
+                Document doc2 = util12345.getDoc(url2,cookie);
                 Element tbody = doc2.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
                 String order_code = tbody.getElementById("HotLineWorkNumber").text();//工单编号
                 String link_person = tbody.getElementById("linkPerson").text();//联系人
