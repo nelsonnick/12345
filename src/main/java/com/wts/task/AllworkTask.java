@@ -18,7 +18,7 @@ import static com.wts.util.util12345.getPageUrl;
 
 public class AllworkTask implements Runnable {
     private static final String path = "D:\\当前下载\\";
-    private static Logger logger = Logger.getLogger(Allwork.class);
+    private static final Logger logger = Logger.getLogger(Allwork.class);
 
     @Override
     public void run(){
@@ -85,7 +85,7 @@ public class AllworkTask implements Runnable {
             String send_person = tbody.getElementById("sendPerson").text();//发送人
             String send_time = tbody.getElementById("sendTime").text();//发送时间
             String end_date = tbody.getElementById("endDate").text();//办理时限
-            String txlx = tbody.getElementById("txlx").text();//督办类型---暂无
+//            String txlx = tbody.getElementById("txlx").text();//督办类型---暂无
             String transfer_opinion = tbody.getElementById("remark").text();//转办意见
             String transfer_process = tbody.getElementById("banliFlow").text();//转办流程
             String remark = tbody.getElementById("beizhu").text();//备注
@@ -122,7 +122,7 @@ public class AllworkTask implements Runnable {
         } catch (Exception e) {
             logger.error("time:" + new Date() + ";无法获取allwork工单:"+ url);
             logger.error(e);
-            System.out.println("错误的未回复工单：" + url);
+            System.out.println("错误的allwork工单：" + url);
             return null;
         }
     }
@@ -130,33 +130,33 @@ public class AllworkTask implements Runnable {
         AllworkService service = new AllworkService();
         if (service.findNumByGUID(allwork.get("order_guid")) == 0) {
             service.add(allwork);
-            String file_guid = allwork.get("file_guid");
+//            String file_guid = allwork.get("file_guid");
             String order_guid = allwork.get("order_guid");
-            String order_state = allwork.get("order_state");
+//            String order_state = allwork.get("order_state");
             String order_code = allwork.get("order_code");
             String link_person = allwork.get("link_person");
             String link_phone = allwork.get("link_phone");
             String link_address = allwork.get("link_address");
-            String business_environment = allwork.get("business_environment");
+//            String business_environment = allwork.get("business_environment");
 //            String new_supervision = unhandle.get("new_supervision");
-            String accept_person = allwork.get("accept_person");
+//            String accept_person = allwork.get("accept_person");
             String accept_person_code = allwork.get("accept_person_code");
             String accept_channel = allwork.get("accept_channel");
-            String handle_type = allwork.get("handle_type");
+//            String handle_type = allwork.get("handle_type");
             String phone_type = allwork.get("phone_type");
-            String write_time = allwork.get("write_time");
+//            String write_time = allwork.get("write_time");
             String urgency_degree = allwork.get("urgency_degree");
             String problem_classification = allwork.get("problem_classification");
             String is_secret = allwork.get("is_secret");
             String is_reply = allwork.get("is_reply");
             String reply_remark = allwork.get("reply_remark");
             String problem_description = allwork.get("problem_description");
-            String send_person = allwork.get("send_person");
+//            String send_person = allwork.get("send_person");
             String send_time = allwork.get("send_time");
             String end_date = allwork.get("end_date");
             String transfer_opinion = allwork.get("transfer_opinion");
             String transfer_process = allwork.get("transfer_process");
-            String remark = allwork.get("remark");
+//            String remark = allwork.get("remark");
             String enclosure = allwork.get("enclosure");
             Map<String, String> map = new HashMap<>();
             map.put("accept_person_code", accept_person_code);
