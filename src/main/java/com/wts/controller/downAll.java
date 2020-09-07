@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.wts.util.WordUtil.getUrgencyDegree;
-import static com.wts.util.util12345.getDoc;
 
 public class downAll extends Controller {
 
@@ -43,10 +42,9 @@ public class downAll extends Controller {
             for (int i = 0; i < trs.size() - 1; i++) {
                 Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
                 String value = in.attr("value");
-                String file_guid = "";
-                String order_guid = "";
+                String file_guid, order_guid;
                 if (value.length() > 80) {
-                    if (value.substring(9, 10).equals("{")) {
+                    if (String.valueOf(value.charAt(9)).equals("{")) {
                         file_guid = value.substring(9, 47);
                         order_guid = value.substring(53, 91);
                     } else {
@@ -54,6 +52,7 @@ public class downAll extends Controller {
                         order_guid = value.substring(51, 89);
                     }
                 } else {
+                    file_guid = "";
                     order_guid = value.substring(5, 43);
                 }
                 save(file_guid, order_guid, cookie);
@@ -64,7 +63,7 @@ public class downAll extends Controller {
     }
 
     public void save(String file_guid, String order_guid, String cookie) {
-        String url = "";
+        String url;
         if (file_guid.equals("")){
             url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?GUID=" + order_guid + "&issend=1&IsZDDB=";
         }else{
@@ -101,7 +100,7 @@ public class downAll extends Controller {
             String send_person = tbody.getElementById("sendPerson").text();//发送人
             String send_time = tbody.getElementById("sendTime").text();//发送时间
             String end_date = tbody.getElementById("endDate").text();//办理时限
-            String txlx = tbody.getElementById("txlx").text();//督办类型---暂无
+//            String txlx = tbody.getElementById("txlx").text();//督办类型---暂无
             String transfer_opinion = tbody.getElementById("remark").text();//转办意见
             String transfer_process = tbody.getElementById("banliFlow").text();//转办流程
             String remark = tbody.getElementById("beizhu").text();//备注
@@ -271,7 +270,7 @@ public class downAll extends Controller {
 
             }
         }catch (Exception e){
-
+            e.printStackTrace();
         }
 
     }
@@ -324,7 +323,7 @@ public class downAll extends Controller {
         String send_person = tbody.getElementById("sendPerson").text();//发送人
         String send_time = tbody.getElementById("sendTime").text();//发送时间
         String end_date = tbody.getElementById("endDate").text();//办理时限
-        String txlx = tbody.getElementById("txlx").text();//督办类型---暂无
+//        String txlx = tbody.getElementById("txlx").text();//督办类型---暂无
         String transfer_opinion = tbody.getElementById("remark").text();//转办意见
         String transfer_process = tbody.getElementById("banliFlow").text();//转办流程
         String remark = tbody.getElementById("beizhu").text();//备注
