@@ -22,7 +22,6 @@ import java.util.*;
 
 import static com.wts.util.WordUtil.*;
 import static com.wts.util.others.IpKit.getLocalHostIP;
-import static com.wts.util.util12345.getPageList;
 import static com.wts.util.util12345.getPageUrl;
 import static com.wts.util.wxUtil.*;
 
@@ -65,6 +64,7 @@ public class DailyMonitor implements Runnable {
 //                                createUnhandleDeleteText(fallback.getOrderGuid());
                             }
                         }
+//                        allworkList.subList(0,allworkList.size()).clear();
                         for (int i = allworkList.size() - 1; i >= 0; i--) {
                             allworkList.remove(i);
                         }
@@ -92,8 +92,7 @@ public class DailyMonitor implements Runnable {
             for (int i = 0; i < trs.size() - 1; i++) {
                 Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
                 String value = in.attr("value");
-                String file_guid = "";
-                String order_guid = "";
+                String file_guid, order_guid;
                 if (value.substring(9, 10).equals("{")) {
                     file_guid = value.substring(9, 47);
                     order_guid = value.substring(53, 91);
@@ -220,7 +219,7 @@ public class DailyMonitor implements Runnable {
             String transfer_process = allwork.get("transfer_process");
             String remark = allwork.get("remark");
             String enclosure = allwork.get("enclosure");
-            Map<String, String> map = new HashMap<String, String>();
+            Map<String, String> map = new HashMap<>();
             map.put("accept_person_code", accept_person_code);
             map.put("end_date", end_date);
             map.put("order_code", order_code);
@@ -334,8 +333,7 @@ public class DailyMonitor implements Runnable {
             for (int i = 0; i < trs.size() - 1; i++) {
                 Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
                 String value = in.attr("value");
-                String file_guid = "";
-                String order_guid = "";
+                String file_guid, order_guid;
                 if (value.substring(9, 10).equals("{")) {
                     file_guid = value.substring(9, 47);
                     order_guid = value.substring(53, 91);
@@ -530,8 +528,7 @@ public class DailyMonitor implements Runnable {
             for (int i = 0; i < trs.size() - 1; i++) {
                 Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
                 String value = in.attr("value");
-                String file_guid = "";
-                String order_guid = "";
+                String file_guid, order_guid;
                 if (value.substring(9, 10).equals("{")) {
                     file_guid = value.substring(9, 47);
                     order_guid = value.substring(53, 91);
