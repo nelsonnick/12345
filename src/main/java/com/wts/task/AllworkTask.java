@@ -186,7 +186,6 @@ public class AllworkTask implements Runnable {
             String path = "D:\\工单备份\\" + date.format(yyyy) + "\\" + date.format(MM) + "\\" + date.format(dd) + "\\";
             logger.info("allwork工单：" + order_code + "-" + link_person + "-" + send_time);
             System.out.println("allwork工单：" + order_code + "-" + link_person + "-" + send_time);
-
             String personCode = service.getPersonCode();
             CreatWordByModel("D:\\TemplateDoc" + personCode + ".docx", map, path + order_code + "-" + order_guid + ".docx");
             CreatWordByModel("D:\\TemplateDoc.docx", map, AllworkTask.path + order_code + "-" + order_guid + ".docx");
