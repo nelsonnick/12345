@@ -113,7 +113,7 @@ public class DailyMonitor implements Runnable {
         try {
             Document doc = util12345.getDoc(url, cookie);
             if (doc==null){
-                logger.error("time:" + new Date() + ";doc为空，无法获取allwork工单:"+ url);
+                logger.error("doc为空，无法获取allwork工单:"+ url);
                 System.out.println("doc为空，无法获取allwork工单：" + url);
                 return null;
             }
@@ -180,7 +180,7 @@ public class DailyMonitor implements Runnable {
                     .set("remark", remark);
             return allwork;
         } catch (Exception e) {
-            logger.error("time:" + new Date() + ";无法获取allwork工单:"+ url);
+            logger.error("无法获取allwork工单:"+ url);
             logger.error(e);
             System.out.println("错误的allwork工单：" + url);
             e.printStackTrace();
@@ -286,17 +286,17 @@ public class DailyMonitor implements Runnable {
         String phoneTime = service.findNumByPhone(allwork.get("link_phone"));
         sendMessageToWeiXin("收到新工单（" + phoneTime + "次）：" + allwork.get("order_code"), "WangTianShuo");
         if (errcode.equals("0")) {
-            logger.info("time:" + new Date() + ";allwork工单已推送：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
+            logger.info("allwork工单已推送：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
             System.out.println("allwork工单已推送：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
         } else {
-            logger.error("time:" + new Date() + ";allwork工单推送失败：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
+            logger.error("allwork工单推送失败：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
             System.out.println("allwork工单推送失败：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
         }
         if (err.equals("0")) {
-            logger.info("time:" + new Date() + ";unhandle工单已推送：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
+            logger.info("unhandle工单已推送：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
             System.out.println("unhandle工单已推送：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
         } else {
-            logger.error("time:" + new Date() + ";unhandle工单推送失败：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
+            logger.error("unhandle工单推送失败：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
             System.out.println("unhandle工单推送失败：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
         }
     }
@@ -492,10 +492,10 @@ public class DailyMonitor implements Runnable {
                 reply.get("order_guid"));
         sendMessageToWeiXin("回复工单：" + reply.get("order_code") + "-->" +reply.get("reply_person"), "WangTianShuo");
         if (errcode.equals("0") && err.equals("0")) {
-            logger.info("time:" + new Date() + ";reply工单已推送：" + reply.get("order_code") + "-" + reply.get("link_person"));
+            logger.info("reply工单已推送：" + reply.get("order_code") + "-" + reply.get("link_person"));
             System.out.println("reply工单已推送：" + reply.get("order_code") + "-" + reply.get("link_person"));
         } else {
-            logger.error("time:" + new Date() + ";reply工单推送失败：" + reply.get("order_code") + "-" + reply.get("link_person"));
+            logger.error("reply工单推送失败：" + reply.get("order_code") + "-" + reply.get("link_person"));
             System.out.println("reply工单推送失败：" + reply.get("order_code") + "-" + reply.get("link_person"));
         }
 
@@ -556,7 +556,7 @@ public class DailyMonitor implements Runnable {
         try {
             Document doc = util12345.getDoc(url, cookie);
             if (doc==null){
-                logger.error("time:" + new Date() + ";doc为空，无法获取fallback工单:"+ url);
+                logger.error("doc为空，无法获取fallback工单:"+ url);
                 System.out.println("doc为空，无法获取fallback工单：" + url);
                 return null;
             }
@@ -639,7 +639,7 @@ public class DailyMonitor implements Runnable {
                     .set("fallback_phone", fallback_phone);
             return fallback;
         } catch (Exception e) {
-            logger.error("time:" + new Date() + ";无法获取fallback工单:"+ url);
+            logger.error("无法获取fallback工单:"+ url);
             logger.error(e);
             System.out.println("错误的fallback工单：" + url);
             e.printStackTrace();
@@ -674,10 +674,10 @@ public class DailyMonitor implements Runnable {
                 fallback.get("order_guid"));
         sendMessageToWeiXin("回退工单：" + fallback.get("order_code") + "-->" + fallback.get("fallback_person"), "WangTianShuo");
         if (errcode.equals("0") && err.equals("0")) {
-            logger.info("time:" + new Date() + ";fallback工单已推送：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
+            logger.info("fallback工单已推送：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
             System.out.println("回退工单已推送：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
         } else {
-            logger.error("time:" + new Date() + ";allback工单推送失败：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
+            logger.error("allback工单推送失败：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
             System.out.println("回退工单推送失败：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
         }
     }
@@ -775,7 +775,7 @@ public class DailyMonitor implements Runnable {
                     .build();
             wxCpService.messageSend(message);
         } catch (Exception e) {
-            logger.error("time:" + new Date() + ";推送企业微信失败:"+ filaPath);
+            logger.error("推送企业微信失败:"+ filaPath);
             System.out.println("推送企业微信失败：" + filaPath);
         }
     }
@@ -798,7 +798,7 @@ public class DailyMonitor implements Runnable {
                     .build();
             wxCpService.messageSend(message);
         } catch (Exception e) {
-            logger.error("time:" + new Date() + ";推送企业微信失败:"+ msgContent);
+            logger.error("推送企业微信失败:"+ msgContent);
             System.out.println("推送企业微信失败：" + msgContent);
         }
     }

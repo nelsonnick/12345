@@ -26,7 +26,7 @@ public class util12345 {
      * messageType:200   issend:1——已处理退回办理单
      * messageType:-1    issend:X——全部工单
      */
-    private static Logger logger = Logger.getLogger(util12345.class);
+    private static final Logger logger = Logger.getLogger(util12345.class);
 
     public static String getPageUrl(String messageType, String issend) {
         String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/listTaskHotLine.aspx?MessageType=" + messageType;
@@ -63,7 +63,7 @@ public class util12345 {
             Response response = client.newCall(request).execute();
             doc = Jsoup.parse(response.body().string());
         } catch (Exception e) {
-            logger.error("time:" + new Date() + ";无法获取链接：" + url);
+            logger.error("无法获取链接：" + url);
             logger.error(e);
             System.out.println("无法获取链接：" + url);
         }
@@ -141,7 +141,7 @@ public class util12345 {
             doc = Jsoup.parse(response.body().string());
 //            System.out.println(doc);
         } catch (Exception e) {
-            logger.error("time:" + new Date() + ";无法获取页面列表：" + MessageTypeFlag);
+            logger.error("无法获取页面列表：" + MessageTypeFlag);
             e.printStackTrace();
         }
         return doc;
