@@ -46,24 +46,24 @@ public class DailyMonitor implements Runnable {
                 try {
                     Boolean network = goWaiWang();
                     if (network) {
-                        String weixinToken = getToken();
-                        if (!weixinToken.equals("")) {
+//                        String weixinToken = getToken();
+//                        if (!weixinToken.equals("")) {
                             for (Allwork allwork : allworkList) {
-                                sendAllwork(allwork, weixinToken);
+                                sendAllwork(allwork, getToken());
 //                                createAllworkText(allwork);
 //                                createUnhandleAddText(allwork);
                             }
                             for (Reply reply : replyList) {
-                                sendReply(reply, weixinToken);
+                                sendReply(reply, getToken());
 //                                createReplyText(reply);
 //                                createUnhandleDeleteText(reply.getOrderGuid());
                             }
                             for (Fallback fallback : fallbackList) {
-                                sendFallback(fallback, weixinToken);
+                                sendFallback(fallback, getToken());
 //                                createFallbackText(fallback);
 //                                createUnhandleDeleteText(fallback.getOrderGuid());
                             }
-                        }
+//                        }
 //                        allworkList.subList(0,allworkList.size()).clear();
                         for (int i = allworkList.size() - 1; i >= 0; i--) {
                             allworkList.remove(i);
@@ -491,14 +491,21 @@ public class DailyMonitor implements Runnable {
         String err = deleteUnhandle(weixinToken,
                 reply.get("order_guid"));
         sendMessageToWeiXin("回复工单：" + reply.get("order_code") + "-->" +reply.get("reply_person"), "WangTianShuo");
-        if (errcode.equals("0") && err.equals("0")) {
+
+        if (errcode.equals("0")) {
             logger.info("reply工单已推送：" + reply.get("order_code") + "-" + reply.get("link_person"));
             System.out.println("reply工单已推送：" + reply.get("order_code") + "-" + reply.get("link_person"));
         } else {
             logger.error("reply工单推送失败：" + reply.get("order_code") + "-" + reply.get("link_person"));
             System.out.println("reply工单推送失败：" + reply.get("order_code") + "-" + reply.get("link_person"));
         }
-
+        if (err.equals("0")) {
+            logger.info("unhandle工单已删除：" + reply.get("order_code") + "-" + reply.get("link_person"));
+            System.out.println("unhandle工单已删除：" + reply.get("order_code") + "-" + reply.get("link_person"));
+        } else {
+            logger.error("unhandle工单删除失败：" + reply.get("order_code") + "-" + reply.get("link_person"));
+            System.out.println("unhandle工单删除失败：" + reply.get("order_code") + "-" + reply.get("link_person"));
+        }
     }
 
     public void createReplyText(Reply reply){
@@ -673,12 +680,20 @@ public class DailyMonitor implements Runnable {
         String err = deleteUnhandle(weixinToken,
                 fallback.get("order_guid"));
         sendMessageToWeiXin("回退工单：" + fallback.get("order_code") + "-->" + fallback.get("fallback_person"), "WangTianShuo");
-        if (errcode.equals("0") && err.equals("0")) {
+
+        if (errcode.equals("0")) {
             logger.info("fallback工单已推送：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
             System.out.println("回退工单已推送：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
         } else {
             logger.error("allback工单推送失败：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
             System.out.println("回退工单推送失败：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
+        }
+        if (err.equals("0")) {
+            logger.info("unhandle工单已删除：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
+            System.out.println("unhandle工单已删除：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
+        } else {
+            logger.error("unhandle工单删除失败：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
+            System.out.println("unhandle工单删除失败：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
         }
     }
 
