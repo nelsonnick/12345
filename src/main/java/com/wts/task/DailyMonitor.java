@@ -189,71 +189,73 @@ public class DailyMonitor implements Runnable {
     }
 
     public void saveAllwork(Allwork allwork) {
-        AllworkService service = new AllworkService();
-        if (service.findNumByGUID(allwork.get("order_guid")) == 0) {
-            service.add(allwork);
+        if(allwork!=null){
+            AllworkService service = new AllworkService();
+            if (service.findNumByGUID(allwork.get("order_guid")) == 0) {
+                service.add(allwork);
 //            String file_guid = allwork.get("file_guid");
-            String order_guid = allwork.get("order_guid");
+                String order_guid = allwork.get("order_guid");
 //            String order_state = allwork.get("order_state");
-            String order_code = allwork.get("order_code");
-            String link_person = allwork.get("link_person");
-            String link_phone = allwork.get("link_phone");
-            String link_address = allwork.get("link_address");
+                String order_code = allwork.get("order_code");
+                String link_person = allwork.get("link_person");
+                String link_phone = allwork.get("link_phone");
+                String link_address = allwork.get("link_address");
 //            String business_environment = allwork.get("business_environment");
 //            String accept_person = allwork.get("accept_person");
-            String accept_person_code = allwork.get("accept_person_code");
-            String accept_channel = allwork.get("accept_channel");
+                String accept_person_code = allwork.get("accept_person_code");
+                String accept_channel = allwork.get("accept_channel");
 //            String handle_type = allwork.get("handle_type");
-            String phone_type = allwork.get("phone_type");
+                String phone_type = allwork.get("phone_type");
 //            String write_time = allwork.get("write_time");
-            String urgency_degree = allwork.get("urgency_degree");
-            String problem_classification = allwork.get("problem_classification");
-            String is_secret = allwork.get("is_secret");
-            String is_reply = allwork.get("is_reply");
-            String reply_remark = allwork.get("reply_remark");
-            String problem_description = allwork.get("problem_description");
+                String urgency_degree = allwork.get("urgency_degree");
+                String problem_classification = allwork.get("problem_classification");
+                String is_secret = allwork.get("is_secret");
+                String is_reply = allwork.get("is_reply");
+                String reply_remark = allwork.get("reply_remark");
+                String problem_description = allwork.get("problem_description");
 //            String send_person = allwork.get("send_person");
-            String send_time = allwork.get("send_time");
-            String end_date = allwork.get("end_date");
-            String transfer_opinion = allwork.get("transfer_opinion");
-            String transfer_process = allwork.get("transfer_process");
+                String send_time = allwork.get("send_time");
+                String end_date = allwork.get("end_date");
+                String transfer_opinion = allwork.get("transfer_opinion");
+                String transfer_process = allwork.get("transfer_process");
 //            String remark = allwork.get("remark");
-            String enclosure = allwork.get("enclosure");
-            Map<String, String> map = new HashMap<>();
-            map.put("accept_person_code", accept_person_code);
-            map.put("end_date", end_date);
-            map.put("order_code", order_code);
-            map.put("urgency_degree", urgency_degree);
-            map.put("phone_type", phone_type);
-            map.put("accept_channel", accept_channel);
-            map.put("is_reply", is_reply);
-            map.put("is_secret", is_secret);
-            map.put("link_person", link_person);
-            map.put("link_phone", link_phone);
-            map.put("link_address", link_address);
-            map.put("reply_remark", reply_remark);
-            map.put("problem_classification", problem_classification);
-            map.put("problem_description", problem_description);
-            map.put("transfer_opinion", transfer_opinion);
-            map.put("transfer_process", transfer_process);
-            map.put("enclosure", enclosure);
-            map.put("order_guid", order_guid);
-            map.put("phone_time", service.findNumByPhone(allwork.get("link_phone")));
-            LocalDate date = LocalDate.now();
-            DateTimeFormatter yyyy = DateTimeFormatter.ofPattern("yyyy");
-            DateTimeFormatter MM = DateTimeFormatter.ofPattern("MM");
-            DateTimeFormatter dd = DateTimeFormatter.ofPattern("dd");
-            String path = "D:\\工单备份\\" + date.format(yyyy) + "\\" + date.format(MM) + "\\" + date.format(dd) + "\\";
-            logger.info("allwork工单：" + order_code + "-" + link_person + "-" + send_time);
-            System.out.println("allwork工单：" + order_code + "-" + link_person + "-" + send_time);
-            String personCode = service.getPersonCode();
-            CreatWordByModel("D:\\TemplateDoc" + personCode + ".docx", map, path + order_code + "-" + order_guid + ".docx");
-            CreatWordByModel("D:\\TemplateDoc.docx", map, DailyMonitor.path + order_code + "-" + order_guid + ".docx");
-            String printerName = PropKit.use("config-dev.txt").get("printer");
+                String enclosure = allwork.get("enclosure");
+                Map<String, String> map = new HashMap<>();
+                map.put("accept_person_code", accept_person_code);
+                map.put("end_date", end_date);
+                map.put("order_code", order_code);
+                map.put("urgency_degree", urgency_degree);
+                map.put("phone_type", phone_type);
+                map.put("accept_channel", accept_channel);
+                map.put("is_reply", is_reply);
+                map.put("is_secret", is_secret);
+                map.put("link_person", link_person);
+                map.put("link_phone", link_phone);
+                map.put("link_address", link_address);
+                map.put("reply_remark", reply_remark);
+                map.put("problem_classification", problem_classification);
+                map.put("problem_description", problem_description);
+                map.put("transfer_opinion", transfer_opinion);
+                map.put("transfer_process", transfer_process);
+                map.put("enclosure", enclosure);
+                map.put("order_guid", order_guid);
+                map.put("phone_time", service.findNumByPhone(allwork.get("link_phone")));
+                LocalDate date = LocalDate.now();
+                DateTimeFormatter yyyy = DateTimeFormatter.ofPattern("yyyy");
+                DateTimeFormatter MM = DateTimeFormatter.ofPattern("MM");
+                DateTimeFormatter dd = DateTimeFormatter.ofPattern("dd");
+                String path = "D:\\工单备份\\" + date.format(yyyy) + "\\" + date.format(MM) + "\\" + date.format(dd) + "\\";
+                logger.info("allwork工单：" + order_code + "-" + link_person + "-" + send_time);
+                System.out.println("allwork工单：" + order_code + "-" + link_person + "-" + send_time);
+                String personCode = service.getPersonCode();
+                CreatWordByModel("D:\\TemplateDoc" + personCode + ".docx", map, path + order_code + "-" + order_guid + ".docx");
+                CreatWordByModel("D:\\TemplateDoc.docx", map, DailyMonitor.path + order_code + "-" + order_guid + ".docx");
+                String printerName = PropKit.use("config-dev.txt").get("printer");
 //            String printerName = "HP LaserJet 1020";//打印机名包含字串
 //            String printerName = "HP LaserJet MFP M227-M231 PCL-6 (V4)";//打印机名包含字串
-            printWord(path + order_code + "-" + order_guid + ".docx", printerName);
-            allworkList.add(allwork);
+                printWord(path + order_code + "-" + order_guid + ".docx", printerName);
+                allworkList.add(allwork);
+            }
         }
     }
 
@@ -467,16 +469,19 @@ public class DailyMonitor implements Runnable {
     }
 
     public void saveReply(Reply reply) {
-        ReplyService service = new ReplyService();
-        if (service.findNumByGUID(reply.get("order_guid")) == 0) {
+        if (reply!=null){
+            ReplyService service = new ReplyService();
+            if (service.findNumByGUID(reply.get("order_guid")) == 0) {
 //            String order_guid = reply.get("order_guid");
-            String order_code = reply.get("order_code");
-            String link_person = reply.get("link_person");
-            String send_time = reply.get("send_time");
-            System.out.println("已回复工单：" + order_code + "-" + link_person + "-" + send_time);
-            service.add(reply);
-            replyList.add(reply);
+                String order_code = reply.get("order_code");
+                String link_person = reply.get("link_person");
+                String send_time = reply.get("send_time");
+                System.out.println("已回复工单：" + order_code + "-" + link_person + "-" + send_time);
+                service.add(reply);
+                replyList.add(reply);
+            }
         }
+
     }
 
     public void sendReply(Reply reply, String weixinToken) {
@@ -655,15 +660,17 @@ public class DailyMonitor implements Runnable {
     }
 
     public void saveFallback(Fallback fallback) {
-        FallbackService service = new FallbackService();
-        if (service.findNumByGUID(fallback.get("order_guid")) == 0) {
+        if (fallback!=null){
+            FallbackService service = new FallbackService();
+            if (service.findNumByGUID(fallback.get("order_guid")) == 0) {
 //            String order_guid = fallback.get("order_guid");
-            String order_code = fallback.get("order_code");
-            String link_person = fallback.get("link_person");
-            String send_time = fallback.get("send_time");
-            System.out.println("已回退工单：" + order_code + "-" + link_person + "-" + send_time);
-            service.add(fallback);
-            fallbackList.add(fallback);
+                String order_code = fallback.get("order_code");
+                String link_person = fallback.get("link_person");
+                String send_time = fallback.get("send_time");
+                System.out.println("已回退工单：" + order_code + "-" + link_person + "-" + send_time);
+                service.add(fallback);
+                fallbackList.add(fallback);
+            }
         }
     }
 

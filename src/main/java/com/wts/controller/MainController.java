@@ -57,6 +57,7 @@ public class MainController extends Controller {
             if (record.get("fallback_time").toString().equals("")){
                 fallbackTime = wxUtil.getTimeStr("2000/1/1 00:00:00");
             }else{
+                System.out.println();
                 fallbackTime = wxUtil.getTimeStr(record.get("fallback_time"));
             }
             String a = "{\"_id\":\"" + record.get("order_guid")
