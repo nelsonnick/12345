@@ -407,7 +407,11 @@ public class DailyMonitor implements Runnable {
             String reply_day = table.getElementsByTag("tr").get(2).getElementsByTag("td").get(3).text();//答复时间
             String reply_person = table.getElementsByTag("tr").get(3).getElementsByTag("td").get(1).text();//答复人
             String reply_phone = table.getElementsByTag("tr").get(3).getElementsByTag("td").get(3).text();//答复电话
-            String reply_content = table.getElementsByTag("tr").get(4).getElementsByTag("td").get(1).text();//办理情况
+            String reply_content = table.getElementsByTag("tr").get(4).getElementsByTag("td").get(1).text()
+                    .replace("\"","").replace(".","")
+                    .replace(";","").replace(":","")
+                    .replace("\\","").replace("/","")
+                    .replace("'","").replace("?","");//办理情况
             String reply_department = table.getElementsByTag("tr").get(5).getElementsByTag("td").get(1).text();//回复单位
             String reply_time = table.getElementsByTag("tr").get(5).getElementsByTag("td").get(3).text();//回复时间
             String subordinate_department = table.getElementsByTag("tr").get(6).getElementsByTag("td").get(1).text();//下级办理单位
