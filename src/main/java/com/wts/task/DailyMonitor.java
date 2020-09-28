@@ -506,7 +506,9 @@ public class DailyMonitor implements Runnable {
                 reply.get("link_person"));
         if (errcode.equals("") || errcode.equals("0") || err.equals("") || err.equals("0")) {
             ReplyService replyService = new ReplyService();
-            replyService.deleteById(reply.getId());
+//            replyService.deleteById(reply.getId());
+            System.out.println("errcode：" + errcode);
+            System.out.println("err：" + err);
             logger.info("推送失败，删除Reply工单-->" + reply.get("order_code") + "-" + reply.get("link_person") + "-" + reply.get("send_time"));
             printSingleColor(31, 3, "推送失败，删除Reply工单-->" + reply.get("order_code") + "-" + reply.get("link_person") + "-" + reply.get("send_time"));
         }
@@ -695,7 +697,9 @@ public class DailyMonitor implements Runnable {
                 fallback.get("link_person"));
         if (errcode.equals("") || errcode.equals("0") || err.equals("") || err.equals("0")) {
             FallbackService fallbackService = new FallbackService();
-            fallbackService.deleteById(fallback.getId());
+//            fallbackService.deleteById(fallback.getId());
+            System.out.println("errcode：" + errcode);
+            System.out.println("err：" + err);
             logger.info("推送失败，删除Fallback工单-->" + fallback.get("order_code") + "-" + fallback.get("link_person") + "-" + fallback.get("send_time"));
             printSingleColor(31, 3, "推送失败，删除Fallback工单-->" + fallback.get("order_code") + "-" + fallback.get("link_person") + "-" + fallback.get("send_time"));
         }
