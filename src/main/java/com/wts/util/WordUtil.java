@@ -18,6 +18,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import static com.wts.util.printUtil.printSingleColor;
+
 public class
 WordUtil {
 
@@ -141,10 +143,10 @@ WordUtil {
         //  new Object[] { filePath }, new int[1]).toDispatch();
         try {
             Dispatch.callN(doc, "PrintOut");
-            System.out.println(filePath + "：打印成功！");
+            printSingleColor(36,3,"打印成功-->" + filePath);
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println(filePath + "：打印失败!");
+            printSingleColor(31,3,"打印失败-->" + filePath);
         } finally {
             try {
                 if (doc != null) {

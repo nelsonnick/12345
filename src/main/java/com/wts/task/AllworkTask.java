@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static com.wts.util.WordUtil.*;
+import static com.wts.util.printUtil.printSingleColor;
 import static com.wts.util.util12345.getPageUrl;
 
 public class AllworkTask implements Runnable {
@@ -26,6 +27,7 @@ public class AllworkTask implements Runnable {
         allwork(cookie);
     }
     public void allwork(String cookie) {
+        AllworkService allworkService = new AllworkService();
         String url = getPageUrl("0", "0");
         Document doc = util12345.getDoc(url, cookie);
         if (doc!=null) {
@@ -41,9 +43,11 @@ public class AllworkTask implements Runnable {
                     file_guid = value.substring(8, 46);
                     order_guid = value.substring(51, 89);
                 }
-                Allwork allwork = getAllwork(file_guid, order_guid, cookie);
-                if (allwork != null) {
-                    saveAllwork(allwork);
+                if (allworkService.findNumByGUID(order_guid)!=0){
+                    Allwork allwork = getAllwork(file_guid, order_guid, cookie);
+                    if (allwork != null) {
+                        saveAllwork(allwork);
+                    }
                 }
             }
         }
@@ -53,8 +57,8 @@ public class AllworkTask implements Runnable {
         try {
             Document doc = util12345.getDoc(url, cookie);
             if (doc==null){
-                logger.error("无法获取allwork列表：" + url);
-                System.out.println("无法获取allwork列表：" + url);
+                logger.error("获取的Allwork工单为空-->"+ url);
+                printSingleColor(31,3,"获取的Allwork工单为空-->" + url);
                 return null;
             }
             Element tbody = doc.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
@@ -120,16 +124,14 @@ public class AllworkTask implements Runnable {
                     .set("remark", remark);
             return allwork;
         } catch (Exception e) {
-            logger.error("time:" + new Date() + ";无法获取allwork工单:"+ url);
-            logger.error(e);
-            System.out.println("错误的allwork工单：" + url);
+            logger.error("解析Allwork工单错误-->"+ url);
+            printSingleColor(31,3,"解析Allwork工单错误-->" + url);
             return null;
         }
     }
     public void saveAllwork(Allwork allwork) {
         AllworkService service = new AllworkService();
         if (service.findNumByGUID(allwork.get("order_guid")) == 0) {
-            service.add(allwork);
 //            String file_guid = allwork.get("file_guid");
             String order_guid = allwork.get("order_guid");
 //            String order_state = allwork.get("order_state");
@@ -158,6 +160,11 @@ public class AllworkTask implements Runnable {
             String transfer_process = allwork.get("transfer_process");
 //            String remark = allwork.get("remark");
             String enclosure = allwork.get("enclosure");
+
+            service.add(allwork);
+            logger.info("收到新Allwork工单-->" + order_code + "-" + link_person + "-" + send_time);
+            printSingleColor(34,3,"收到新Allwork工单-->" + order_code + "-" + link_person + "-" + send_time);
+
             Map<String, String> map = new HashMap<>();
             map.put("accept_person_code", accept_person_code);
             map.put("end_date", end_date);
@@ -183,8 +190,6 @@ public class AllworkTask implements Runnable {
             DateTimeFormatter MM = DateTimeFormatter.ofPattern("MM");
             DateTimeFormatter dd = DateTimeFormatter.ofPattern("dd");
             String path = "D:\\工单备份\\" + date.format(yyyy) + "\\" + date.format(MM) + "\\" + date.format(dd) + "\\";
-            logger.info("allwork工单：" + order_code + "-" + link_person + "-" + send_time);
-            System.out.println("allwork工单：" + order_code + "-" + link_person + "-" + send_time);
             String personCode = service.getPersonCode();
             CreatWordByModel("D:\\TemplateDoc" + personCode + ".docx", map, path + order_code + "-" + order_guid + ".docx");
             CreatWordByModel("D:\\TemplateDoc.docx", map, AllworkTask.path + order_code + "-" + order_guid + ".docx");

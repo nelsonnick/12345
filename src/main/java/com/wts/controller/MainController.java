@@ -25,7 +25,7 @@ public class MainController extends Controller {
         renderText("服务正常");
     }
 
-    public void fallback() throws IOException {
+    public void getFallback() throws IOException {
         String path = "d:\\fallback.txt";
         File file = new File(path);
         if(!file.exists()){
@@ -79,7 +79,7 @@ public class MainController extends Controller {
         renderText("已回退工单已生成");
     }
 
-    public void reply() throws IOException {
+    public void getReply() throws IOException {
         String path = "d:\\reply.txt";
         File file = new File(path);
         if(!file.exists()){
@@ -128,7 +128,7 @@ public class MainController extends Controller {
         renderText("已回复工单已生成");
     }
 
-    public void allwork() throws IOException {
+    public void getAllwork() throws IOException {
         String path = "d:\\allwork.txt";
         File file = new File(path);
         if(!file.exists()){
@@ -167,7 +167,7 @@ public class MainController extends Controller {
     }
 
     // 数据来源：到期工单的第一页
-    public void expire() throws Exception{
+    public void getExpire() throws Exception{
         String path = "d:\\expire.txt";
         File file = new File(path);
         if(!file.exists()){
@@ -212,7 +212,7 @@ public class MainController extends Controller {
         renderText("到期工单已生成！");
     }
 
-    public void unhandle() throws Exception{
+    public void getUnhandle() throws Exception{
 //        String path = "d:\\unhandle.txt";
 //        File file = new File(path);
 //        if(!file.exists()){

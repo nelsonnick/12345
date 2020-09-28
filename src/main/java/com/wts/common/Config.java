@@ -15,9 +15,6 @@ import com.jfinal.server.undertow.UndertowServer;
 import com.jfinal.template.Engine;
 import com.wts.controller.*;
 import com.wts.entity.model._MappingKit;
-import com.wts.task.AllworkTask;
-import com.wts.task.DailyMonitor;
-import com.wts.task.ReadSend;
 
 
 /**
@@ -72,7 +69,7 @@ public class Config extends JFinalConfig {
 	 */
 	public void configRoute(Routes me) {
 		me.add("/", MainController.class);
-		me.add("/aa", downAll.class);
+		me.add("/downAll", DownAll.class);
 		me.add("/re", ReController.class);
 	}
 

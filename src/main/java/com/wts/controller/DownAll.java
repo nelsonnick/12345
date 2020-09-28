@@ -16,8 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.wts.util.WordUtil.getUrgencyDegree;
+import static com.wts.util.printUtil.printSingleColor;
 
-public class downAll extends Controller {
+public class DownAll extends Controller {
 
     @Inject
     AllworkService allworkService;
@@ -28,9 +29,9 @@ public class downAll extends Controller {
 
     public void index() {
         String cookie = PropKit.use("config-dev.txt").get("cookie");
-        for (int i=1;i<900;i++){
+        for (int i=11;i<13;i++){
             getPageInfo(i, cookie);
-            System.out.println("第" + i + "页已完成");
+            printSingleColor(32,3,"第" + i + "页已完成");
         }
         renderText("已完成");
     }
@@ -58,7 +59,7 @@ public class downAll extends Controller {
                 save(file_guid, order_guid, cookie);
             }
         }catch (Exception e){
-            System.out.println("页面信息获取失败：" + pageNum);
+            printSingleColor(31,3,"页面信息获取失败，错误页码-->" + pageNum);
         }
     }
 
@@ -71,7 +72,7 @@ public class downAll extends Controller {
         }
         try {
             Document doc = util12345.getDoc(url, cookie);
-            System.out.println(url);
+            printSingleColor(35,3,"当前url-->" + url);
             Element tbody = doc.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
             Element td = tbody.getElementsByTag("tr").get(8).getElementsByTag("td").get(1);
             String enclosure = "";
@@ -136,9 +137,9 @@ public class downAll extends Controller {
                         .set("enclosure", enclosure)
                         .set("remark", remark);
                 allworkService.add(allwork);
-                System.out.println(order_guid + "---已完成！");
+                printSingleColor(36,3,order_guid + "-->" + "已完成");
             } else {
-                System.out.println(order_guid + "---已存在！");
+                printSingleColor(33,3,order_guid + "-->" + "已存在");
             }
             List<String> errorList = new ArrayList<>();
             errorList.add("{a846085e-ea93-480f-a23f-a6fcf7221140}");
@@ -201,9 +202,9 @@ public class downAll extends Controller {
                                 .set("fallback_person", fallback_person)
                                 .set("fallback_phone", fallback_phone);
                         fallbackService.add(fallback);
+                        printSingleColor(36,3,order_guid + "-->" + "已回退");
                     }
                 }
-
                 if (order_state.equals("已回复")) {
                     String reply_type = table.getElementsByTag("tr").get(1).getElementsByTag("td").get(2).text();//答复类型
                     String finish_time = table.getElementsByTag("tr").get(1).getElementsByTag("td").get(4).text();//预计完成时间
@@ -265,17 +266,17 @@ public class downAll extends Controller {
                                 .set("reply_person2", reply_person2)
                                 .set("reply_phone2", reply_phone2);
                         replyService.add(reply);
+                        printSingleColor(36,3,order_guid + "-->" + "已回复");
                     }
                 }
-
             }
         }catch (Exception e){
             e.printStackTrace();
         }
 
     }
-
-    public void s(){
+    // 单独下载异常工单
+    public void downError(){
         List<String> errorList = new ArrayList<>();
 
         errorList.add("{85639357-db7e-4371-85da-3e41f72f43b0}");//h---shao
@@ -444,7 +445,6 @@ public class downAll extends Controller {
             }
         }
 
-        System.out.println(info);
-        renderText("11111");
+        renderText("异常工单下载完成！");
     }
 }

@@ -2,6 +2,7 @@ package com.wts.util;
 
 import com.alibaba.fastjson.JSONObject;
 import okhttp3.*;
+import org.apache.log4j.Logger;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
@@ -13,7 +14,10 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import static com.wts.util.printUtil.printSingleColor;
+
 public class oaUtil {
+    private static final Logger logger = Logger.getLogger(oaUtil.class);
     /*
     获取token
     */
@@ -42,7 +46,8 @@ public class oaUtil {
             Response response = client.newCall(request).execute();
             return  JSONObject.parseObject(JSONObject.parseObject(response.body().string()).getString("data")).getString("token");
         }catch (Exception e){
-            System.out.println("获取OA的token失败！");
+            logger.error("获取OA的token失败，无法推送！");
+            printSingleColor(31,3,"获取OA的token失败，无法推送！");
             return "";
         }
     }
@@ -50,10 +55,6 @@ public class oaUtil {
     获取run_id：通过新建流程来获取
     */
     public static String getRun_id(String token){
-        if (token.equals("")){
-            System.out.println("token为空，无法获取OA的run_id！");
-            return "";
-        }
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("application/json;charset=UTF-8");
@@ -79,7 +80,8 @@ public class oaUtil {
             String run_id = JSONObject.parseObject(JSONObject.parseObject(response.body().string()).getString("data")).getString("run_id");
             return run_id;
         }catch (Exception e){
-            System.out.println("获取OA的run_id失败！");
+            logger.error("获取OA的run_id失败，无法推送！");
+            printSingleColor(31,3,"获取OA的run_id失败，无法推送！");
             return "";
         }
     }
@@ -110,9 +112,10 @@ public class oaUtil {
                         .build();
                 Response response = client.newCall(request).execute();
                 String run_id = JSONObject.parseObject(JSONObject.parseObject(response.body().string()).getString("data")).getString("run_id");
-                System.out.println("已提交OA系统！");
+                printSingleColor(34,3,"提交OA系统成功！");
             }catch (Exception e){
-                System.out.println("提交OA系统失败！");
+                logger.error("提交OA系统失败！");
+                printSingleColor(31,3,"提交OA系统失败！");
             }
         }
     }
@@ -122,10 +125,6 @@ public class oaUtil {
      */
     public static String getContent(String run_id, String order_code, String link_person, String end_date, String urgency_degree, String link_phone,
                                     String problem_description, String transfer_opinion, String transfer_process, String suggestion) {
-        if (run_id.equals("")){
-            System.out.println("run_id为空，无法生成Content信息！");
-            return "";
-        }
         Date dNow = new Date();
         SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String temp = "{\"run_id\":\"${run_id}\",\"run_name\":\"12345转办件${工单编号}\",\"run_name_html\":\"<div contenteditable=\\\"false\\\" class=\\\"title-item\\\">12345转办件</div><div class=\\\"title-item control\\\" data-type=\\\"formData\\\" ng-click=\\\"vm.choiceControl('DATA_2')\\\" data-id=\\\"DATA_2\\\" title=\\\"值来源于-工单编号\\\" ng-bind=\\\"vm.praseData('DATA_2')\\\">${工单编号}</div><div contenteditable=\\\"false\\\" class=\\\"title-item\\\"></div>\",\"instancy_type\":\"${紧急编号}\",\"form_data\":{\"DATA_31\":\"${办件类型}\",\"DATA_2\":\"${工单编号}\",\"DATA_7\":\"${办结时限}\",\"DATA_3\":\"${来电类别}\",\"DATA_8\":\"${紧急程度}\",\"DATA_5\":\"${联系人}\",\"DATA_10\":\"${联系电话}\",\"DATA_13\":\"${问题分类}\",\"DATA_16\":\"${问题描述}\",\"DATA_27\":\"经核实实际情况与12345描述一致\",\"DATA_30\":\"${问题核实情况}\",\"DATA_15\":\"${处理意见}\",\"DATA_17\":\"${处理意见时间}\",\"DATA_18\":\"\",\"DATA_19\":\"\",\"DATA_20\":\"\",\"DATA_21\":\"\",\"DATA_24\":\"\",\"DATA_25\":\"\"},\"flow_process\":66,\"process_id\":1}";
@@ -149,7 +148,7 @@ public class oaUtil {
         } else {
             str.replace("${紧急编号}", "2");
         }
-        System.out.println("拟提交OA数据：" + run_id + "-" + order_code + "-" + link_person + "-" + end_date);
+        printSingleColor(34,3,"拟提交OA数据-->"+ run_id + "-" + order_code + "-" + link_person + "-" + end_date);
         return str;
     }
     /*

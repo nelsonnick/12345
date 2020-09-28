@@ -114,14 +114,8 @@ public class ReadSend implements Runnable {
                 reply.get("order_code"),
                 reply.get("link_person"));
         String err = deleteUnhandle(weixinToken,
-                reply.get("order_guid"));
+                reply.get("order_guid"),reply.get("order_code"),reply.get("link_person"));
         sendMessageToWeiXin("工单：" + reply.get("order_code") + "-->已回复", "WangTianShuo");
-        if (errcode.equals("0") && err.equals("0")) {
-            System.out.println("已回复工单已推送：" + reply.get("order_code") + "-" + reply.get("link_person"));
-        } else {
-            System.out.println("已回复工单推送失败：" + reply.get("order_code") + "-" + reply.get("link_person"));
-        }
-
     }
 
     public void readReplyText(String weixinToken){
@@ -171,13 +165,8 @@ public class ReadSend implements Runnable {
                 fallback.get("order_code"),
                 fallback.get("link_person"));
         String err = deleteUnhandle(weixinToken,
-                fallback.get("order_guid"));
+                fallback.get("order_guid"),fallback.get("order_code"),fallback.get("link_person"));
         sendMessageToWeiXin("工单：" + fallback.get("order_code") + "-->已回退", "WangTianShuo");
-        if (errcode.equals("0") && err.equals("0")) {
-            System.out.println("已回退工单已推送：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
-        } else {
-            System.out.println("已回退工单推送失败：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
-        }
     }
 
     public void readFallbackText(String weixinToken){
@@ -231,11 +220,6 @@ public class ReadSend implements Runnable {
                         jsonObject.getString("order_code"),
                         jsonObject.getString("link_person"),
                         jsonObject.getString("end_date"));
-                if (err.equals("0")) {
-                    System.out.println("待办理工单已推送：" + jsonObject.getString("order_code") + "-" + jsonObject.getString("link_person"));
-                } else {
-                    System.out.println("待办理工单推送失败：" + jsonObject.getString("order_code") + "-" + jsonObject.getString("link_person"));
-                }
                 line++;
             }
             reader.close();
@@ -264,12 +248,9 @@ public class ReadSend implements Runnable {
             while((tempString = reader.readLine())!=null) {
                 JSONObject jsonObject = JSON.parseObject(tempString);
                 String err = deleteUnhandle(weixinToken,
-                        jsonObject.getString("order_guid"));
-                if (err.equals("0")) {
-                    System.out.println("完成工单已推送：" + jsonObject.getString("order_code") + "-" + jsonObject.getString("link_person"));
-                } else {
-                    System.out.println("完成工单推送失败：" + jsonObject.getString("order_code") + "-" + jsonObject.getString("link_person"));
-                }
+                        jsonObject.getString("order_guid"),
+                        jsonObject.getString("order_code"),
+                        jsonObject.getString("linke_person"));
                 line++;
             }
             reader.close();

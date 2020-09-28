@@ -22,6 +22,7 @@ import java.util.*;
 
 import static com.wts.util.WordUtil.*;
 import static com.wts.util.others.IpKit.getLocalHostIP;
+import static com.wts.util.printUtil.printSingleColor;
 import static com.wts.util.util12345.getPageUrl;
 import static com.wts.util.wxUtil.*;
 
@@ -48,21 +49,21 @@ public class DailyMonitor implements Runnable {
                     if (network) {
 //                        String weixinToken = getToken();
 //                        if (!weixinToken.equals("")) {
-                            for (Allwork allwork : allworkList) {
-                                sendAllwork(allwork, getToken());
+                        for (Allwork allwork : allworkList) {
+                            sendAllwork(allwork, getToken());
 //                                createAllworkText(allwork);
 //                                createUnhandleAddText(allwork);
-                            }
-                            for (Reply reply : replyList) {
-                                sendReply(reply, getToken());
+                        }
+                        for (Reply reply : replyList) {
+                            sendReply(reply, getToken());
 //                                createReplyText(reply);
 //                                createUnhandleDeleteText(reply.getOrderGuid());
-                            }
-                            for (Fallback fallback : fallbackList) {
-                                sendFallback(fallback, getToken());
+                        }
+                        for (Fallback fallback : fallbackList) {
+                            sendFallback(fallback, getToken());
 //                                createFallbackText(fallback);
 //                                createUnhandleDeleteText(fallback.getOrderGuid());
-                            }
+                        }
 //                        }
 //                        allworkList.subList(0,allworkList.size()).clear();
                         for (int i = allworkList.size() - 1; i >= 0; i--) {
@@ -85,9 +86,10 @@ public class DailyMonitor implements Runnable {
     }
 
     public void allwork(String cookie) {
+        AllworkService allworkService = new AllworkService();
         String url = getPageUrl("0", "0");
         Document doc = util12345.getDoc(url, cookie);
-        if (doc!=null) {
+        if (doc != null) {
             Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
             for (int i = 0; i < trs.size() - 1; i++) {
                 Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
@@ -100,9 +102,11 @@ public class DailyMonitor implements Runnable {
                     file_guid = value.substring(8, 46);
                     order_guid = value.substring(51, 89);
                 }
-                Allwork allwork = getAllwork(file_guid, order_guid, cookie);
-                if (allwork != null) {
-                    saveAllwork(allwork);
+                if (allworkService.findNumByGUID(order_guid) != 0) {
+                    Allwork allwork = getAllwork(file_guid, order_guid, cookie);
+                    if (allwork != null) {
+                        saveAllwork(allwork);
+                    }
                 }
             }
         }
@@ -112,9 +116,9 @@ public class DailyMonitor implements Runnable {
         String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid=" + file_guid + "&GUID=" + order_guid + "&IsZDDB=&xxlyid=1";
         try {
             Document doc = util12345.getDoc(url, cookie);
-            if (doc==null){
-                logger.error("doc为空，无法获取allwork工单:"+ url);
-                System.out.println("doc为空，无法获取allwork工单：" + url);
+            if (doc == null) {
+                logger.error("获取的Allwork工单为空-->" + url);
+                printSingleColor(31, 3, "获取的Allwork工单为空-->" + url);
                 return null;
             }
             Element tbody = doc.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
@@ -180,19 +184,17 @@ public class DailyMonitor implements Runnable {
                     .set("remark", remark);
             return allwork;
         } catch (Exception e) {
-            logger.error("无法获取allwork工单:"+ url);
-            logger.error(e);
-            System.out.println("错误的allwork工单：" + url);
-            e.printStackTrace();
+            logger.error("解析Allwork工单错误-->" + url);
+            printSingleColor(31, 3, "解析Allwork工单错误-->" + url);
             return null;
         }
     }
 
     public void saveAllwork(Allwork allwork) {
-        if(allwork!=null){
+        if (allwork != null) {
             AllworkService service = new AllworkService();
             if (service.findNumByGUID(allwork.get("order_guid")) == 0) {
-                service.add(allwork);
+
 //            String file_guid = allwork.get("file_guid");
                 String order_guid = allwork.get("order_guid");
 //            String order_state = allwork.get("order_state");
@@ -220,6 +222,11 @@ public class DailyMonitor implements Runnable {
                 String transfer_process = allwork.get("transfer_process");
 //            String remark = allwork.get("remark");
                 String enclosure = allwork.get("enclosure");
+
+                service.add(allwork);
+                logger.info("收到新Allwork工单-->" + order_code + "-" + link_person + "-" + send_time);
+                printSingleColor(34, 3, "收到新Allwork工单-->" + order_code + "-" + link_person + "-" + send_time);
+
                 Map<String, String> map = new HashMap<>();
                 map.put("accept_person_code", accept_person_code);
                 map.put("end_date", end_date);
@@ -245,8 +252,6 @@ public class DailyMonitor implements Runnable {
                 DateTimeFormatter MM = DateTimeFormatter.ofPattern("MM");
                 DateTimeFormatter dd = DateTimeFormatter.ofPattern("dd");
                 String path = "D:\\工单备份\\" + date.format(yyyy) + "\\" + date.format(MM) + "\\" + date.format(dd) + "\\";
-                logger.info("allwork工单：" + order_code + "-" + link_person + "-" + send_time);
-                System.out.println("allwork工单：" + order_code + "-" + link_person + "-" + send_time);
                 String personCode = service.getPersonCode();
                 CreatWordByModel("D:\\TemplateDoc" + personCode + ".docx", map, path + order_code + "-" + order_guid + ".docx");
                 CreatWordByModel("D:\\TemplateDoc.docx", map, DailyMonitor.path + order_code + "-" + order_guid + ".docx");
@@ -280,47 +285,41 @@ public class DailyMonitor implements Runnable {
                 allwork.get("link_person"),
                 allwork.get("end_date"));
         String OA_token = oaUtil.getToken();
-        String run_id = oaUtil.getRun_id(OA_token);
-        String OA_content = oaUtil.getContent(run_id, allwork.get("order_code"), allwork.get("link_person"), allwork.get("end_date"), allwork.get("urgency_degree"), allwork.get("link_phone"),
-                allwork.get("problem_description"), allwork.get("transfer_opinion"), allwork.get("transfer_process"), "XXX");
-        oaUtil.inputOA(OA_token, OA_content);
+        if (!OA_token.equals("")) {
+            String run_id = oaUtil.getRun_id(OA_token);
+            if (!run_id.equals("")) {
+                String OA_content = oaUtil.getContent(run_id, allwork.get("order_code"), allwork.get("link_person"), allwork.get("end_date"), allwork.get("urgency_degree"), allwork.get("link_phone"),
+                        allwork.get("problem_description"), allwork.get("transfer_opinion"), allwork.get("transfer_process"), "XXX");
+                if (!OA_content.equals("")) {
+                    oaUtil.inputOA(OA_token, OA_content);
+                }
+            }
+
+        }
         AllworkService service = new AllworkService();
         String phoneTime = service.findNumByPhone(allwork.get("link_phone"));
         sendMessageToWeiXin("收到新工单（" + phoneTime + "次）：" + allwork.get("order_code"), "WangTianShuo");
-        if (errcode.equals("0")) {
-            logger.info("allwork工单已推送：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
-            System.out.println("allwork工单已推送：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
-        } else {
-            logger.error("allwork工单推送失败：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
-            System.out.println("allwork工单推送失败：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
-        }
-        if (err.equals("0")) {
-            logger.info("unhandle工单已推送：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
-            System.out.println("unhandle工单已推送：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
-        } else {
-            logger.error("unhandle工单推送失败：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
-            System.out.println("unhandle工单推送失败：" + allwork.get("order_code") + "-" + allwork.get("link_person"));
-        }
+
     }
 
-    public void createAllworkText(Allwork allwork){
+    public void createAllworkText(Allwork allwork) {
         Allwork al = new Allwork();
-        al.set("order_guid",allwork.get("order_guid"))
-                .set("order_code",allwork.get("order_code"))
-                .set("link_person",allwork.get("link_person"))
-                .set("link_phone",allwork.get("link_phone"))
-                .set("send_time",allwork.get("send_time"))
-                .set("urgency_degree",allwork.get("urgency_degree"))
-                .set("is_secret",allwork.get("is_secret"))
-                .set("is_reply",allwork.get("is_reply"))
-                .set("end_date",allwork.get("end_date"))
-                .set("problem_description",getSubStr(allwork.get("problem_description")))
-                .set("transfer_opinion",getSubStr(allwork.get("transfer_opinion")))
-                .set("transfer_process",getSubStr(allwork.get("transfer_process")))
-                .set("accept_channel",allwork.get("accept_channel"));
+        al.set("order_guid", allwork.get("order_guid"))
+                .set("order_code", allwork.get("order_code"))
+                .set("link_person", allwork.get("link_person"))
+                .set("link_phone", allwork.get("link_phone"))
+                .set("send_time", allwork.get("send_time"))
+                .set("urgency_degree", allwork.get("urgency_degree"))
+                .set("is_secret", allwork.get("is_secret"))
+                .set("is_reply", allwork.get("is_reply"))
+                .set("end_date", allwork.get("end_date"))
+                .set("problem_description", getSubStr(allwork.get("problem_description")))
+                .set("transfer_opinion", getSubStr(allwork.get("transfer_opinion")))
+                .set("transfer_process", getSubStr(allwork.get("transfer_process")))
+                .set("accept_channel", allwork.get("accept_channel"));
         String path = downPath + "allwork.txt";
         File file = new File(path);
-        if(!file.exists()){
+        if (!file.exists()) {
             file.getParentFile().mkdirs();
         }
         try {
@@ -331,15 +330,16 @@ public class DailyMonitor implements Runnable {
             bw.flush();
             bw.close();
             fw.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("创建文件失败：" + path);
         }
     }
 
     public void reply(String cookie) {
+        ReplyService replyService = new ReplyService();
         String url = getPageUrl("201", "1");
         Document doc = util12345.getDoc(url, cookie);
-        if (doc!=null) {
+        if (doc != null) {
             Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
             for (int i = 0; i < trs.size() - 1; i++) {
                 Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
@@ -352,21 +352,23 @@ public class DailyMonitor implements Runnable {
                     file_guid = value.substring(8, 46);
                     order_guid = value.substring(51, 89);
                 }
-                Reply reply = getReply(file_guid, order_guid, cookie);
-                if (reply != null) {
-                    saveReply(reply);
+                if (replyService.findNumByGUID(order_guid) != 0) {
+                    Reply reply = getReply(file_guid, order_guid, cookie);
+                    if (reply != null) {
+                        saveReply(reply);
+                    }
                 }
             }
         }
-        }
+    }
 
     public Reply getReply(String file_guid, String order_guid, String cookie) {
         String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid=" + file_guid + "&GUID=" + order_guid + "&IsZDDB=&xxlyid=1";
         try {
             Document doc = util12345.getDoc(url, cookie);
-            if (doc==null){
-                logger.error("time:" + new Date() + ";doc为空，无法获取reply工单:"+ url);
-                System.out.println("doc为空，无法获取reply工单：" + url);
+            if (doc == null) {
+                logger.error("获取的Reply工单为空-->" + url);
+                printSingleColor(31, 3, "获取的Reply工单为空-->" + url);
                 return null;
             }
             Element tbody = doc.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
@@ -408,10 +410,10 @@ public class DailyMonitor implements Runnable {
             String reply_person = table.getElementsByTag("tr").get(3).getElementsByTag("td").get(1).text();//答复人
             String reply_phone = table.getElementsByTag("tr").get(3).getElementsByTag("td").get(3).text();//答复电话
             String reply_content = table.getElementsByTag("tr").get(4).getElementsByTag("td").get(1).text()
-                    .replace("\"","").replace(".","")
-                    .replace(";","").replace(":","")
-                    .replace("\\","").replace("/","")
-                    .replace("'","").replace("?","");//办理情况
+                    .replace("\"", "").replace(".", "")
+                    .replace(";", "").replace(":", "")
+                    .replace("\\", "").replace("/", "")
+                    .replace("'", "").replace("?", "");//办理情况
             String reply_department = table.getElementsByTag("tr").get(5).getElementsByTag("td").get(1).text();//回复单位
             String reply_time = table.getElementsByTag("tr").get(5).getElementsByTag("td").get(3).text();//回复时间
             String subordinate_department = table.getElementsByTag("tr").get(6).getElementsByTag("td").get(1).text();//下级办理单位
@@ -464,24 +466,25 @@ public class DailyMonitor implements Runnable {
                     .set("reply_phone2", reply_phone2);
             return reply;
         } catch (Exception e) {
-            logger.error("time:" + new Date() + ";无法获取reply工单:"+ url);
-            logger.error(e);
-            System.out.println("错误的回复工单：" + url);
-            e.printStackTrace();
+            logger.error("解析Reply工单错误-->" + url);
+            printSingleColor(31, 3, "解析Reply工单错误-->" + url);
             return null;
         }
     }
 
     public void saveReply(Reply reply) {
-        if (reply!=null){
+        if (reply != null) {
             ReplyService service = new ReplyService();
             if (service.findNumByGUID(reply.get("order_guid")) == 0) {
 //            String order_guid = reply.get("order_guid");
                 String order_code = reply.get("order_code");
                 String link_person = reply.get("link_person");
                 String send_time = reply.get("send_time");
-                System.out.println("已回复工单：" + order_code + "-" + link_person + "-" + send_time);
+
                 service.add(reply);
+                logger.info("确认新Reply工单-->" + order_code + "-" + link_person + "-" + send_time);
+                printSingleColor(34, 3, "确认新Reply工单-->" + order_code + "-" + link_person + "-" + send_time);
+
                 replyList.add(reply);
             }
         }
@@ -498,37 +501,30 @@ public class DailyMonitor implements Runnable {
                 reply.get("order_code"),
                 reply.get("link_person"));
         String err = deleteUnhandle(weixinToken,
-                reply.get("order_guid"));
-        sendMessageToWeiXin("回复工单：" + reply.get("order_code") + "-->" +reply.get("reply_person"), "WangTianShuo");
-
-        if (errcode.equals("0")) {
-            logger.info("reply工单已推送：" + reply.get("order_code") + "-" + reply.get("link_person"));
-            System.out.println("reply工单已推送：" + reply.get("order_code") + "-" + reply.get("link_person"));
-        } else {
-            logger.error("reply工单推送失败：" + reply.get("order_code") + "-" + reply.get("link_person"));
-            System.out.println("reply工单推送失败：" + reply.get("order_code") + "-" + reply.get("link_person"));
+                reply.get("order_guid"),
+                reply.get("order_code"),
+                reply.get("link_person"));
+        if (errcode.equals("") || errcode.equals("0") || err.equals("") || err.equals("0")) {
+            ReplyService replyService = new ReplyService();
+            replyService.deleteById(reply.getId());
+            logger.info("推送失败，删除Reply工单-->" + reply.get("order_code") + "-" + reply.get("link_person") + "-" + reply.get("send_time"));
+            printSingleColor(31, 3, "推送失败，删除Reply工单-->" + reply.get("order_code") + "-" + reply.get("link_person") + "-" + reply.get("send_time"));
         }
-        if (err.equals("0")) {
-            logger.info("unhandle工单已删除：" + reply.get("order_code") + "-" + reply.get("link_person"));
-            System.out.println("unhandle工单已删除：" + reply.get("order_code") + "-" + reply.get("link_person"));
-        } else {
-            logger.error("unhandle工单删除失败：" + reply.get("order_code") + "-" + reply.get("link_person"));
-            System.out.println("unhandle工单删除失败：" + reply.get("order_code") + "-" + reply.get("link_person"));
-        }
+        sendMessageToWeiXin("回复工单：" + reply.get("order_code") + "-->" + reply.get("reply_person"), "WangTianShuo");
     }
 
-    public void createReplyText(Reply reply){
+    public void createReplyText(Reply reply) {
         Reply re = new Reply();
-        re.set("order_guid",reply.get("order_guid"))
-                .set("order_code",reply.get("order_code"))
-                .set("link_person",reply.get("link_person"))
-                .set("reply_time",reply.get("reply_time"))
-                .set("reply_person",reply.get("reply_person"))
-                .set("reply_content",getSubStr(reply.get("reply_content")))
-                .set("reply_satisfy",reply.get("reply_satisfy"));
+        re.set("order_guid", reply.get("order_guid"))
+                .set("order_code", reply.get("order_code"))
+                .set("link_person", reply.get("link_person"))
+                .set("reply_time", reply.get("reply_time"))
+                .set("reply_person", reply.get("reply_person"))
+                .set("reply_content", getSubStr(reply.get("reply_content")))
+                .set("reply_satisfy", reply.get("reply_satisfy"));
         String path = downPath + "reply.txt";
         File file = new File(path);
-        if(!file.exists()){
+        if (!file.exists()) {
             file.getParentFile().mkdirs();
         }
         try {
@@ -539,15 +535,16 @@ public class DailyMonitor implements Runnable {
             bw.flush();
             bw.close();
             fw.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("创建文件失败：" + path);
         }
     }
 
     public void fallback(String cookie) {
+        FallbackService fallbackService = new FallbackService();
         String url = getPageUrl("202", "1");
         Document doc = util12345.getDoc(url, cookie);
-        if (doc!=null) {
+        if (doc != null) {
             Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
             for (int i = 0; i < trs.size() - 1; i++) {
                 Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
@@ -560,20 +557,23 @@ public class DailyMonitor implements Runnable {
                     file_guid = value.substring(8, 46);
                     order_guid = value.substring(51, 89);
                 }
-                Fallback fallback = getFallback(file_guid, order_guid, cookie);
-                if (fallback != null) {
-                    saveFallback(fallback);
+                if (fallbackService.findNumByGUID(order_guid) != 0) {
+                    Fallback fallback = getFallback(file_guid, order_guid, cookie);
+                    if (fallback != null) {
+                        saveFallback(fallback);
+                    }
                 }
             }
-        }}
+        }
+    }
 
     public Fallback getFallback(String file_guid, String order_guid, String cookie) {
         String url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid=" + file_guid + "&GUID=" + order_guid + "&IsZDDB=&xxlyid=1";
         try {
             Document doc = util12345.getDoc(url, cookie);
-            if (doc==null){
-                logger.error("doc为空，无法获取fallback工单:"+ url);
-                System.out.println("doc为空，无法获取fallback工单：" + url);
+            if (doc == null) {
+                logger.error("获取的Fallback工单为空-->" + url);
+                printSingleColor(31, 3, "获取的Fallback工单为空-->" + url);
                 return null;
             }
             Element tbody = doc.getElementsByClass("tablebgcolor").get(0).getElementsByTag("tbody").get(0);
@@ -655,24 +655,25 @@ public class DailyMonitor implements Runnable {
                     .set("fallback_phone", fallback_phone);
             return fallback;
         } catch (Exception e) {
-            logger.error("无法获取fallback工单:"+ url);
-            logger.error(e);
-            System.out.println("错误的fallback工单：" + url);
-            e.printStackTrace();
+            logger.error("解析Fallback工单错误-->" + url);
+            printSingleColor(31, 3, "解析Fallback工单错误-->" + url);
             return null;
         }
     }
 
     public void saveFallback(Fallback fallback) {
-        if (fallback!=null){
+        if (fallback != null) {
             FallbackService service = new FallbackService();
             if (service.findNumByGUID(fallback.get("order_guid")) == 0) {
 //            String order_guid = fallback.get("order_guid");
                 String order_code = fallback.get("order_code");
                 String link_person = fallback.get("link_person");
                 String send_time = fallback.get("send_time");
-                System.out.println("已回退工单：" + order_code + "-" + link_person + "-" + send_time);
+
                 service.add(fallback);
+                logger.info("确认新Fallback工单-->" + order_code + "-" + link_person + "-" + send_time);
+                printSingleColor(34, 3, "确认新Fallback工单-->" + order_code + "-" + link_person + "-" + send_time);
+
                 fallbackList.add(fallback);
             }
         }
@@ -689,38 +690,31 @@ public class DailyMonitor implements Runnable {
                 fallback.get("order_code"),
                 fallback.get("link_person"));
         String err = deleteUnhandle(weixinToken,
-                fallback.get("order_guid"));
+                fallback.get("order_guid"),
+                fallback.get("order_code"),
+                fallback.get("link_person"));
+        if (errcode.equals("") || errcode.equals("0") || err.equals("") || err.equals("0")) {
+            FallbackService fallbackService = new FallbackService();
+            fallbackService.deleteById(fallback.getId());
+            logger.info("推送失败，删除Fallback工单-->" + fallback.get("order_code") + "-" + fallback.get("link_person") + "-" + fallback.get("send_time"));
+            printSingleColor(31, 3, "推送失败，删除Fallback工单-->" + fallback.get("order_code") + "-" + fallback.get("link_person") + "-" + fallback.get("send_time"));
+        }
         sendMessageToWeiXin("回退工单：" + fallback.get("order_code") + "-->" + fallback.get("fallback_person"), "WangTianShuo");
-
-        if (errcode.equals("0")) {
-            logger.info("fallback工单已推送：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
-            System.out.println("回退工单已推送：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
-        } else {
-            logger.error("allback工单推送失败：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
-            System.out.println("回退工单推送失败：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
-        }
-        if (err.equals("0")) {
-            logger.info("unhandle工单已删除：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
-            System.out.println("unhandle工单已删除：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
-        } else {
-            logger.error("unhandle工单删除失败：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
-            System.out.println("unhandle工单删除失败：" + fallback.get("order_code") + "-" + fallback.get("link_person"));
-        }
     }
 
-    public void createFallbackText(Fallback fallback){
+    public void createFallbackText(Fallback fallback) {
         Fallback fall = new Fallback();
-        fall.set("order_guid",fallback.get("order_guid"))
-                .set("order_code",fallback.get("order_code"))
-                .set("link_person",fallback.get("link_person"))
-                .set("fallback_time",fallback.get("fallback_time"))
-                .set("fallback_person",fallback.get("fallback_person"))
-                .set("fallback_reason",getSubStr(fallback.get("fallback_reason")))
-                .set("suggestion",getSubStr(fallback.get("suggestion")))
-                .set("fallback_department",fallback.get("fallback_department"));
+        fall.set("order_guid", fallback.get("order_guid"))
+                .set("order_code", fallback.get("order_code"))
+                .set("link_person", fallback.get("link_person"))
+                .set("fallback_time", fallback.get("fallback_time"))
+                .set("fallback_person", fallback.get("fallback_person"))
+                .set("fallback_reason", getSubStr(fallback.get("fallback_reason")))
+                .set("suggestion", getSubStr(fallback.get("suggestion")))
+                .set("fallback_department", fallback.get("fallback_department"));
         String path = downPath + "fallback.txt";
         File file = new File(path);
-        if(!file.exists()){
+        if (!file.exists()) {
             file.getParentFile().mkdirs();
         }
         try {
@@ -731,20 +725,20 @@ public class DailyMonitor implements Runnable {
             bw.flush();
             bw.close();
             fw.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("创建文件失败：" + path);
         }
     }
 
-    public void createUnhandleAddText(Allwork allwork){
+    public void createUnhandleAddText(Allwork allwork) {
         Allwork al = new Allwork();
-        al.set("order_guid",allwork.get("order_guid"))
-                .set("order_code",allwork.get("order_code"))
-                .set("link_person",allwork.get("link_person"))
-                .set("end_date",allwork.get("end_date"));
+        al.set("order_guid", allwork.get("order_guid"))
+                .set("order_code", allwork.get("order_code"))
+                .set("link_person", allwork.get("link_person"))
+                .set("end_date", allwork.get("end_date"));
         String path = downPath + "unhandleAdd.txt";
         File file = new File(path);
-        if(!file.exists()){
+        if (!file.exists()) {
             file.getParentFile().mkdirs();
         }
         try {
@@ -755,17 +749,17 @@ public class DailyMonitor implements Runnable {
             bw.flush();
             bw.close();
             fw.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("创建文件失败：" + path);
         }
     }
 
-    public void createUnhandleDeleteText(String order_guid){
+    public void createUnhandleDeleteText(String order_guid) {
         Allwork al = new Allwork();
-        al.set("order_guid",order_guid);
+        al.set("order_guid", order_guid);
         String path = downPath + "unhandleDelete.txt";
         File file = new File(path);
-        if(!file.exists()){
+        if (!file.exists()) {
             file.getParentFile().mkdirs();
         }
         try {
@@ -776,7 +770,7 @@ public class DailyMonitor implements Runnable {
             bw.flush();
             bw.close();
             fw.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("创建文件失败：" + path);
         }
     }
@@ -801,7 +795,7 @@ public class DailyMonitor implements Runnable {
                     .build();
             wxCpService.messageSend(message);
         } catch (Exception e) {
-            logger.error("推送企业微信失败:"+ filaPath);
+            logger.error("推送企业微信失败:" + filaPath);
             System.out.println("推送企业微信失败：" + filaPath);
         }
     }
@@ -824,7 +818,7 @@ public class DailyMonitor implements Runnable {
                     .build();
             wxCpService.messageSend(message);
         } catch (Exception e) {
-            logger.error("推送企业微信失败:"+ msgContent);
+            logger.error("推送企业微信失败:" + msgContent);
             System.out.println("推送企业微信失败：" + msgContent);
         }
     }

@@ -2,10 +2,12 @@ package com.wts.util;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.kit.PropKit;
+import com.wts.task.DailyMonitor;
 import me.chanjar.weixin.cp.api.impl.WxCpServiceImpl;
 import me.chanjar.weixin.cp.bean.WxCpMessage;
 import me.chanjar.weixin.cp.config.impl.WxCpDefaultConfigImpl;
 import okhttp3.*;
+import org.apache.log4j.Logger;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,10 +15,11 @@ import java.util.Calendar;
 import java.util.Date;
 
 import static com.wts.util.others.IpKit.getLocalHostIP;
+import static com.wts.util.printUtil.printSingleColor;
 
 
 public class wxUtil {
-
+    private static final Logger logger = Logger.getLogger(wxUtil.class);
     public static String getTimeStr(String localTime) {
         String str = localTime
                 .replace("/1/", "-01-")
@@ -193,13 +196,16 @@ public class wxUtil {
             Response response = client.newCall(request).execute();
             String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
             if (!errcode.equals("0")) {
-                System.out.println(unhandleStr);
-                System.out.println(errcode);
-                System.out.println(response.body().string());
+                logger.info("上传Allwork失败-->" + HotLineWorkNumber + "-" + linkPerson);
+                printSingleColor(33,3,"上传Allwork失败-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
+            }else{
+                logger.info("上传Allwork成功-->" + HotLineWorkNumber + "-" + linkPerson);
+                printSingleColor(34,3,"上传Allwork成功-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
             }
             return errcode;
         } catch (Exception e) {
-            System.out.println("添加Allwork失败：" + unhandleStr);
+            logger.error("上传Allwork错误-->" + HotLineWorkNumber + "-" + linkPerson);
+            printSingleColor(31,3,"上传Allwork错误-->" + HotLineWorkNumber + "-" + linkPerson);
             return "";
         }
     }
@@ -223,13 +229,16 @@ public class wxUtil {
             Response response = client.newCall(request).execute();
             String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
             if (!errcode.equals("0")) {
-                System.out.println(replyStr);
-                System.out.println(errcode);
-                System.out.println(response.body().string());
+                logger.info("上传Reply失败-->" + HotLineWorkNumber + "-" + linkPerson);
+                printSingleColor(33,3,"上传Reply失败-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
+            }else{
+                logger.info("上传Reply成功-->" + HotLineWorkNumber + "-" + linkPerson);
+                printSingleColor(34,3,"上传Reply成功-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
             }
             return errcode;
         } catch (Exception e) {
-            System.out.println("添加Reply失败：" + replyStr);
+            logger.error("上传Reply错误-->" + HotLineWorkNumber + "-" + linkPerson);
+            printSingleColor(31,3,"上传Reply错误-->" + HotLineWorkNumber + "-" + linkPerson);
             return "";
         }
     }
@@ -253,13 +262,16 @@ public class wxUtil {
             Response response = client.newCall(request).execute();
             String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
             if (!errcode.equals("0")) {
-                System.out.println(fallbackStr);
-                System.out.println(errcode);
-                System.out.println(response.body().string());
+                logger.info("上传Fallback失败-->" + HotLineWorkNumber + "-" + linkPerson);
+                printSingleColor(33,3,"上传Fallback失败-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
+            }else{
+                logger.info("上传Fallback成功-->" + HotLineWorkNumber + "-" + linkPerson);
+                printSingleColor(34,3,"上传Fallback成功-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
             }
             return errcode;
         } catch (Exception e) {
-            System.out.println("添加Fallback失败：" + fallbackStr);
+            logger.error("上传Fallback错误-->" + HotLineWorkNumber + "-" + linkPerson);
+            printSingleColor(31,3,"上传Fallback错误-->" + HotLineWorkNumber + "-" + linkPerson);
             return "";
         }
     }
@@ -283,13 +295,16 @@ public class wxUtil {
             Response response = client.newCall(request).execute();
             String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
             if (!errcode.equals("0")) {
-                System.out.println(UnhandleStr);
-                System.out.println(errcode);
-                System.out.println(response.body().string());
+                logger.info("上传Unhandle失败-->" + HotLineWorkNumber + "-" + linkPerson);
+                printSingleColor(33,3,"上传Unhandle失败-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
+            }else{
+                logger.info("上传Unhandle成功-->" + HotLineWorkNumber + "-" + linkPerson);
+                printSingleColor(34,3,"上传Unhandle成功-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
             }
             return errcode;
         } catch (Exception e) {
-            System.out.println("添加Unhandle失败：" + UnhandleStr);
+            logger.error("上传Unhandle错误-->" + HotLineWorkNumber + "-" + linkPerson);
+            printSingleColor(31,3,"上传Unhandle错误-->" + HotLineWorkNumber + "-" + linkPerson);
             return "";
         }
     }
@@ -298,7 +313,7 @@ public class wxUtil {
        删除Unhandle
        返回0表示正常
        */
-    public static String deleteUnhandle(String token, String guid) {
+    public static String deleteUnhandle(String token, String guid, String HotLineWorkNumber, String linkPerson) {
         String temp = "{\"env\":\"gov-rri3h\",\"query\":\"db.collection(\\\"unhandle\\\").doc(\\\"${_id}\\\").remove()\"}";
         String str = temp.replace("${_id}", guid);
         OkHttpClient client = new OkHttpClient().newBuilder()
@@ -314,13 +329,16 @@ public class wxUtil {
             Response response = client.newCall(request).execute();
             String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
             if (!errcode.equals("0")) {
-                System.out.println(str);
-                System.out.println(errcode);
-                System.out.println(response.body().string());
+                logger.info("删除Unhandle失败-->" + HotLineWorkNumber + "-" + linkPerson);
+                printSingleColor(33,3,"删除Unhandle失败-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
+            }else{
+                logger.info("删除Unhandle成功-->" + HotLineWorkNumber + "-" + linkPerson);
+                printSingleColor(34,3,"删除Unhandle成功-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
             }
             return errcode;
         } catch (Exception e) {
-            System.out.println("删除Unhandle失败：" + str);
+            logger.error("删除Unhandle错误-->" + HotLineWorkNumber + "-" + linkPerson);
+            printSingleColor(31,3,"删除Unhandle错误-->" + HotLineWorkNumber + "-" + linkPerson);
             return "";
         }
     }
@@ -366,7 +384,7 @@ public class wxUtil {
                     .build();
             wxCpService.messageSend(message);
         } catch (Exception e) {
-            System.out.println("推送企业微信失败：" + msgContent);
+            printSingleColor(31,3,"推送企业微信失败-->" + msgContent);
         }
     }
 
@@ -377,10 +395,10 @@ public class wxUtil {
         String ip = getLocalHostIP();
         String waiwangIP = PropKit.use("config-dev.txt").get("waiwangIP");
         if (ip.equals(waiwangIP)) {
-            System.out.println("切换外网状态成功");
+            printSingleColor(36,3,"切换外网状态成功");
             return true;
         } else {
-            System.out.println("切换外网状态失败");
+            printSingleColor(31,3,"切换外网状态失败");
             return false;
         }
     }
@@ -393,10 +411,10 @@ public class wxUtil {
         String ip = getLocalHostIP();
         String neiwangIP = PropKit.use("config-dev.txt").get("neiwangIP");
         if (ip.equals(neiwangIP)) {
-            System.out.println("切换内网状态成功");
+            printSingleColor(36,3,"切换内网状态成功");
             return true;
         } else {
-            System.out.println("切换内网状态失败");
+            printSingleColor(31,3,"切换内网状态失败");
             return false;
         }
     }

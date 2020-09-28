@@ -10,6 +10,8 @@ import java.io.File;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import static com.wts.util.printUtil.printSingleColor;
+
 
 public class util12345 {
     /**
@@ -64,8 +66,7 @@ public class util12345 {
             doc = Jsoup.parse(response.body().string());
         } catch (Exception e) {
             logger.error("无法获取链接：" + url);
-            logger.error(e);
-            System.out.println("无法获取链接：" + url);
+            printSingleColor(31,3,"获取链接错误-->" + url);
         }
         return doc;
     }
@@ -142,6 +143,7 @@ public class util12345 {
 //            System.out.println(doc);
         } catch (Exception e) {
             logger.error("无法获取页面列表：" + MessageTypeFlag);
+            printSingleColor(31,3,"获取页面列表错误-->" + MessageTypeFlag);
             e.printStackTrace();
         }
         return doc;
@@ -151,12 +153,6 @@ public class util12345 {
     public static Boolean hasDirectory(){
         File f = new File("D:\\12345");
         return f.isDirectory();
-    }
-
-    public static void main(String[] args) {
-        String cookie = PropKit.use("config-dev.txt").get("cookie");
-        Document doc2 = getPageList("2",cookie,"0");
-        System.out.println(doc2);
     }
 
 }
