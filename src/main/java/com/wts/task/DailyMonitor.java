@@ -43,6 +43,9 @@ public class DailyMonitor implements Runnable {
             allwork(cookie);
             reply(cookie);
             fallback(cookie);
+
+
+
             if (allworkList.size() != 0 || replyList.size() != 0 || fallbackList.size() != 0) {
                 try {
                     Boolean network = goWaiWang();
