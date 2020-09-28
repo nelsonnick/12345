@@ -112,7 +112,7 @@ public class oaUtil {
                         .build();
                 Response response = client.newCall(request).execute();
                 String run_id = JSONObject.parseObject(JSONObject.parseObject(response.body().string()).getString("data")).getString("run_id");
-                printSingleColor(34,3,"提交OA系统成功！");
+//                printSingleColor(34,3,"提交OA系统成功！");
             }catch (Exception e){
                 logger.error("提交OA系统失败！");
                 printSingleColor(31,3,"提交OA系统失败！");
@@ -137,8 +137,8 @@ public class oaUtil {
                 .replace("${联系电话}", link_phone)
                 .replace("${问题分类}", "")
                 .replace("${问题描述}", problem_description)
-                .replace("${问题核实情况}", "")
-//                .replace("${问题核实情况}", transfer_opinion + transfer_process)
+//                .replace("${问题核实情况}", "")
+                .replace("${问题核实情况}", transfer_opinion + transfer_process)
                 .replace("${处理意见}", "建议转" + suggestion + "进行答复。")
                 .replace("${办件类型}", "承办件")
                 .replace("${处理意见时间}", ft.format(dNow));
@@ -148,8 +148,8 @@ public class oaUtil {
         } else {
             str.replace("${紧急编号}", "2");
         }
-        printSingleColor(34,3,"拟提交OA数据-->"+ run_id + "-" + order_code + "-" + link_person + "-" + end_date);
-        return str;
+        printSingleColor(35,3,"拟提交OA数据-->"+ run_id + "-" + order_code + "-" + link_person + "-" + end_date);
+        return str.replace("\n","").replace("\r","");
     }
     /*
     读取单个文档内容并写入

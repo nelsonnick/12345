@@ -29,7 +29,7 @@ public class DownAll extends Controller {
 
     public void index() {
         String cookie = PropKit.use("config-dev.txt").get("cookie");
-        for (int i=11;i<13;i++){
+        for (int i=1;i<130;i++){
             getPageInfo(i, cookie);
             printSingleColor(32,3,"第" + i + "页已完成");
         }
