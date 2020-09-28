@@ -15,6 +15,7 @@ import com.jfinal.server.undertow.UndertowServer;
 import com.jfinal.template.Engine;
 import com.wts.controller.*;
 import com.wts.entity.model._MappingKit;
+import com.wts.task.DailyMonitor;
 
 
 /**
@@ -93,7 +94,7 @@ public class Config extends JFinalConfig {
 		me.add(arp);
 		// 配置任务调度插件
 		Cron4jPlugin cp = new Cron4jPlugin();
-//		cp.addTask("*/2 * * * *", new DailyMonitor());//每2分钟执行一次日常监控任务
+		cp.addTask("*/2 * * * *", new DailyMonitor());//每2分钟执行一次日常监控任务
 //		cp.addTask("*/1 * * * *", new AllworkTask());//每1分钟执行一次allwork监控任务
 //		cp.addTask("*/1 * * * *", new ReadSend());//每2分钟执行一次读取发送任务
 		me.add(cp);

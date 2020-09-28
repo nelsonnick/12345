@@ -395,10 +395,10 @@ public class wxUtil {
         String ip = getLocalHostIP();
         String waiwangIP = PropKit.use("config-dev.txt").get("waiwangIP");
         if (ip.equals(waiwangIP)) {
-            printSingleColor(36,3,"切换外网状态成功");
+            printSingleColor(36,3,"切换外网状态成功！");
             return true;
         } else {
-            printSingleColor(31,3,"切换外网状态失败");
+            printSingleColor(31,3,"切换外网状态失败！");
             return false;
         }
     }
@@ -411,10 +411,10 @@ public class wxUtil {
         String ip = getLocalHostIP();
         String neiwangIP = PropKit.use("config-dev.txt").get("neiwangIP");
         if (ip.equals(neiwangIP)) {
-            printSingleColor(36,3,"切换内网状态成功");
+            printSingleColor(36,3,"切换内网状态成功！");
             return true;
         } else {
-            printSingleColor(31,3,"切换内网状态失败");
+            printSingleColor(31,3,"切换内网状态失败！");
             return false;
         }
     }

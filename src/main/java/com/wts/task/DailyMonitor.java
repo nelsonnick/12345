@@ -43,9 +43,6 @@ public class DailyMonitor implements Runnable {
             allwork(cookie);
             reply(cookie);
             fallback(cookie);
-
-
-
             if (allworkList.size() != 0 || replyList.size() != 0 || fallbackList.size() != 0) {
                 try {
                     Boolean network = goWaiWang();
@@ -81,8 +78,8 @@ public class DailyMonitor implements Runnable {
                     }
                     goNeiWang();
                 } catch (Exception e) {
-                    logger.error("切换错误！");
-                    e.printStackTrace();
+                    logger.error("切换网卡错误！");
+                    printSingleColor(31, 3, "切换错误-->请务必以管理员身份运行此程序！");
                 }
             }
         }
@@ -799,7 +796,7 @@ public class DailyMonitor implements Runnable {
             wxCpService.messageSend(message);
         } catch (Exception e) {
             logger.error("推送企业微信失败:" + filaPath);
-            System.out.println("推送企业微信失败：" + filaPath);
+            printSingleColor(31, 3, "推送企业微信失败-->" + filaPath);
         }
     }
 
@@ -822,7 +819,7 @@ public class DailyMonitor implements Runnable {
             wxCpService.messageSend(message);
         } catch (Exception e) {
             logger.error("推送企业微信失败:" + msgContent);
-            System.out.println("推送企业微信失败：" + msgContent);
+            printSingleColor(31, 3, "推送企业微信失败-->" + msgContent);
         }
     }
 
