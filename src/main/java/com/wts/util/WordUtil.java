@@ -143,7 +143,7 @@ WordUtil {
         //  new Object[] { filePath }, new int[1]).toDispatch();
         try {
             Dispatch.callN(doc, "PrintOut");
-            printSingleColor(36,3,"打印成功-->" + filePath);
+            printSingleColor(95,3,"打印成功-->" + filePath);
         } catch (Exception e) {
             e.printStackTrace();
             printSingleColor(31,3,"打印失败-->" + filePath);

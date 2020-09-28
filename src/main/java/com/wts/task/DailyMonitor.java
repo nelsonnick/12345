@@ -79,7 +79,7 @@ public class DailyMonitor implements Runnable {
                     goNeiWang();
                 } catch (Exception e) {
                     logger.error("切换网卡错误！");
-                    printSingleColor(31, 3, "切换错误-->请务必以管理员身份运行此程序！");
+                    printSingleColor(91, 3, "切换网络错误-->请务必以管理员身份运行此程序！");
                 }
             }
         }
@@ -284,6 +284,13 @@ public class DailyMonitor implements Runnable {
                 allwork.get("order_code"),
                 allwork.get("link_person"),
                 allwork.get("end_date"));
+        if (errcode.equals("") || !errcode.equals("0") || err.equals("") || !err.equals("0")) {
+            AllworkService allworkService = new AllworkService();
+//            allworkService.deleteById(allwork.getId());
+            logger.info("推送失败，删除Allwork工单-->" + allwork.get("order_code") + "-" + allwork.get("link_person") + "-" + allwork.get("send_time"));
+            printSingleColor(32, 3, "推送失败，删除Allwork工单-->" + allwork.get("order_code") + "-" + allwork.get("link_person") + "-" + allwork.get("send_time") + "-AddAllworkErrCode:" + errcode + "-AddUnhandleErrCode:" + err);
+
+        }
         String OA_token = oaUtil.getToken();
         if (!OA_token.equals("")) {
             String run_id = oaUtil.getRun_id(OA_token);
@@ -294,7 +301,6 @@ public class DailyMonitor implements Runnable {
                     oaUtil.inputOA(OA_token, OA_content);
                 }
             }
-
         }
         AllworkService service = new AllworkService();
         String phoneTime = service.findNumByPhone(allwork.get("link_phone"));
@@ -483,7 +489,7 @@ public class DailyMonitor implements Runnable {
 
                 service.add(reply);
                 logger.info("确认新Reply工单-->" + order_code + "-" + link_person + "-" + send_time);
-                printSingleColor(34, 3, "确认新Reply工单-->" + order_code + "-" + link_person + "-" + send_time);
+                printSingleColor(35, 3, "确认新Reply工单-->" + order_code + "-" + link_person + "-" + send_time);
 
                 replyList.add(reply);
             }
@@ -508,7 +514,7 @@ public class DailyMonitor implements Runnable {
             ReplyService replyService = new ReplyService();
 //            replyService.deleteById(reply.getId());
             logger.info("推送失败，删除Reply工单-->" + reply.get("order_code") + "-" + reply.get("link_person") + "-" + reply.get("send_time"));
-            printSingleColor(31, 3, "推送失败，删除Reply工单-->" + reply.get("order_code") + "-" + reply.get("link_person") + "-" + reply.get("send_time") + "-AddReplyErrCode:" + errcode + "-DeleteUnhandleErrCode:" + err);
+            printSingleColor(32, 3, "推送失败，删除Reply工单-->" + reply.get("order_code") + "-" + reply.get("link_person") + "-" + reply.get("send_time") + "-AddReplyErrCode:" + errcode + "-DeleteUnhandleErrCode:" + err);
         }
         sendMessageToWeiXin("回复工单：" + reply.get("order_code") + "-->" + reply.get("reply_person"), "WangTianShuo");
     }
@@ -672,7 +678,7 @@ public class DailyMonitor implements Runnable {
 
                 service.add(fallback);
                 logger.info("确认新Fallback工单-->" + order_code + "-" + link_person + "-" + send_time);
-                printSingleColor(34, 3, "确认新Fallback工单-->" + order_code + "-" + link_person + "-" + send_time);
+                printSingleColor(36, 3, "确认新Fallback工单-->" + order_code + "-" + link_person + "-" + send_time);
 
                 fallbackList.add(fallback);
             }
@@ -696,10 +702,8 @@ public class DailyMonitor implements Runnable {
         if (errcode.equals("") || !errcode.equals("0") || err.equals("") || !err.equals("0")) {
             FallbackService fallbackService = new FallbackService();
 //            fallbackService.deleteById(fallback.getId());
-            System.out.println("errcode：" + errcode);
-            System.out.println("err：" + err);
             logger.info("推送失败，删除Fallback工单-->" + fallback.get("order_code") + "-" + fallback.get("link_person") + "-" + fallback.get("send_time"));
-            printSingleColor(31, 3, "推送失败，删除Fallback工单-->" + fallback.get("order_code") + "-" + fallback.get("link_person") + "-" + fallback.get("send_time") + "-AddFallbackErrCode:" + errcode + "-DeleteUnhandleErrCode:" + err);
+            printSingleColor(32, 3, "推送失败，删除Fallback工单-->" + fallback.get("order_code") + "-" + fallback.get("link_person") + "-" + fallback.get("send_time") + "-AddFallbackErrCode:" + errcode + "-DeleteUnhandleErrCode:" + err);
         }
         sendMessageToWeiXin("回退工单：" + fallback.get("order_code") + "-->" + fallback.get("fallback_person"), "WangTianShuo");
     }
@@ -821,7 +825,7 @@ public class DailyMonitor implements Runnable {
             wxCpService.messageSend(message);
         } catch (Exception e) {
             logger.error("推送企业微信失败:" + msgContent);
-            printSingleColor(31, 3, "推送企业微信失败-->" + msgContent);
+            printSingleColor(91, 3, "推送企业微信失败-->" + msgContent);
         }
     }
 

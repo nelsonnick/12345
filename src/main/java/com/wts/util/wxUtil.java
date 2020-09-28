@@ -197,7 +197,7 @@ public class wxUtil {
             String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
             if (!errcode.equals("0")) {
                 logger.info("上传Allwork失败-->" + HotLineWorkNumber + "-" + linkPerson);
-                printSingleColor(33,3,"上传Allwork失败-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
+                printSingleColor(93,3,"上传Allwork失败-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
             }else{
                 logger.info("上传Allwork成功-->" + HotLineWorkNumber + "-" + linkPerson);
                 printSingleColor(34,3,"上传Allwork成功-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
@@ -205,7 +205,7 @@ public class wxUtil {
             return errcode;
         } catch (Exception e) {
             logger.error("上传Allwork错误-->" + HotLineWorkNumber + "-" + linkPerson);
-            printSingleColor(31,3,"上传Allwork错误-->" + HotLineWorkNumber + "-" + linkPerson);
+            printSingleColor(91,3,"上传Allwork错误-->" + HotLineWorkNumber + "-" + linkPerson);
             return "";
         }
     }
@@ -230,15 +230,15 @@ public class wxUtil {
             String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
             if (!errcode.equals("0")) {
                 logger.info("上传Reply失败-->" + HotLineWorkNumber + "-" + linkPerson);
-                printSingleColor(33,3,"上传Reply失败-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
+                printSingleColor(93,3,"上传Reply失败-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
             }else{
                 logger.info("上传Reply成功-->" + HotLineWorkNumber + "-" + linkPerson);
-                printSingleColor(34,3,"上传Reply成功-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
+                printSingleColor(35,3,"上传Reply成功-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
             }
             return errcode;
         } catch (Exception e) {
             logger.error("上传Reply错误-->" + HotLineWorkNumber + "-" + linkPerson);
-            printSingleColor(31,3,"上传Reply错误-->" + HotLineWorkNumber + "-" + linkPerson);
+            printSingleColor(1,3,"上传Reply错误-->" + HotLineWorkNumber + "-" + linkPerson);
             return "";
         }
     }
@@ -263,15 +263,15 @@ public class wxUtil {
             String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
             if (!errcode.equals("0")) {
                 logger.info("上传Fallback失败-->" + HotLineWorkNumber + "-" + linkPerson);
-                printSingleColor(33,3,"上传Fallback失败-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
+                printSingleColor(93,3,"上传Fallback失败-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
             }else{
                 logger.info("上传Fallback成功-->" + HotLineWorkNumber + "-" + linkPerson);
-                printSingleColor(34,3,"上传Fallback成功-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
+                printSingleColor(36,3,"上传Fallback成功-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
             }
             return errcode;
         } catch (Exception e) {
             logger.error("上传Fallback错误-->" + HotLineWorkNumber + "-" + linkPerson);
-            printSingleColor(31,3,"上传Fallback错误-->" + HotLineWorkNumber + "-" + linkPerson);
+            printSingleColor(91,3,"上传Fallback错误-->" + HotLineWorkNumber + "-" + linkPerson);
             return "";
         }
     }
@@ -296,15 +296,15 @@ public class wxUtil {
             String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
             if (!errcode.equals("0")) {
                 logger.info("上传Unhandle失败-->" + HotLineWorkNumber + "-" + linkPerson);
-                printSingleColor(33,3,"上传Unhandle失败-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
+                printSingleColor(93,3,"上传Unhandle失败-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
             }else{
                 logger.info("上传Unhandle成功-->" + HotLineWorkNumber + "-" + linkPerson);
-                printSingleColor(34,3,"上传Unhandle成功-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
+                printSingleColor(37,3,"上传Unhandle成功-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
             }
             return errcode;
         } catch (Exception e) {
             logger.error("上传Unhandle错误-->" + HotLineWorkNumber + "-" + linkPerson);
-            printSingleColor(31,3,"上传Unhandle错误-->" + HotLineWorkNumber + "-" + linkPerson);
+            printSingleColor(91,3,"上传Unhandle错误-->" + HotLineWorkNumber + "-" + linkPerson);
             return "";
         }
     }
@@ -330,15 +330,15 @@ public class wxUtil {
             String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
             if (!errcode.equals("0")) {
                 logger.info("删除Unhandle失败-->" + HotLineWorkNumber + "-" + linkPerson);
-                printSingleColor(33,3,"删除Unhandle失败-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
+                printSingleColor(93,3,"删除Unhandle失败-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
             }else{
                 logger.info("删除Unhandle成功-->" + HotLineWorkNumber + "-" + linkPerson);
-                printSingleColor(34,3,"删除Unhandle成功-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
+                printSingleColor(90,3,"删除Unhandle成功-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
             }
             return errcode;
         } catch (Exception e) {
             logger.error("删除Unhandle错误-->" + HotLineWorkNumber + "-" + linkPerson);
-            printSingleColor(31,3,"删除Unhandle错误-->" + HotLineWorkNumber + "-" + linkPerson);
+            printSingleColor(91,3,"删除Unhandle错误-->" + HotLineWorkNumber + "-" + linkPerson);
             return "";
         }
     }
@@ -384,7 +384,7 @@ public class wxUtil {
                     .build();
             wxCpService.messageSend(message);
         } catch (Exception e) {
-            printSingleColor(31,3,"推送企业微信失败-->" + msgContent);
+            printSingleColor(91,3,"推送企业微信失败-->" + msgContent);
         }
     }
 
@@ -395,10 +395,10 @@ public class wxUtil {
         String ip = getLocalHostIP();
         String waiwangIP = PropKit.use("config-dev.txt").get("waiwangIP");
         if (ip.equals(waiwangIP)) {
-            printSingleColor(36,3,"切换外网状态成功！");
+            printSingleColor(30,3,"切换外网状态成功！");
             return true;
         } else {
-            printSingleColor(31,3,"切换外网状态失败！");
+            printSingleColor(91,3,"切换外网状态失败！");
             return false;
         }
     }
@@ -411,10 +411,10 @@ public class wxUtil {
         String ip = getLocalHostIP();
         String neiwangIP = PropKit.use("config-dev.txt").get("neiwangIP");
         if (ip.equals(neiwangIP)) {
-            printSingleColor(36,3,"切换内网状态成功！");
+            printSingleColor(30,3,"切换内网状态成功！");
             return true;
         } else {
-            printSingleColor(31,3,"切换内网状态失败！");
+            printSingleColor(91,3,"切换内网状态失败！");
             return false;
         }
     }

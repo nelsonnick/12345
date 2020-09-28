@@ -47,7 +47,7 @@ public class oaUtil {
             return  JSONObject.parseObject(JSONObject.parseObject(response.body().string()).getString("data")).getString("token");
         }catch (Exception e){
             logger.error("获取OA的token失败，无法推送！");
-            printSingleColor(31,3,"获取OA的token失败，无法推送！");
+            printSingleColor(91,3,"获取OA的token失败，无法推送！");
             return "";
         }
     }
@@ -115,7 +115,7 @@ public class oaUtil {
 //                printSingleColor(34,3,"提交OA系统成功！");
             }catch (Exception e){
                 logger.error("提交OA系统失败！");
-                printSingleColor(31,3,"提交OA系统失败！");
+                printSingleColor(91,3,"提交OA系统失败！");
             }
         }
     }
@@ -148,7 +148,7 @@ public class oaUtil {
         } else {
             str.replace("${紧急编号}", "2");
         }
-        printSingleColor(35,3,"拟提交OA数据-->"+ run_id + "-" + order_code + "-" + link_person + "-" + end_date);
+        printSingleColor(32,3,"提交OA数据-->"+ run_id + "-" + order_code + "-" + link_person + "-" + end_date);
         return str.replace("\n","").replace("\r","");
     }
     /*
