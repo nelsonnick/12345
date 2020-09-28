@@ -1,6 +1,5 @@
 package com.wts.util;
 
-import com.jfinal.kit.PropKit;
 import com.wts.entity.model.Allwork;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -87,8 +86,6 @@ public class testUtil {
         }
     }
 
-
-
     public static void sendAllwork(Allwork allwork) {
         String OA_token = oaUtil.getToken();
         if (!OA_token.equals("")) {
@@ -105,9 +102,6 @@ public class testUtil {
 
     }
 
-    public static void main(String[] args) throws Exception{
-        Allwork allwork = getAllwork();
-        sendAllwork(allwork);
-    }
+
 
 }

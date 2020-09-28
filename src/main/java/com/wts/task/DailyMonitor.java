@@ -102,7 +102,7 @@ public class DailyMonitor implements Runnable {
                     file_guid = value.substring(8, 46);
                     order_guid = value.substring(51, 89);
                 }
-                if (allworkService.findNumByGUID(order_guid) != 0) {
+                if (allworkService.findNumByGUID(order_guid) == 0) {
                     Allwork allwork = getAllwork(file_guid, order_guid, cookie);
                     if (allwork != null) {
                         saveAllwork(allwork);
@@ -352,7 +352,7 @@ public class DailyMonitor implements Runnable {
                     file_guid = value.substring(8, 46);
                     order_guid = value.substring(51, 89);
                 }
-                if (replyService.findNumByGUID(order_guid) != 0) {
+                if (replyService.findNumByGUID(order_guid) == 0) {
                     Reply reply = getReply(file_guid, order_guid, cookie);
                     if (reply != null) {
                         saveReply(reply);
@@ -504,13 +504,11 @@ public class DailyMonitor implements Runnable {
                 reply.get("order_guid"),
                 reply.get("order_code"),
                 reply.get("link_person"));
-        if (errcode.equals("") || errcode.equals("0") || err.equals("") || err.equals("0")) {
+        if (errcode.equals("") || !errcode.equals("0") || err.equals("") || !err.equals("0")) {
             ReplyService replyService = new ReplyService();
 //            replyService.deleteById(reply.getId());
-            System.out.println("errcode：" + errcode);
-            System.out.println("err：" + err);
             logger.info("推送失败，删除Reply工单-->" + reply.get("order_code") + "-" + reply.get("link_person") + "-" + reply.get("send_time"));
-            printSingleColor(31, 3, "推送失败，删除Reply工单-->" + reply.get("order_code") + "-" + reply.get("link_person") + "-" + reply.get("send_time"));
+            printSingleColor(31, 3, "推送失败，删除Reply工单-->" + reply.get("order_code") + "-" + reply.get("link_person") + "-" + reply.get("send_time") + "-AddReplyErrCode:" + errcode + "-DeleteUnhandleErrCode:" + err);
         }
         sendMessageToWeiXin("回复工单：" + reply.get("order_code") + "-->" + reply.get("reply_person"), "WangTianShuo");
     }
@@ -559,7 +557,7 @@ public class DailyMonitor implements Runnable {
                     file_guid = value.substring(8, 46);
                     order_guid = value.substring(51, 89);
                 }
-                if (fallbackService.findNumByGUID(order_guid) != 0) {
+                if (fallbackService.findNumByGUID(order_guid) == 0) {
                     Fallback fallback = getFallback(file_guid, order_guid, cookie);
                     if (fallback != null) {
                         saveFallback(fallback);
@@ -695,13 +693,13 @@ public class DailyMonitor implements Runnable {
                 fallback.get("order_guid"),
                 fallback.get("order_code"),
                 fallback.get("link_person"));
-        if (errcode.equals("") || errcode.equals("0") || err.equals("") || err.equals("0")) {
+        if (errcode.equals("") || !errcode.equals("0") || err.equals("") || !err.equals("0")) {
             FallbackService fallbackService = new FallbackService();
 //            fallbackService.deleteById(fallback.getId());
             System.out.println("errcode：" + errcode);
             System.out.println("err：" + err);
             logger.info("推送失败，删除Fallback工单-->" + fallback.get("order_code") + "-" + fallback.get("link_person") + "-" + fallback.get("send_time"));
-            printSingleColor(31, 3, "推送失败，删除Fallback工单-->" + fallback.get("order_code") + "-" + fallback.get("link_person") + "-" + fallback.get("send_time"));
+            printSingleColor(31, 3, "推送失败，删除Fallback工单-->" + fallback.get("order_code") + "-" + fallback.get("link_person") + "-" + fallback.get("send_time") + "-AddFallbackErrCode:" + errcode + "-DeleteUnhandleErrCode:" + err);
         }
         sendMessageToWeiXin("回退工单：" + fallback.get("order_code") + "-->" + fallback.get("fallback_person"), "WangTianShuo");
     }
