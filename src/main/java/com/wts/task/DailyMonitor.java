@@ -90,24 +90,29 @@ public class DailyMonitor implements Runnable {
         String url = getPageUrl("0", "0");
         Document doc = util12345.getDoc(url, cookie);
         if (doc != null) {
-            Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
-            for (int i = 0; i < trs.size() - 1; i++) {
-                Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
-                String value = in.attr("value");
-                String file_guid, order_guid;
-                if (String.valueOf(value.charAt(9)).equals("{")) {
-                    file_guid = value.substring(9, 47);
-                    order_guid = value.substring(53, 91);
-                } else {
-                    file_guid = value.substring(8, 46);
-                    order_guid = value.substring(51, 89);
-                }
-                if (allworkService.findNumByGUID(order_guid) == 0) {
-                    Allwork allwork = getAllwork(file_guid, order_guid, cookie);
-                    if (allwork != null) {
-                        saveAllwork(allwork);
+            try {
+                Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
+                for (int i = 0; i < trs.size() - 1; i++) {
+                    Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
+                    String value = in.attr("value");
+                    String file_guid, order_guid;
+                    if (String.valueOf(value.charAt(9)).equals("{")) {
+                        file_guid = value.substring(9, 47);
+                        order_guid = value.substring(53, 91);
+                    } else {
+                        file_guid = value.substring(8, 46);
+                        order_guid = value.substring(51, 89);
+                    }
+                    if (allworkService.findNumByGUID(order_guid) == 0) {
+                        Allwork allwork = getAllwork(file_guid, order_guid, cookie);
+                        if (allwork != null) {
+                            saveAllwork(allwork);
+                        }
                     }
                 }
+            }catch (Exception e){
+                logger.error("解析Allwork列表错误-->" + url);
+                printSingleColor(31, 3, "解析Allwork列表错误-->" + url);
             }
         }
     }
@@ -346,6 +351,7 @@ public class DailyMonitor implements Runnable {
         String url = getPageUrl("201", "1");
         Document doc = util12345.getDoc(url, cookie);
         if (doc != null) {
+            try{
             Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
             for (int i = 0; i < trs.size() - 1; i++) {
                 Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
@@ -364,6 +370,10 @@ public class DailyMonitor implements Runnable {
                         saveReply(reply);
                     }
                 }
+            }
+            }catch (Exception e){
+                logger.error("解析Reply列表错误-->" + url);
+                printSingleColor(31, 3, "解析Reply列表错误-->" + url);
             }
         }
     }
@@ -551,6 +561,7 @@ public class DailyMonitor implements Runnable {
         String url = getPageUrl("202", "1");
         Document doc = util12345.getDoc(url, cookie);
         if (doc != null) {
+            try{
             Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
             for (int i = 0; i < trs.size() - 1; i++) {
                 Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
@@ -569,6 +580,10 @@ public class DailyMonitor implements Runnable {
                         saveFallback(fallback);
                     }
                 }
+            }
+            }catch (Exception e){
+                logger.error("解析Fallback列表错误-->" + url);
+                printSingleColor(31, 3, "解析Fallback列表错误-->" + url);
             }
         }
     }
