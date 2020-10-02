@@ -168,8 +168,8 @@ public class AllworkTask implements Runnable {
             worker.add("李名菊");
             worker.add("于辰");
             worker.add("焦圣雨");
-            logger.info("收到新Allwork工单-->" + order_code + "-" + link_person + "-" + send_time + "-" + worker.get(0));
-            printSingleColor(34, 3, "收到新Allwork工单-->" + order_code + "-" + link_person + "-" + send_time + "-" + worker.get(0));
+            logger.info("收到新Allwork工单-->" + order_code + "-" + link_person + "-" + send_time + "-" + worker.get(Integer.parseInt(personCode)));
+            printSingleColor(34, 3, "收到新Allwork工单-->" + order_code + "-" + link_person + "-" + send_time + "-" + worker.get(Integer.parseInt(personCode)));
 
             Map<String, String> map = new HashMap<>();
             map.put("accept_person_code", accept_person_code);

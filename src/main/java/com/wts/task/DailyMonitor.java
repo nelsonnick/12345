@@ -231,8 +231,8 @@ public class DailyMonitor implements Runnable {
                 worker.add("李名菊");
                 worker.add("于辰");
                 worker.add("焦圣雨");
-                logger.info("收到新Allwork工单-->" + order_code + "-" + link_person + "-" + send_time + "-" + worker.get(0));
-                printSingleColor(34, 3, "收到新Allwork工单-->" + order_code + "-" + link_person + "-" + send_time + "-" + worker.get(0));
+                logger.info("收到新Allwork工单-->" + order_code + "-" + link_person + "-" + send_time + "-" + worker.get(Integer.parseInt(personCode)));
+                printSingleColor(34, 3, "收到新Allwork工单-->" + order_code + "-" + link_person + "-" + send_time + "-" + worker.get(Integer.parseInt(personCode)));
 
                 Map<String, String> map = new HashMap<>();
                 map.put("accept_person_code", accept_person_code);
@@ -350,56 +350,56 @@ public class DailyMonitor implements Runnable {
 
     public void reply(String cookie) {
         ReplyService replyService = new ReplyService();
-//        String url = getPageUrl("201", "1");
-//        Document doc = util12345.getDoc(url, cookie);
-//        if (doc != null) {
-//            Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
-//            for (int i = 0; i < trs.size() - 1; i++) {
-//                Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
-//                String value = in.attr("value");
-//                String file_guid, order_guid;
-//                if (String.valueOf(value.charAt(9)).equals("{")) {
-//                    file_guid = value.substring(9, 47);
-//                    order_guid = value.substring(53, 91);
-//                } else {
-//                    file_guid = value.substring(8, 46);
-//                    order_guid = value.substring(51, 89);
-//                }
-//                if (replyService.findNumByGUID(order_guid) == 0) {
-//                    Reply reply = getReply(file_guid, order_guid, cookie);
-//                    if (reply != null) {
-//                        saveReply(reply);
-//                    }
-//                }
-//            }
-//        }
-
-        util12345.getDoc(getPageUrl("201", "1"), cookie);
-        Document doc = null;
-        for (int j = 1; j < 9; j++) {
-            doc = getDocOther(getPageUrl(j + ""), cookie);
-            if (doc != null) {
-                Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
-                for (int i = 0; i < trs.size() - 1; i++) {
-                    Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
-                    String value = in.attr("value");
-                    String file_guid, order_guid;
-                    if (String.valueOf(value.charAt(9)).equals("{")) {
-                        file_guid = value.substring(9, 47);
-                        order_guid = value.substring(53, 91);
-                    } else {
-                        file_guid = value.substring(8, 46);
-                        order_guid = value.substring(51, 89);
-                    }
-                    if (replyService.findNumByGUID(order_guid) == 0) {
-                        Reply reply = getReply(file_guid, order_guid, cookie);
-                        if (reply != null) {
-                            saveReply(reply);
-                        }
+        String url = getPageUrl("201", "1");
+        Document doc = util12345.getDoc(url, cookie);
+        if (doc != null) {
+            Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
+            for (int i = 0; i < trs.size() - 1; i++) {
+                Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
+                String value = in.attr("value");
+                String file_guid, order_guid;
+                if (String.valueOf(value.charAt(9)).equals("{")) {
+                    file_guid = value.substring(9, 47);
+                    order_guid = value.substring(53, 91);
+                } else {
+                    file_guid = value.substring(8, 46);
+                    order_guid = value.substring(51, 89);
+                }
+                if (replyService.findNumByGUID(order_guid) == 0) {
+                    Reply reply = getReply(file_guid, order_guid, cookie);
+                    if (reply != null) {
+                        saveReply(reply);
                     }
                 }
             }
         }
+
+//        util12345.getDoc(getPageUrl("201", "1"), cookie);
+//        Document doc = null;
+//        for (int j = 1; j < 9; j++) {
+//            doc = getDocOther(getPageUrl(j + ""), cookie);
+//            if (doc != null) {
+//                Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
+//                for (int i = 0; i < trs.size() - 1; i++) {
+//                    Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
+//                    String value = in.attr("value");
+//                    String file_guid, order_guid;
+//                    if (String.valueOf(value.charAt(9)).equals("{")) {
+//                        file_guid = value.substring(9, 47);
+//                        order_guid = value.substring(53, 91);
+//                    } else {
+//                        file_guid = value.substring(8, 46);
+//                        order_guid = value.substring(51, 89);
+//                    }
+//                    if (replyService.findNumByGUID(order_guid) == 0) {
+//                        Reply reply = getReply(file_guid, order_guid, cookie);
+//                        if (reply != null) {
+//                            saveReply(reply);
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
 
     public Reply getReply(String file_guid, String order_guid, String cookie) {
@@ -582,56 +582,56 @@ public class DailyMonitor implements Runnable {
 
     public void fallback(String cookie) {
         FallbackService fallbackService = new FallbackService();
-//        String url = getPageUrl("202", "1");
-//        Document doc = util12345.getDoc(url, cookie);
-//        if (doc != null) {
-//            Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
-//            for (int i = 0; i < trs.size() - 1; i++) {
-//                Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
-//                String value = in.attr("value");
-//                String file_guid, order_guid;
-//                if (String.valueOf(value.charAt(9)).equals("{")) {
-//                    file_guid = value.substring(9, 47);
-//                    order_guid = value.substring(53, 91);
-//                } else {
-//                    file_guid = value.substring(8, 46);
-//                    order_guid = value.substring(51, 89);
-//                }
-//                if (fallbackService.findNumByGUID(order_guid) == 0) {
-//                    Fallback fallback = getFallback(file_guid, order_guid, cookie);
-//                    if (fallback != null) {
-//                        saveFallback(fallback);
-//                    }
-//                }
-//            }
-//        }
-
-        util12345.getDoc(getPageUrl("202", "1"), cookie);
-        Document doc = null;
-        for (int j = 1; j < 5; j++) {
-            doc = getDocOther(getPageUrl(j + ""), cookie);
-            if (doc != null) {
-                Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
-                for (int i = 0; i < trs.size() - 1; i++) {
-                    Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
-                    String value = in.attr("value");
-                    String file_guid, order_guid;
-                    if (String.valueOf(value.charAt(9)).equals("{")) {
-                        file_guid = value.substring(9, 47);
-                        order_guid = value.substring(53, 91);
-                    } else {
-                        file_guid = value.substring(8, 46);
-                        order_guid = value.substring(51, 89);
-                    }
-                    if (fallbackService.findNumByGUID(order_guid) == 0) {
-                        Fallback fallback = getFallback(file_guid, order_guid, cookie);
-                        if (fallback != null) {
-                            saveFallback(fallback);
-                        }
+        String url = getPageUrl("202", "1");
+        Document doc = util12345.getDoc(url, cookie);
+        if (doc != null) {
+            Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
+            for (int i = 0; i < trs.size() - 1; i++) {
+                Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
+                String value = in.attr("value");
+                String file_guid, order_guid;
+                if (String.valueOf(value.charAt(9)).equals("{")) {
+                    file_guid = value.substring(9, 47);
+                    order_guid = value.substring(53, 91);
+                } else {
+                    file_guid = value.substring(8, 46);
+                    order_guid = value.substring(51, 89);
+                }
+                if (fallbackService.findNumByGUID(order_guid) == 0) {
+                    Fallback fallback = getFallback(file_guid, order_guid, cookie);
+                    if (fallback != null) {
+                        saveFallback(fallback);
                     }
                 }
             }
         }
+
+//        util12345.getDoc(getPageUrl("202", "1"), cookie);
+//        Document doc = null;
+//        for (int j = 1; j < 5; j++) {
+//            doc = getDocOther(getPageUrl(j + ""), cookie);
+//            if (doc != null) {
+//                Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
+//                for (int i = 0; i < trs.size() - 1; i++) {
+//                    Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
+//                    String value = in.attr("value");
+//                    String file_guid, order_guid;
+//                    if (String.valueOf(value.charAt(9)).equals("{")) {
+//                        file_guid = value.substring(9, 47);
+//                        order_guid = value.substring(53, 91);
+//                    } else {
+//                        file_guid = value.substring(8, 46);
+//                        order_guid = value.substring(51, 89);
+//                    }
+//                    if (fallbackService.findNumByGUID(order_guid) == 0) {
+//                        Fallback fallback = getFallback(file_guid, order_guid, cookie);
+//                        if (fallback != null) {
+//                            saveFallback(fallback);
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
     }
 
