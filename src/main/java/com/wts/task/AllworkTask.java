@@ -162,8 +162,14 @@ public class AllworkTask implements Runnable {
             String enclosure = allwork.get("enclosure");
 
             service.add(allwork);
-            logger.info("收到新Allwork工单-->" + order_code + "-" + link_person + "-" + send_time);
-            printSingleColor(34,3,"收到新Allwork工单-->" + order_code + "-" + link_person + "-" + send_time);
+            String personCode = service.getPersonCode();
+            List<String> worker=new ArrayList<>();
+            worker.add("朱晓庆");
+            worker.add("李名菊");
+            worker.add("于辰");
+            worker.add("焦圣雨");
+            logger.info("收到新Allwork工单-->" + order_code + "-" + link_person + "-" + send_time + "-" + worker.get(0));
+            printSingleColor(34, 3, "收到新Allwork工单-->" + order_code + "-" + link_person + "-" + send_time + "-" + worker.get(0));
 
             Map<String, String> map = new HashMap<>();
             map.put("accept_person_code", accept_person_code);
@@ -190,7 +196,6 @@ public class AllworkTask implements Runnable {
             DateTimeFormatter MM = DateTimeFormatter.ofPattern("MM");
             DateTimeFormatter dd = DateTimeFormatter.ofPattern("dd");
             String path = "D:\\工单备份\\" + date.format(yyyy) + "\\" + date.format(MM) + "\\" + date.format(dd) + "\\";
-            String personCode = service.getPersonCode();
             CreatWordByModel("D:\\TemplateDoc" + personCode + ".docx", map, path + order_code + "-" + order_guid + ".docx");
             CreatWordByModel("D:\\TemplateDoc.docx", map, AllworkTask.path + order_code + "-" + order_guid + ".docx");
             String printerName = "HP LaserJet 1020";//打印机名包含字串

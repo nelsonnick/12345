@@ -20,6 +20,7 @@ public class _MappingKit {
 		arp.addMapping("reply", "id", Reply.class);
 		arp.addMapping("re", "id", Re.class);
 		arp.addMapping("allwork", "id", Allwork.class);
+		arp.addMapping("unhandle", "id", Unhandle.class);
 	}
 }
 

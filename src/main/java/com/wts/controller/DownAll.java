@@ -29,7 +29,8 @@ public class DownAll extends Controller {
 
     public void index() {
         String cookie = PropKit.use("config-dev.txt").get("cookie");
-        for (int i=1;i<130;i++){
+//        getPageInfo2(cookie);
+        for (int i=1;i<50;i++){
             getPageInfo(i, cookie);
             printSingleColor(32,3,"第" + i + "页已完成");
         }
@@ -447,4 +448,40 @@ public class DownAll extends Controller {
 
         renderText("异常工单下载完成！");
     }
+
+    public void getPageInfo2(String cookie){
+        try {
+            Document doc = util12345.getPageList("2", cookie, "201");
+            System.out.println(doc);
+            Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
+            for (int i = 0; i < trs.size() - 1; i++) {
+                Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
+                String value = in.attr("value");
+                String file_guid, order_guid;
+                if (value.length() > 80) {
+                    if (String.valueOf(value.charAt(9)).equals("{")) {
+                        file_guid = value.substring(9, 47);
+                        order_guid = value.substring(53, 91);
+                    } else {
+                        file_guid = value.substring(8, 46);
+                        order_guid = value.substring(51, 89);
+                    }
+                } else {
+                    file_guid = "";
+                    order_guid = value.substring(5, 43);
+                }
+                String url;
+                if (file_guid.equals("")){
+                    url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?GUID=" + order_guid + "&issend=1&IsZDDB=";
+                }else{
+                    url = "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/ViewTaskHotLine.aspx?fileGuid=" + file_guid + "&GUID=" + order_guid + "&IsZDDB=&xxlyid=1";
+                }
+                System.out.println(url);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            printSingleColor(31,3,"页面信息获取失败，错误页码-->1");
+        }
+    }
+
 }

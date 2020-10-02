@@ -197,7 +197,7 @@ public class wxUtil {
             String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
             if (!errcode.equals("0")) {
                 logger.info("上传Allwork失败-->" + HotLineWorkNumber + "-" + linkPerson);
-                printSingleColor(93,3,"上传Allwork失败-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
+                printSingleColor(31,3,"上传Allwork失败-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
             }else{
                 logger.info("上传Allwork成功-->" + HotLineWorkNumber + "-" + linkPerson);
                 printSingleColor(34,3,"上传Allwork成功-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
@@ -230,7 +230,7 @@ public class wxUtil {
             String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
             if (!errcode.equals("0")) {
                 logger.info("上传Reply失败-->" + HotLineWorkNumber + "-" + linkPerson);
-                printSingleColor(93,3,"上传Reply失败-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
+                printSingleColor(31,3,"上传Reply失败-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
             }else{
                 logger.info("上传Reply成功-->" + HotLineWorkNumber + "-" + linkPerson);
                 printSingleColor(35,3,"上传Reply成功-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
@@ -263,7 +263,7 @@ public class wxUtil {
             String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
             if (!errcode.equals("0")) {
                 logger.info("上传Fallback失败-->" + HotLineWorkNumber + "-" + linkPerson);
-                printSingleColor(93,3,"上传Fallback失败-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
+                printSingleColor(31,3,"上传Fallback失败-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
             }else{
                 logger.info("上传Fallback成功-->" + HotLineWorkNumber + "-" + linkPerson);
                 printSingleColor(36,3,"上传Fallback成功-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
@@ -296,7 +296,7 @@ public class wxUtil {
             String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
             if (!errcode.equals("0")) {
                 logger.info("上传Unhandle失败-->" + HotLineWorkNumber + "-" + linkPerson);
-                printSingleColor(93,3,"上传Unhandle失败-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
+                printSingleColor(31,3,"上传Unhandle失败-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
             }else{
                 logger.info("上传Unhandle成功-->" + HotLineWorkNumber + "-" + linkPerson);
                 printSingleColor(37,3,"上传Unhandle成功-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
@@ -330,7 +330,7 @@ public class wxUtil {
             String errcode = JSONObject.parseObject(response.body().string()).getString("errcode");
             if (!errcode.equals("0")) {
                 logger.info("删除Unhandle失败-->" + HotLineWorkNumber + "-" + linkPerson);
-                printSingleColor(93,3,"删除Unhandle失败-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
+                printSingleColor(31,3,"删除Unhandle失败-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);
             }else{
                 logger.info("删除Unhandle成功-->" + HotLineWorkNumber + "-" + linkPerson);
                 printSingleColor(90,3,"删除Unhandle成功-->" + HotLineWorkNumber + "-" + linkPerson + "-errcode:" + errcode);

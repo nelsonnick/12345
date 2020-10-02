@@ -125,6 +125,41 @@ CREATE TABLE `reply`
     `reply_phone2`           varchar(50) CHARACTER SET utf8   NULL COMMENT '回复电话',
     PRIMARY KEY (`id`)
 );
+DROP TABLE IF EXISTS `unhandle`;
+CREATE TABLE `unhandle`
+(
+  `id`                     int(11)                          NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `order_guid`             varchar(100) CHARACTER SET utf8  NULL COMMENT '工单序号',
+  `file_guid`              varchar(100) CHARACTER SET utf8  NULL COMMENT '文档序号',
+  `order_state`            varchar(20) CHARACTER SET utf8   NULL COMMENT '工单状态：已回复、已回退、待处理',
+  `order_code`             varchar(50) CHARACTER SET utf8   NULL COMMENT '工单编号',
+  `link_person`            varchar(50) CHARACTER SET utf8   NULL COMMENT '联系人',
+  `link_phone`             varchar(50) CHARACTER SET utf8   NULL COMMENT '联系电话',
+  `link_address`           varchar(255) CHARACTER SET utf8  NULL COMMENT '联系地址',
+  `business_environment`   varchar(50) CHARACTER SET utf8   NULL COMMENT '营商环境',
+  `new_supervision`        varchar(50) CHARACTER SET utf8   NULL COMMENT '新版督察',
+  `accept_person`          varchar(50) CHARACTER SET utf8   NULL COMMENT '受理人员',
+  `accept_person_code`     varchar(50) CHARACTER SET utf8   NULL COMMENT '受理员编号',
+  `accept_channel`         varchar(50) CHARACTER SET utf8   NULL COMMENT '受理渠道',
+  `handle_type`            varchar(50) CHARACTER SET utf8   NULL COMMENT '办理类型',
+  `phone_type`             varchar(50) CHARACTER SET utf8   NULL COMMENT '来电类别',
+  `write_time`             varchar(50) CHARACTER SET utf8   NULL COMMENT '录入时间',
+  `urgency_degree`         varchar(50) CHARACTER SET utf8   NULL COMMENT '紧急程度',
+  `problem_classification` varchar(255) CHARACTER SET utf8  NULL COMMENT '问题分类',
+  `is_secret`              varchar(10) CHARACTER SET utf8   NULL COMMENT '是否保密',
+  `is_reply`               varchar(10) CHARACTER SET utf8   NULL COMMENT '是否回复',
+  `reply_remark`           varchar(255) CHARACTER SET utf8  NULL COMMENT '回复备注',
+  `problem_description`    varchar(3220) CHARACTER SET utf8 NULL COMMENT '问题描述',
+  `enclosure`              varchar(50) CHARACTER SET utf8   NULL COMMENT '附件',
+  `send_person`            varchar(50) CHARACTER SET utf8   NULL COMMENT '发送人',
+  `send_time`              varchar(50) CHARACTER SET utf8   NULL COMMENT '发送时间',
+  `end_date`               varchar(50) CHARACTER SET utf8   NULL COMMENT '办理时限',
+  `transfer_opinion`       varchar(3220) CHARACTER SET utf8 NULL COMMENT '转办意见',
+  `transfer_process`       varchar(3220) CHARACTER SET utf8 NULL COMMENT '转办流程',
+  `remark`                 varchar(255) CHARACTER SET utf8  NULL COMMENT '备注',
+  `down_time`              datetime(0)                      NULL DEFAULT NULL COMMENT '下载时间',
+  PRIMARY KEY (`id`)
+);
 DROP TABLE IF EXISTS `expire`;
 CREATE TABLE `expire`
 (

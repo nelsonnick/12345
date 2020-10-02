@@ -1,13 +1,11 @@
 package com.wts.util;
 
-import com.jfinal.kit.PropKit;
 import okhttp3.*;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.File;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import static com.wts.util.printUtil.printSingleColor;
@@ -71,7 +69,36 @@ public class util12345 {
         return doc;
     }
 
-    // 获取更多的页面的信息
+    // 获取工单详细信息或者各类列表的第N页（必须先有第一页）
+    public static Document getDocOther(String url, String cookie) {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(40, TimeUnit.SECONDS)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .method("GET", null)
+                .addHeader("Accept", "text/html, application/xhtml+xml, image/jxr, */*")
+                .addHeader("Accept-Language", "zh-Hans-CN, zh-Hans; q=0.5")
+//					.addHeader("Accept-Encoding", "gzip, deflate")
+                .addHeader("Cookie", cookie)
+                .addHeader("Connection", "Keep-Alive")
+                .addHeader("Host", "15.1.0.24")
+                .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko Core/1.70.3756.400 QQBrowser/10.5.4039.400")
+                .build();
+        Document doc = null;
+        try {
+            Response response = client.newCall(request).execute();
+            doc = Jsoup.parse(response.body().string());
+        } catch (Exception e) {
+            logger.error("无法获取链接：" + url);
+            printSingleColor(31,3,"获取链接错误-->" + url);
+        }
+        return doc;
+    }
+
+
+    // 获取更多的页面的信息（各种报错，总是返回回退数据。勉强能用。）
     public static Document getPageList(String PageNum, String cookie, String MessageTypeFlag) {
         String sqlwhereHidden = "";
         String u = "";
@@ -120,7 +147,7 @@ public class util12345 {
                     .addFormDataPart("IsTwoUnitFlag","")
                     .addFormDataPart("hdsqlWhere","")
                     .build();
-            Long l = body.contentLength();
+            long l = body.contentLength();
             Request request = new Request.Builder()
                     .url(u)
                     .method("POST", body)
@@ -129,7 +156,7 @@ public class util12345 {
                     .addHeader("Accept-Language", "zh-CN,zh;q=0.9")
                     .addHeader("Cache-Control", "max-age=0")
                     .addHeader("Connection", "keep-alive")
-                    .addHeader("Content-Length", l.toString())
+                    .addHeader("Content-Length", Long.toString(l))
                     .addHeader("Content-Type", "application/x-www-form-urlencoded")
                     .addHeader("Cookie", cookie)
                     .addHeader("Host", "15.1.0.24")
@@ -142,13 +169,11 @@ public class util12345 {
             doc = Jsoup.parse(response.body().string());
 //            System.out.println(doc);
         } catch (Exception e) {
-            logger.error("无法获取页面列表：" + MessageTypeFlag);
-            printSingleColor(31,3,"获取页面列表错误-->" + MessageTypeFlag);
-            e.printStackTrace();
+            logger.error("无法获取页面列表：" + MessageTypeFlag + "：第" +PageNum + "页");
+            printSingleColor(31,3,"获取页面列表错误-->" + MessageTypeFlag + "：第" +PageNum + "页");
         }
         return doc;
     }
-
 
     public static Boolean hasDirectory(){
         File f = new File("D:\\12345");

@@ -162,33 +162,35 @@ WordUtil {
             ComThread.quitMainSTA();
         }
     }
-
-    public static void main(String[] args) {
-        File file = new File("D:\\2020");
+    // 创建文件夹
+    public static void createFiles(String filesPath){
+        File file = new File(filesPath);
         if (!file.exists()) {//如果文件夹不存在
             file.mkdir();//创建文件夹
         }
+        // 创建月
         for (int i = 1; i < 10; i++) {
-            File file1 = new File("D:\\2020\\0" + i);
+            File file1 = new File(filesPath+"\\0" + i);
             if (!file1.exists()) {//如果文件夹不存在
                 file1.mkdir();//创建文件夹
             }
         }
         for (int i = 10; i < 13; i++) {
-            File file1 = new File("D:\\2020\\" + i);
+            File file1 = new File(filesPath+"\\" + i);
             if (!file1.exists()) {//如果文件夹不存在
                 file1.mkdir();//创建文件夹
             }
         }
+        //创建日
         for (int i = 1; i < 10; i++) {
             for (int j = 1; j < 10; j++) {
-                File file2 = new File("D:\\2020\\0" + i + "\\0" + j);
+                File file2 = new File(filesPath+"\\0" + i + "\\0" + j);
                 if (!file2.exists()) {//如果文件夹不存在
                     file2.mkdir();//创建文件夹
                 }
             }
             for (int j = 10; j < 32; j++) {
-                File file2 = new File("D:\\2020\\0" + i + "\\" + j);
+                File file2 = new File(filesPath+"\\0" + i + "\\" + j);
                 if (!file2.exists()) {//如果文件夹不存在
                     file2.mkdir();//创建文件夹
                 }
@@ -196,13 +198,13 @@ WordUtil {
         }
         for (int i = 10; i < 13; i++) {
             for (int j = 1; j < 10; j++) {
-                File file2 = new File("D:\\2020\\0" + i + "\\0" + j);
+                File file2 = new File(filesPath+"\\" + i + "\\0" + j);
                 if (!file2.exists()) {//如果文件夹不存在
                     file2.mkdir();//创建文件夹
                 }
             }
             for (int j = 10; j < 32; j++) {
-                File file2 = new File("D:\\2020\\" + i + "\\" + j);
+                File file2 = new File(filesPath+"\\" + i + "\\" + j);
                 if (!file2.exists()) {//如果文件夹不存在
                     file2.mkdir();//创建文件夹
                 }
@@ -216,5 +218,10 @@ WordUtil {
         System.out.println(date.format(MM));
         System.out.println(date.format(dd));
         System.out.println(System.currentTimeMillis());
+    }
+
+    public static void main(String[] args) {
+        String filesPath = "D:\\2021";
+        createFiles(filesPath);
     }
 }
