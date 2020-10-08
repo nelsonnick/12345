@@ -84,6 +84,8 @@ public class util12345 {
                 .addHeader("Cookie", cookie)
                 .addHeader("Connection", "Keep-Alive")
                 .addHeader("Host", "15.1.0.24")
+                .addHeader("Referer", "http://15.1.0.24/jhoa_huaiyinqu/taskhotline/listTaskHotLine.aspx")
+                .addHeader("Upgrade-Insecure-Requests", "1")
                 .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko Core/1.70.3756.400 QQBrowser/10.5.4039.400")
                 .build();
         Document doc = null;

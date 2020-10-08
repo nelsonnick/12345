@@ -84,33 +84,65 @@ public class DailyMonitor implements Runnable {
                 }
             }
         }
+        printSingleColor(30, 3, "Reply检测完成");
     }
 
     public void allwork(String cookie) {
         AllworkService allworkService = new AllworkService();
-        String url = getPageUrl("0", "0");
-        Document doc = util12345.getDoc(url, cookie);
-        if (doc != null) {
-            Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
-            for (int i = 0; i < trs.size() - 1; i++) {
-                Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
-                String value = in.attr("value");
-                String file_guid, order_guid;
-                if (String.valueOf(value.charAt(9)).equals("{")) {
-                    file_guid = value.substring(9, 47);
-                    order_guid = value.substring(53, 91);
-                } else {
-                    file_guid = value.substring(8, 46);
-                    order_guid = value.substring(51, 89);
-                }
-                if (allworkService.findNumByGUID(order_guid) == 0) {
-                    Allwork allwork = getAllwork(file_guid, order_guid, cookie);
-                    if (allwork != null) {
-                        saveAllwork(allwork);
+//        String url = getPageUrl("0", "0");
+//        Document doc = util12345.getDoc(url, cookie);
+//        if (doc != null) {
+//            Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
+//            for (int i = 0; i < trs.size() - 1; i++) {
+//                Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
+//                String value = in.attr("value");
+//                String file_guid, order_guid;
+//                if (String.valueOf(value.charAt(9)).equals("{")) {
+//                    file_guid = value.substring(9, 47);
+//                    order_guid = value.substring(53, 91);
+//                } else {
+//                    file_guid = value.substring(8, 46);
+//                    order_guid = value.substring(51, 89);
+//                }
+//                if (allworkService.findNumByGUID(order_guid) == 0) {
+//                    Allwork allwork = getAllwork(file_guid, order_guid, cookie);
+//                    if (allwork != null) {
+//                        saveAllwork(allwork);
+//                    }
+//                }
+//            }
+//        }
+
+
+        util12345.getDoc(getPageUrl("0", "0"), cookie);
+        Document doc = null;
+        for (int j = 1; j < 9; j++) {
+            doc = getDocOther(getPageUrl(j + ""), cookie);
+            if (doc != null) {
+                Elements trs = doc.getElementById("outerDIV").getElementsByTag("tbody").get(1).getElementsByTag("tr");
+                for (int i = 0; i < trs.size() - 1; i++) {
+                    Element in = trs.get(i).getElementsByTag("td").get(0).getElementsByTag("input").get(0);
+                    String value = in.attr("value");
+                    String file_guid, order_guid;
+                    if (String.valueOf(value.charAt(9)).equals("{")) {
+                        file_guid = value.substring(9, 47);
+                        order_guid = value.substring(53, 91);
+                    } else {
+                        file_guid = value.substring(8, 46);
+                        order_guid = value.substring(51, 89);
+                    }
+                    if (allworkService.findNumByGUID(order_guid) == 0) {
+                        Allwork allwork = getAllwork(file_guid, order_guid, cookie);
+                        if (allwork != null) {
+                            saveAllwork(allwork);
+                        }
                     }
                 }
             }
         }
+
+
+        printSingleColor(30, 3, "Allwork检测完成");
     }
 
     public Allwork getAllwork(String file_guid, String order_guid, String cookie) {
@@ -234,38 +266,38 @@ public class DailyMonitor implements Runnable {
                 logger.info("收到新Allwork工单-->" + order_code + "-" + link_person + "-" + send_time + "-" + worker.get(Integer.parseInt(personCode)));
                 printSingleColor(34, 3, "收到新Allwork工单-->" + order_code + "-" + link_person + "-" + send_time + "-" + worker.get(Integer.parseInt(personCode)));
 
-                Map<String, String> map = new HashMap<>();
-                map.put("accept_person_code", accept_person_code);
-                map.put("end_date", end_date);
-                map.put("order_code", order_code);
-                map.put("urgency_degree", urgency_degree);
-                map.put("phone_type", phone_type);
-                map.put("accept_channel", accept_channel);
-                map.put("is_reply", is_reply);
-                map.put("is_secret", is_secret);
-                map.put("link_person", link_person);
-                map.put("link_phone", link_phone);
-                map.put("link_address", link_address);
-                map.put("reply_remark", reply_remark);
-                map.put("problem_classification", problem_classification);
-                map.put("problem_description", problem_description);
-                map.put("transfer_opinion", transfer_opinion);
-                map.put("transfer_process", transfer_process);
-                map.put("enclosure", enclosure);
-                map.put("order_guid", order_guid);
-                map.put("phone_time", service.findNumByPhone(allwork.get("link_phone")));
-                LocalDate date = LocalDate.now();
-                DateTimeFormatter yyyy = DateTimeFormatter.ofPattern("yyyy");
-                DateTimeFormatter MM = DateTimeFormatter.ofPattern("MM");
-                DateTimeFormatter dd = DateTimeFormatter.ofPattern("dd");
-                String path = "D:\\工单备份\\" + date.format(yyyy) + "\\" + date.format(MM) + "\\" + date.format(dd) + "\\";
+//                Map<String, String> map = new HashMap<>();
+//                map.put("accept_person_code", accept_person_code);
+//                map.put("end_date", end_date);
+//                map.put("order_code", order_code);
+//                map.put("urgency_degree", urgency_degree);
+//                map.put("phone_type", phone_type);
+//                map.put("accept_channel", accept_channel);
+//                map.put("is_reply", is_reply);
+//                map.put("is_secret", is_secret);
+//                map.put("link_person", link_person);
+//                map.put("link_phone", link_phone);
+//                map.put("link_address", link_address);
+//                map.put("reply_remark", reply_remark);
+//                map.put("problem_classification", problem_classification);
+//                map.put("problem_description", problem_description);
+//                map.put("transfer_opinion", transfer_opinion);
+//                map.put("transfer_process", transfer_process);
+//                map.put("enclosure", enclosure);
+//                map.put("order_guid", order_guid);
+//                map.put("phone_time", service.findNumByPhone(allwork.get("link_phone")));
+//                LocalDate date = LocalDate.now();
+//                DateTimeFormatter yyyy = DateTimeFormatter.ofPattern("yyyy");
+//                DateTimeFormatter MM = DateTimeFormatter.ofPattern("MM");
+//                DateTimeFormatter dd = DateTimeFormatter.ofPattern("dd");
+//                String path = "D:\\工单备份\\" + date.format(yyyy) + "\\" + date.format(MM) + "\\" + date.format(dd) + "\\";
 
-                CreatWordByModel("D:\\TemplateDoc" + personCode + ".docx", map, path + order_code + "-" + order_guid + ".docx");
-                CreatWordByModel("D:\\TemplateDoc.docx", map, DailyMonitor.path + order_code + "-" + order_guid + ".docx");
-                String printerName = PropKit.use("config-dev.txt").get("printer");
-//            String printerName = "HP LaserJet 1020";//打印机名包含字串
-//            String printerName = "HP LaserJet MFP M227-M231 PCL-6 (V4)";//打印机名包含字串
-                printWord(path + order_code + "-" + order_guid + ".docx", printerName);
+//                CreatWordByModel("D:\\TemplateDoc" + personCode + ".docx", map, path + order_code + "-" + order_guid + ".docx");
+//                CreatWordByModel("D:\\TemplateDoc.docx", map, DailyMonitor.path + order_code + "-" + order_guid + ".docx");
+//                String printerName = PropKit.use("config-dev.txt").get("printer");
+////            String printerName = "HP LaserJet 1020";//打印机名包含字串
+////            String printerName = "HP LaserJet MFP M227-M231 PCL-6 (V4)";//打印机名包含字串
+//                printWord(path + order_code + "-" + order_guid + ".docx", printerName);
                 allworkList.add(allwork);
             }
         }
@@ -535,6 +567,7 @@ public class DailyMonitor implements Runnable {
                 replyList.add(reply);
             }
         }
+        printSingleColor(30, 3, "Fallback检测完成");
 
     }
 
