@@ -213,15 +213,16 @@ public class DownAll extends Controller {
                     String reply_day = table.getElementsByTag("tr").get(2).getElementsByTag("td").get(3).text();//答复时间
                     String reply_person = table.getElementsByTag("tr").get(3).getElementsByTag("td").get(1).text();//答复人
                     String reply_phone = table.getElementsByTag("tr").get(3).getElementsByTag("td").get(3).text();//答复电话
-                    String reply_content = table.getElementsByTag("tr").get(4).getElementsByTag("td").get(1).text();//办理情况
-                    String reply_department = table.getElementsByTag("tr").get(5).getElementsByTag("td").get(1).text();//回复单位
-                    String reply_time = table.getElementsByTag("tr").get(5).getElementsByTag("td").get(3).text();//回复时间
-                    String subordinate_department = table.getElementsByTag("tr").get(6).getElementsByTag("td").get(1).text();//下级办理单位
-                    String if_nodo = table.getElementsByTag("tr").get(7).getElementsByTag("td").get(1).text();//不再办理
-                    String nodo_reason = table.getElementsByTag("tr").get(8).getElementsByTag("td").get(1).text();//不再办理原因
-                    String reply_enclosure = table.getElementsByTag("tr").get(9).getElementsByTag("td").get(1).text();//附件
-                    String reply_person2 = table.getElementsByTag("tr").get(10).getElementsByTag("td").get(1).text();//回复联系人
-                    String reply_phone2 = table.getElementsByTag("tr").get(10).getElementsByTag("td").get(3).text();//回复电话
+                    String reply_solve = table.getElementsByTag("tr").get(4).getElementsByTag("td").get(1).text();//解决情况
+                    String reply_content = table.getElementsByTag("tr").get(5).getElementsByTag("td").get(1).text();//办理情况
+                    String reply_department = table.getElementsByTag("tr").get(6).getElementsByTag("td").get(1).text();//回复单位
+                    String reply_time = table.getElementsByTag("tr").get(6).getElementsByTag("td").get(3).text();//回复时间
+                    String subordinate_department = table.getElementsByTag("tr").get(7).getElementsByTag("td").get(1).text();//下级办理单位
+                    String if_nodo = table.getElementsByTag("tr").get(8).getElementsByTag("td").get(1).text();//不再办理
+                    String nodo_reason = table.getElementsByTag("tr").get(9).getElementsByTag("td").get(1).text();//不再办理原因
+                    String reply_enclosure = table.getElementsByTag("tr").get(10).getElementsByTag("td").get(1).text();//附件
+                    String reply_person2 = table.getElementsByTag("tr").get(11).getElementsByTag("td").get(1).text();//回复联系人
+                    String reply_phone2 = table.getElementsByTag("tr").get(11).getElementsByTag("td").get(3).text();//回复电话
                     if (!replyService.has(order_guid)) {
                         Reply reply = new Reply();
                         reply.set("order_guid", order_guid)
@@ -257,6 +258,7 @@ public class DownAll extends Controller {
                                 .set("reply_day", reply_day)
                                 .set("reply_person", reply_person)
                                 .set("reply_phone", reply_phone)
+                                .set("reply_solve", reply_solve)
                                 .set("reply_content", reply_content)
                                 .set("reply_department", reply_department)
                                 .set("reply_time", reply_time)
@@ -276,7 +278,7 @@ public class DownAll extends Controller {
         }
 
     }
-    // 单独下载异常工单
+    // 单独下载异常工单--->20201005回复页面的更新，这里还没有调整
     public void downError(){
         List<String> errorList = new ArrayList<>();
 
@@ -339,16 +341,18 @@ public class DownAll extends Controller {
             String reply_day = table.getElementsByTag("tr").get(2).getElementsByTag("td").get(3).text();//答复时间
             String reply_person = table.getElementsByTag("tr").get(3).getElementsByTag("td").get(1).text();//答复人
             String reply_phone = table.getElementsByTag("tr").get(3).getElementsByTag("td").get(3).text();//答复电话
-            String reply_content = table.getElementsByTag("tr").get(4).getElementsByTag("td").get(1).text();//办理情况
-            String reply_department = table.getElementsByTag("tr").get(5).getElementsByTag("td").get(1).text();//回复单位
-            String reply_time = table.getElementsByTag("tr").get(5).getElementsByTag("td").get(3).text();//回复时间
+            String reply_solve = table.getElementsByTag("tr").get(4).getElementsByTag("td").get(1).text();//解决情况
 
-            String subordinate_department = table.getElementsByTag("tr").get(6).getElementsByTag("td").get(1).text();//下级办理单位
-            String if_nodo = table.getElementsByTag("tr").get(7).getElementsByTag("td").get(1).text();//不再办理
-            String nodo_reason = table.getElementsByTag("tr").get(8).getElementsByTag("td").get(1).text();//不再办理原因
-            String reply_enclosure = table.getElementsByTag("tr").get(9).getElementsByTag("td").get(1).text();//附件
-            String reply_person2 = table.getElementsByTag("tr").get(10).getElementsByTag("td").get(1).text();//回复联系人
-            String reply_phone2 = table.getElementsByTag("tr").get(10).getElementsByTag("td").get(3).text();//回复电话
+            String reply_content = table.getElementsByTag("tr").get(5).getElementsByTag("td").get(1).text();//办理情况
+            String reply_department = table.getElementsByTag("tr").get(6).getElementsByTag("td").get(1).text();//回复单位
+            String reply_time = table.getElementsByTag("tr").get(6).getElementsByTag("td").get(3).text();//回复时间
+
+            String subordinate_department = table.getElementsByTag("tr").get(7).getElementsByTag("td").get(1).text();//下级办理单位
+            String if_nodo = table.getElementsByTag("tr").get(8).getElementsByTag("td").get(1).text();//不再办理
+            String nodo_reason = table.getElementsByTag("tr").get(9).getElementsByTag("td").get(1).text();//不再办理原因
+            String reply_enclosure = table.getElementsByTag("tr").get(10).getElementsByTag("td").get(1).text();//附件
+            String reply_person2 = table.getElementsByTag("tr").get(11).getElementsByTag("td").get(1).text();//回复联系人
+            String reply_phone2 = table.getElementsByTag("tr").get(11).getElementsByTag("td").get(3).text();//回复电话
             if(!replyService.has(order_guid)) {
                 Reply reply = new Reply();
                 reply.set("order_guid", order_guid)
@@ -384,6 +388,7 @@ public class DownAll extends Controller {
                         .set("reply_day", reply_day)
                         .set("reply_person", reply_person)
                         .set("reply_phone", reply_phone)
+                        .set("reply_solve", reply_solve)
                         .set("reply_content", reply_content)
                         .set("reply_department", reply_department)
                         .set("reply_time", reply_time)

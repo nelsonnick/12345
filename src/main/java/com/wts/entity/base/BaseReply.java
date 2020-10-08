@@ -516,6 +516,20 @@ public abstract class BaseReply<M extends BaseReply<M>> extends Model<M> impleme
 	/**
 	 * 办理情况
 	 */
+	public void setReplySolve(java.lang.String replySolve) {
+		set("reply_solve", replySolve);
+	}
+
+	/**
+	 * 办理情况
+	 */
+	public java.lang.String getReplySolve() {
+		return getStr("reply_solve");
+	}
+
+	/**
+	 * 办理情况
+	 */
 	public void setReplyContent(java.lang.String replyContent) {
 		set("reply_content", replyContent);
 	}

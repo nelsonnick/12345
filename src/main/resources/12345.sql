@@ -114,6 +114,7 @@ CREATE TABLE `reply`
     `reply_day`              varchar(50) CHARACTER SET utf8   NULL COMMENT '答复时间',
     `reply_person`           varchar(50) CHARACTER SET utf8   NULL COMMENT '答复人',
     `reply_phone`            varchar(50) CHARACTER SET utf8   NULL COMMENT '答复电话',
+    `reply_solve`            varchar(50) CHARACTER SET utf8   NULL COMMENT '办理情况',
     `reply_content`          varchar(3220) CHARACTER SET utf8 NULL COMMENT '办理情况',
     `reply_department`       varchar(255) CHARACTER SET utf8  NULL COMMENT '回复单位',
     `reply_time`             varchar(50) CHARACTER SET utf8   NULL COMMENT '回复时间',

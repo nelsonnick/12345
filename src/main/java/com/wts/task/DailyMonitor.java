@@ -226,7 +226,7 @@ public class DailyMonitor implements Runnable {
 
                 service.add(allwork);
                 String personCode = service.getPersonCode();
-                List<String> worker=new ArrayList<>();
+                List<String> worker = new ArrayList<>();
                 worker.add("朱晓庆");
                 worker.add("李名菊");
                 worker.add("于辰");
@@ -292,11 +292,15 @@ public class DailyMonitor implements Runnable {
                 allwork.get("link_person"),
                 allwork.get("end_date"));
         if (errcode.equals("") || !errcode.equals("0") || err.equals("") || !err.equals("0")) {
-            AllworkService allworkService = new AllworkService();
+            if (errcode.equals("-501000") || err.equals("-501000")) {
+                logger.info("重复推送，本次推送取消-->" + allwork.get("order_code") + "-" + allwork.get("link_person") + "-" + allwork.get("send_time"));
+                printSingleColor(32, 3, "重复推送，本次推送取消-->" + allwork.get("order_code") + "-" + allwork.get("link_person") + "-" + allwork.get("send_time") + "-AddAllworkErrCode:" + errcode + "-AddUnhandleErrCode:" + err);
+            } else {
+                AllworkService allworkService = new AllworkService();
 //            allworkService.deleteById(allwork.getId());
-            logger.info("推送失败，删除Allwork工单-->" + allwork.get("order_code") + "-" + allwork.get("link_person") + "-" + allwork.get("send_time"));
-            printSingleColor(32, 3, "推送失败，删除Allwork工单-->" + allwork.get("order_code") + "-" + allwork.get("link_person") + "-" + allwork.get("send_time") + "-AddAllworkErrCode:" + errcode + "-AddUnhandleErrCode:" + err);
-
+                logger.info("推送失败，删除Allwork工单-->" + allwork.get("order_code") + "-" + allwork.get("link_person") + "-" + allwork.get("send_time"));
+                printSingleColor(32, 3, "推送失败，删除Allwork工单-->" + allwork.get("order_code") + "-" + allwork.get("link_person") + "-" + allwork.get("send_time") + "-AddAllworkErrCode:" + errcode + "-AddUnhandleErrCode:" + err);
+            }
         }
         String OA_token = oaUtil.getToken();
         if (!OA_token.equals("")) {
@@ -449,19 +453,21 @@ public class DailyMonitor implements Runnable {
             String reply_day = table.getElementsByTag("tr").get(2).getElementsByTag("td").get(3).text();//答复时间
             String reply_person = table.getElementsByTag("tr").get(3).getElementsByTag("td").get(1).text();//答复人
             String reply_phone = table.getElementsByTag("tr").get(3).getElementsByTag("td").get(3).text();//答复电话
-            String reply_content = table.getElementsByTag("tr").get(4).getElementsByTag("td").get(1).text()
+            String reply_solve = table.getElementsByTag("tr").get(4).getElementsByTag("td").get(1).text();//解决情况
+
+            String reply_content = table.getElementsByTag("tr").get(5).getElementsByTag("td").get(1).text()
                     .replace("\"", "").replace(".", "")
                     .replace(";", "").replace(":", "")
                     .replace("\\", "").replace("/", "")
                     .replace("'", "").replace("?", "");//办理情况
-            String reply_department = table.getElementsByTag("tr").get(5).getElementsByTag("td").get(1).text();//回复单位
-            String reply_time = table.getElementsByTag("tr").get(5).getElementsByTag("td").get(3).text();//回复时间
-            String subordinate_department = table.getElementsByTag("tr").get(6).getElementsByTag("td").get(1).text();//下级办理单位
-            String if_nodo = table.getElementsByTag("tr").get(7).getElementsByTag("td").get(1).text();//不再办理
-            String nodo_reason = table.getElementsByTag("tr").get(8).getElementsByTag("td").get(1).text();//不再办理原因
-            String reply_enclosure = table.getElementsByTag("tr").get(9).getElementsByTag("td").get(1).text().substring(0, 0);//附件
-            String reply_person2 = table.getElementsByTag("tr").get(10).getElementsByTag("td").get(1).text();//回复联系人
-            String reply_phone2 = table.getElementsByTag("tr").get(10).getElementsByTag("td").get(3).text();//回复电话
+            String reply_department = table.getElementsByTag("tr").get(6).getElementsByTag("td").get(1).text();//回复单位
+            String reply_time = table.getElementsByTag("tr").get(6).getElementsByTag("td").get(3).text();//回复时间
+            String subordinate_department = table.getElementsByTag("tr").get(7).getElementsByTag("td").get(1).text();//下级办理单位
+            String if_nodo = table.getElementsByTag("tr").get(8).getElementsByTag("td").get(1).text();//不再办理
+            String nodo_reason = table.getElementsByTag("tr").get(9).getElementsByTag("td").get(1).text();//不再办理原因
+            String reply_enclosure = table.getElementsByTag("tr").get(10).getElementsByTag("td").get(1).text().substring(0, 0);//附件
+            String reply_person2 = table.getElementsByTag("tr").get(11).getElementsByTag("td").get(1).text();//回复联系人
+            String reply_phone2 = table.getElementsByTag("tr").get(11).getElementsByTag("td").get(3).text();//回复电话
             Reply reply = new Reply();
             reply.set("order_guid", order_guid)
                     .set("order_state", order_state)
@@ -495,6 +501,7 @@ public class DailyMonitor implements Runnable {
                     .set("reply_day", reply_day)
                     .set("reply_person", reply_person)
                     .set("reply_phone", reply_phone)
+                    .set("reply_solve", reply_solve)
                     .set("reply_content", reply_content)
                     .set("reply_department", reply_department)
                     .set("reply_time", reply_time)
