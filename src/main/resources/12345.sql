@@ -180,3 +180,12 @@ CREATE TABLE `re`
     `remark`                 varchar(255) CHARACTER SET utf8  NULL COMMENT '备注',
     PRIMARY KEY (`id`)
 );
+DROP TABLE IF EXISTS `unread`;
+CREATE TABLE `unread`
+(
+    `id`                     int(11)                          NOT NULL AUTO_INCREMENT COMMENT '序号',
+    `order_guid`             varchar(100) CHARACTER SET utf8  NULL COMMENT '序号',
+    `title`             varchar(500) CHARACTER SET utf8   NULL COMMENT '标题',
+    `origSendPerson`            varchar(500) CHARACTER SET utf8   NULL COMMENT '发送人',
+    PRIMARY KEY (`id`)
+);

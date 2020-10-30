@@ -21,6 +21,7 @@ public class _MappingKit {
 		arp.addMapping("re", "id", Re.class);
 		arp.addMapping("allwork", "id", Allwork.class);
 		arp.addMapping("unhandle", "id", Unhandle.class);
+		arp.addMapping("unread", "id", Unread.class);
 	}
 }
 
