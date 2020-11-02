@@ -96,7 +96,7 @@ public class Config extends JFinalConfig {
 		me.add(arp);
 		// 配置任务调度插件
 		Cron4jPlugin cp = new Cron4jPlugin();
-		cp.addTask("*/3 * * * *", new DailyMonitor());//每3分钟执行一次日常监控任务
+//		cp.addTask("*/3 * * * *", new DailyMonitor());//每3分钟执行一次日常监控任务
 //		cp.addTask("*/1 * * * *", new AllworkTask());//每1分钟执行一次allwork监控任务
 //		cp.addTask("*/1 * * * *", new ReadSend());//每2分钟执行一次读取发送任务
 
