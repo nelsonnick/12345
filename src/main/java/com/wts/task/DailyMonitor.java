@@ -36,6 +36,7 @@ public class DailyMonitor implements Runnable {
     List<Allwork> allworkList = new ArrayList<>();
     List<Reply> replyList = new ArrayList<>();
     List<Fallback> fallbackList = new ArrayList<>();
+    List<Unread> unreadList = new ArrayList<>();
     private static final Logger logger = Logger.getLogger(DailyMonitor.class);
 
     @Override
@@ -47,8 +48,8 @@ public class DailyMonitor implements Runnable {
             allwork(cookie);
             reply(cookie);
             fallback(cookie);
-            getUnread(cookie);
-            if (allworkList.size() != 0 || replyList.size() != 0 || fallbackList.size() != 0) {
+            saveUnread(cookie);
+            if (allworkList.size() != 0 || replyList.size() != 0 || fallbackList.size() != 0 || unreadList.size() != 0) {
                 try {
                     Boolean network = goWaiWang();
                     if (network) {
@@ -69,6 +70,11 @@ public class DailyMonitor implements Runnable {
 //                                createFallbackText(fallback);
 //                                createUnhandleDeleteText(fallback.getOrderGuid());
                         }
+                        for (Unread unread : unreadList) {
+                            sendUnread(unread);
+//                                createFallbackText(fallback);
+//                                createUnhandleDeleteText(fallback.getOrderGuid());
+                        }
 //                        }
 //                        allworkList.subList(0,allworkList.size()).clear();
                         for (int i = allworkList.size() - 1; i >= 0; i--) {
@@ -80,6 +86,9 @@ public class DailyMonitor implements Runnable {
                         for (int i = fallbackList.size() - 1; i >= 0; i--) {
                             fallbackList.remove(i);
                         }
+                        if (unreadList.size() > 0) {
+                            unreadList.subList(0, unreadList.size()).clear();
+                        }
                     }
                     goNeiWang();
                 } catch (Exception e) {
@@ -88,7 +97,6 @@ public class DailyMonitor implements Runnable {
                 }
             }
         }
-        printSingleColor(30, 3, "Reply检测完成");
     }
 
     public void allwork(String cookie) {
@@ -145,8 +153,6 @@ public class DailyMonitor implements Runnable {
             }
         }
 
-
-        printSingleColor(30, 3, "Allwork检测完成");
     }
 
     public Allwork getAllwork(String file_guid, String order_guid, String cookie) {
@@ -270,38 +276,38 @@ public class DailyMonitor implements Runnable {
                 logger.info("收到新Allwork工单-->" + order_code + "-" + link_person + "-" + send_time + "-" + worker.get(Integer.parseInt(personCode)));
                 printSingleColor(34, 3, "收到新Allwork工单-->" + order_code + "-" + link_person + "-" + send_time + "-" + worker.get(Integer.parseInt(personCode)));
 
-//                Map<String, String> map = new HashMap<>();
-//                map.put("accept_person_code", accept_person_code);
-//                map.put("end_date", end_date);
-//                map.put("order_code", order_code);
-//                map.put("urgency_degree", urgency_degree);
-//                map.put("phone_type", phone_type);
-//                map.put("accept_channel", accept_channel);
-//                map.put("is_reply", is_reply);
-//                map.put("is_secret", is_secret);
-//                map.put("link_person", link_person);
-//                map.put("link_phone", link_phone);
-//                map.put("link_address", link_address);
-//                map.put("reply_remark", reply_remark);
-//                map.put("problem_classification", problem_classification);
-//                map.put("problem_description", problem_description);
-//                map.put("transfer_opinion", transfer_opinion);
-//                map.put("transfer_process", transfer_process);
-//                map.put("enclosure", enclosure);
-//                map.put("order_guid", order_guid);
-//                map.put("phone_time", service.findNumByPhone(allwork.get("link_phone")));
-//                LocalDate date = LocalDate.now();
-//                DateTimeFormatter yyyy = DateTimeFormatter.ofPattern("yyyy");
-//                DateTimeFormatter MM = DateTimeFormatter.ofPattern("MM");
-//                DateTimeFormatter dd = DateTimeFormatter.ofPattern("dd");
-//                String path = "D:\\工单备份\\" + date.format(yyyy) + "\\" + date.format(MM) + "\\" + date.format(dd) + "\\";
+                Map<String, String> map = new HashMap<>();
+                map.put("accept_person_code", accept_person_code);
+                map.put("end_date", end_date);
+                map.put("order_code", order_code);
+                map.put("urgency_degree", urgency_degree);
+                map.put("phone_type", phone_type);
+                map.put("accept_channel", accept_channel);
+                map.put("is_reply", is_reply);
+                map.put("is_secret", is_secret);
+                map.put("link_person", link_person);
+                map.put("link_phone", link_phone);
+                map.put("link_address", link_address);
+                map.put("reply_remark", reply_remark);
+                map.put("problem_classification", problem_classification);
+                map.put("problem_description", problem_description);
+                map.put("transfer_opinion", transfer_opinion);
+                map.put("transfer_process", transfer_process);
+                map.put("enclosure", enclosure);
+                map.put("order_guid", order_guid);
+                map.put("phone_time", service.findNumByPhone(allwork.get("link_phone")));
+                LocalDate date = LocalDate.now();
+                DateTimeFormatter yyyy = DateTimeFormatter.ofPattern("yyyy");
+                DateTimeFormatter MM = DateTimeFormatter.ofPattern("MM");
+                DateTimeFormatter dd = DateTimeFormatter.ofPattern("dd");
+                String path = "D:\\工单备份\\" + date.format(yyyy) + "\\" + date.format(MM) + "\\" + date.format(dd) + "\\";
 
-//                CreatWordByModel("D:\\TemplateDoc" + personCode + ".docx", map, path + order_code + "-" + order_guid + ".docx");
-//                CreatWordByModel("D:\\TemplateDoc.docx", map, DailyMonitor.path + order_code + "-" + order_guid + ".docx");
-//                String printerName = PropKit.use("config-dev.txt").get("printer");
-////            String printerName = "HP LaserJet 1020";//打印机名包含字串
-////            String printerName = "HP LaserJet MFP M227-M231 PCL-6 (V4)";//打印机名包含字串
-//                printWord(path + order_code + "-" + order_guid + ".docx", printerName);
+                CreatWordByModel("D:\\TemplateDoc" + personCode + ".docx", map, path + order_code + "-" + order_guid + ".docx");
+                CreatWordByModel("D:\\TemplateDoc.docx", map, DailyMonitor.path + order_code + "-" + order_guid + ".docx");
+                String printerName = PropKit.use("config-dev.txt").get("printer");
+//            String printerName = "HP LaserJet 1020";//打印机名包含字串
+//            String printerName = "HP LaserJet MFP M227-M231 PCL-6 (V4)";//打印机名包含字串
+                printWord(path + order_code + "-" + order_guid + ".docx", printerName);
                 allworkList.add(allwork);
             }
         }
@@ -571,8 +577,6 @@ public class DailyMonitor implements Runnable {
                 replyList.add(reply);
             }
         }
-        printSingleColor(30, 3, "Fallback检测完成");
-
     }
 
     public void sendReply(Reply reply, String weixinToken) {
@@ -930,12 +934,13 @@ public class DailyMonitor implements Runnable {
                     .build();
             wxCpService.messageSend(message);
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error("推送企业微信失败:" + msgContent);
             printSingleColor(91, 3, "推送企业微信失败-->" + msgContent);
         }
     }
 
-    public void getUnread(String cookie) {
+    public void saveUnread(String cookie) {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
@@ -968,14 +973,14 @@ public class DailyMonitor implements Runnable {
                 String GUID = hiddenValues.getString("GUID");
                 String origSendPerson = hiddenValues.getString("origSendPerson");
                 if (!title.startsWith("济南12345")) {
-                    if (service.findNumByGUID(GUID) != 0) {
+                    if (service.findNumByGUID(GUID) == 0) {
                         Unread unread = new Unread();
                         unread.setOrderGuid(GUID);
                         unread.setTitle(title);
                         unread.setOrigSendPerson(origSendPerson);
                         unread.save();
-                        System.out.println("新的代办：" + origSendPerson + "-->" + title);
-                        sendMessageToWeiXin("新的代办：" + origSendPerson + "-->" + title, "WangTianShuo");
+                        printSingleColor(95, 3, "新的代办：" + origSendPerson + "-->" + title);
+                        unreadList.add(unread);
                     }
                 }
             }
@@ -984,4 +989,9 @@ public class DailyMonitor implements Runnable {
         }
     }
 
+    public void sendUnread(Unread unread){
+//        sendMessageToWeiXin("新的代办：" + unread.getOrigSendPerson() + "-->" + unread.getTitle(), "WangTianShuo");
+        sendMessageToWeiXin("新的代办：" + unread.getOrigSendPerson() + "-->" + unread.getTitle(), "WangHanTao");
+        sendMessageToWeiXin("新的代办：" + unread.getOrigSendPerson() + "-->" + unread.getTitle(), "XieWen");
+    }
 }
