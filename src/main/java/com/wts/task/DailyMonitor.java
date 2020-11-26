@@ -19,6 +19,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -301,7 +302,14 @@ public class DailyMonitor implements Runnable {
                 DateTimeFormatter MM = DateTimeFormatter.ofPattern("MM");
                 DateTimeFormatter dd = DateTimeFormatter.ofPattern("dd");
                 String path = "D:\\工单备份\\" + date.format(yyyy) + "\\" + date.format(MM) + "\\" + date.format(dd) + "\\";
-
+                // 当日工单数量
+                String countNum = String.valueOf(Objects.requireNonNull(new File(path).listFiles()).length);
+                map.put("count_num", countNum);
+                // 打印工单时间
+                Date d= new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String printTime = sdf.format(d);
+                map.put("print_time", printTime);
                 CreatWordByModel("D:\\TemplateDoc" + personCode + ".docx", map, path + order_code + "-" + order_guid + ".docx");
                 CreatWordByModel("D:\\TemplateDoc.docx", map, DailyMonitor.path + order_code + "-" + order_guid + ".docx");
                 String printerName = PropKit.use("config-dev.txt").get("printer");

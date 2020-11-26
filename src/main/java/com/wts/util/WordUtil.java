@@ -17,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.wts.util.printUtil.printSingleColor;
 
@@ -162,6 +163,12 @@ WordUtil {
             ComThread.quitMainSTA();
         }
     }
+    //  统计文件个数
+    public static Integer countFiles(String filesPath){
+        return Objects.requireNonNull(new File(filesPath).listFiles()).length;
+    }
+
+
     // 创建文件夹
     public static void createFiles(String filesPath){
         File file = new File(filesPath);
@@ -220,8 +227,12 @@ WordUtil {
         System.out.println(System.currentTimeMillis());
     }
 
+
+
+
     public static void main(String[] args) {
         String filesPath = "D:\\2021";
-        createFiles(filesPath);
+//        createFiles(filesPath);
+        System.out.println(countFiles(filesPath));
     }
 }
