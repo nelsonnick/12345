@@ -303,7 +303,7 @@ public class DailyMonitor implements Runnable {
                 DateTimeFormatter dd = DateTimeFormatter.ofPattern("dd");
                 String path = "D:\\工单备份\\" + date.format(yyyy) + "\\" + date.format(MM) + "\\" + date.format(dd) + "\\";
                 // 当日工单数量
-                String countNum = String.valueOf(Objects.requireNonNull(new File(path).listFiles()).length);
+                String countNum = String.valueOf(Objects.requireNonNull(new File(path).listFiles()).length+1);
                 map.put("count_num", countNum);
                 // 打印工单时间
                 Date d= new Date();
